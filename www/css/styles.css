@@ -1,0 +1,24 @@
+.login-image{
+	width:640px;
+	height:1136px;
+	background: url(../images/background.png) no-repeat 0 0;
+}
+.center {
+	width:313px;
+	margin: 0 auto;
+	position: absolute;
+	bottom: 160px;
+	left: 19%;
+}
+.center .login{
+	background-color: rgb(34, 192, 100);
+	border-radius: 40px;
+	border: 0;
+	color: #fff;
+}
+.center .tour{
+	background-color: transparent;
+	border-radius: 40px;
+	border-color: #fff;
+	color: #fff;
+}
