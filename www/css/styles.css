@@ -1,6 +1,9 @@
 .login-image{
 	width:640px;
 	height:1136px;
+	
+}
+.login-page{
 	background: url(../images/background.png) no-repeat 0 0;
 }
 .center {
