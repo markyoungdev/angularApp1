@@ -26,31 +26,41 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: "/app",
       abstract: true,
       templateUrl: "partials/menu.html",
-      controller: 'AppCtrl'
+      controller: 'menuController'
     })
-
+    <!-- // handle the login -->
     .state('login', {
       url: '/login',
       templateUrl: 'partials/login.html',
       //controller: 'AppCtrl'
     })
-    
-    .state('app.friends', {
-      url: '/friends',
+     <!-- // handle the Faqs -->
+     .state('app.faqs', {
+      url: '/faqs',
       views: {
         'menuContent': {
-          templateUrl: 'partials/friends.html',
-          controller: 'FriendsController'
+           templateUrl: 'partials/faqs.html',
+           controller: 'faqsController'
+          }
+      }
+    })
+     <!-- // handle the matches -->
+    .state('app.matches', {
+      url: '/matches',
+      views: {
+        'menuContent': {
+          templateUrl: 'partials/matches.html',
+          controller: 'matchesController'
         }
       }
     })
-    
+     <!-- // handle the profile -->
     .state('app.profile', {
       url: '/profile',
       views: {
         'menuContent': {
            templateUrl: 'partials/profile.html',
-           controller: 'ProfileController'
+           controller: 'profileController'
           }
       }
     })
