@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('MenuController', function ($scope, $location) {
+angular.module('sideMenuApp.controllers').controller('menuController', function ($scope, $location) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
 
