@@ -25,3 +25,8 @@
 	border-color: #fff;
 	color: #fff;
 }
+.menu-left .bar-footer{
+	z-index: 999999;
+	margin-top:-5px;
+	height:50px;
+}

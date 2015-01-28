@@ -11,8 +11,8 @@
     
     <ion-content class="has-header">
       <ion-list>
-        <ion-item nav-clear menu-close href="#/app/friends">
-          Friends
+        <ion-item nav-clear menu-close href="#/app/matches">
+          Matches
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/messages">
           Messages
@@ -28,5 +28,8 @@
         </ion-item>
       </ion-list>
     </ion-content>
+    <div class="bar bar-footer">
+      <button class="button button-balanced button-full button-large" ng-click="goTo('app.matches')">View Profile</button>
+    </div>
   </ion-side-menu>
 </ion-side-menus>
