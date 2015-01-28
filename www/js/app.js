@@ -1,6 +1,6 @@
-var sideMenuApp = angular.module('app', ['ionic', 'sideMenuApp.controllers']);
+var sideMenuApp = angular.module('app', ['ionic', 'sideMenuApp.controllers','UserApp']);
 
-sideMenuApp.run(function($ionicPlatform) {
+sideMenuApp.run(function($ionicPlatform, user) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -12,6 +12,7 @@ sideMenuApp.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
   });
+  user.init({ appId: '54c951838e11a' });
 })
 
 sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
@@ -32,6 +33,14 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
     .state('login', {
       url: '/login',
       templateUrl: 'partials/login.html',
+      data: { login: true }
+      //controller: 'AppCtrl'
+    })
+     <!-- // handle the login -->
+    .state('signup', {
+      url: '/signup',
+      templateUrl: 'partials/signup.html',
+      data: { public: true }
       //controller: 'AppCtrl'
     })
      <!-- // handle the Faqs -->
@@ -64,11 +73,21 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
           }
       }
     })
+      <!-- // handle the profile -->
+    .state('app.profile.details', {
+      url: '/:profileId',
+      views: {
+        'menuContent': {
+           templateUrl: 'partials/profile-single.html',
+           controller: 'profileController'
+          }
+      }
+    })
     ;
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/');
   
 
 });
