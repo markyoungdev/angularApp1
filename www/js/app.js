@@ -1,6 +1,6 @@
-var sideMenuApp = angular.module('app', ['ionic', 'sideMenuApp.controllers']);
+var sideMenuApp = angular.module('app', ['ionic', 'sideMenuApp.controllers','UserApp']);
 
-sideMenuApp.run(function($ionicPlatform) {
+sideMenuApp.run(function($ionicPlatform, user) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -12,6 +12,7 @@ sideMenuApp.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
   });
+  user.init({ appId: '54c951838e11a' });
 })
 
 sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
@@ -26,31 +27,59 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: "/app",
       abstract: true,
       templateUrl: "partials/menu.html",
-      controller: 'AppCtrl'
+      controller: 'menuController'
     })
-
+    <!-- // handle the login -->
     .state('login', {
       url: '/login',
       templateUrl: 'partials/login.html',
+      data: { login: true }
       //controller: 'AppCtrl'
     })
-    
-    .state('app.friends', {
-      url: '/friends',
+     <!-- // handle the login -->
+    .state('signup', {
+      url: '/signup',
+      templateUrl: 'partials/signup.html',
+      data: { public: true }
+      //controller: 'AppCtrl'
+    })
+     <!-- // handle the Faqs -->
+     .state('app.faqs', {
+      url: '/faqs',
       views: {
         'menuContent': {
-          templateUrl: 'partials/friends.html',
-          controller: 'FriendsController'
+           templateUrl: 'partials/faqs.html',
+           controller: 'faqsController'
+          }
+      }
+    })
+     <!-- // handle the matches -->
+    .state('app.matches', {
+      url: '/matches',
+      views: {
+        'menuContent': {
+          templateUrl: 'partials/matches.html',
+          controller: 'matchesController'
         }
       }
     })
-    
+     <!-- // handle the profile -->
     .state('app.profile', {
       url: '/profile',
       views: {
         'menuContent': {
            templateUrl: 'partials/profile.html',
-           controller: 'ProfileController'
+           controller: 'profileController'
+          }
+      }
+    })
+      <!-- // handle the profile -->
+    .state('app.profile.details', {
+      url: '/:profileId',
+      views: {
+        'menuContent': {
+           templateUrl: 'partials/profile-single.html',
+           controller: 'profileController'
           }
       }
     })
@@ -58,7 +87,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/');
   
 
 });
