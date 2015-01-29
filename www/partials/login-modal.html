@@ -1,0 +1,18 @@
+<ion-modal-view>
+	<div class="form-wrap list list-inset">
+		<form ua-login>
+			<label class="item item-input">
+				<input name="login" placeholder="Username">
+			</label>
+			<label class="item item-input">
+				<input name="password" placeholder="Password" type="password">
+			</label>
+			<p><button type="submit">Log in</button> or <a href="" ua-oauth-link="google">Log in with Google</a></p>
+
+			<p ng-show="loading"><img src="https://app.userapp.io/img/ajax-loader-transparent.gif"></p>
+			<p ng-show="error">{{ error.message }}</p>
+		</form>
+		<p><a href="#/signup">Sign up</a></p>
+	</div>
+</ion-modal-view>
+

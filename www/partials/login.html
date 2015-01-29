@@ -3,17 +3,10 @@
       <ion-content class="login-page">
 	    
 	        <div class="login-image" style="display: inline-block;">
-	        	<div class="center">
-	        		<form ua-login>
-						<input name="login" placeholder="Username"><br>
-						<input name="password" placeholder="Password" type="password"><br>
-						<p><button type="submit">Log in</button> or <a href="" ua-oauth-link="google">Log in with Google</a></p>
-						
-						<p ng-show="loading"><img src="https://app.userapp.io/img/ajax-loader-transparent.gif"></p>
-						<p ng-show="error">{{ error.message }}</p>
-					</form>
-					<p><a href="#/signup">Sign up</a></p>
-	       			<a href="" class="login button button-stable button-block">Log In</a>
+	        	<div class="center">	        		
+	       			<a href="" class="login button button-stable button-block" ng-click="openModal()">Log In</a>
+	       			<p>or Login with a social network</p>
+	       			<a ua-oauth-link href="" class="social-login">
 	        		<button class="tour button button-stable button-block">Take a tour!</button>
 	        	</div>
 	        </div>

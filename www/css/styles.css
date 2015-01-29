@@ -1,17 +1,21 @@
+html, body {
+    height: 100vh;
+    margin: 0px;
+}
 .login-image{
-	width:640px;
-	height:1136px;
-	
+	width:640px;	
+	height: 100vh;
 }
 .login-page{
 	background: url(../images/background.png) no-repeat 0 0;
+	background-size: cover;
 }
 .center {
-	width:313px;
+	width: 50vh;
 	margin: 0 auto;
 	position: absolute;
 	bottom: 160px;
-	left: 19%;
+	left: 8vh;
 }
 .center .login{
 	background-color: rgb(34, 192, 100);
@@ -29,4 +33,18 @@
 	z-index: 999999;
 	margin-top:-5px;
 	height:50px;
+}
+/*=======Help page styles =========*/
+.list .item.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear;
+}
+.list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+  display: block !important;
 }
