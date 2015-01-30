@@ -1,4 +1,4 @@
-var sideMenuApp = angular.module('app', ['ionic', 'sideMenuApp.controllers','UserApp']);
+var sideMenuApp = angular.module('app', ['ionic', 'sideMenuApp.services','sideMenuApp.controllers','UserApp','ui.bootstrap']);
 
 sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
   $ionicPlatform.ready(function() {
@@ -85,14 +85,14 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       }
     })
       <!-- // handle the profile -->
-    .state('app.profile.details', {
-      url: '/:profileId',
+    .state('app.match', {
+      url: '/match/:matchId',
       views: {
         'menuContent': {
-           templateUrl: 'partials/profile-single.html',
-           controller: 'profileController'
+           templateUrl: 'partials/match-single.html',
+           controller: 'matchSingleController'
           }
-      }
+      },
     })
     ;
 

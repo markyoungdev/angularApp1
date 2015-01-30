@@ -29,4 +29,25 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
     $scope.modal.hide();
     $scope.modal.remove();
   });
+
+   /*$scope.open = function (size) {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'partials/login-modal.html',
+      //controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        items: function () {
+          return $scope.items;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };*/
+
 });

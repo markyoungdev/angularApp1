@@ -13,12 +13,18 @@
     </style>
 
     <!--<link href="/css/preview-frame.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-
+    
+    <link href="css/styles.css" rel="stylesheet">   
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!-- initialize app -->
     <script src="js/app.js"></script>
+     <!-- load bootstrap -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap.js"></script>
+     <!-- load services -->          
+    <script src="js/services.js"></script>
     <!-- default controller -->
     <script src="js/controllers/mainController.js"></script>
     <!-- login modal controller -->
@@ -29,10 +35,12 @@
     <script src="js/controllers/matchesController.js"></script>
     <!-- profile Controller -->    
     <script src="js/controllers/profileController.js"></script>
+     <!-- match Single Controller -->    
+    <script src="js/controllers/matchSingleController.js"></script>
     <!-- settings Controller -->          
     <script src="js/controllers/settingsController.js"></script>
     <!-- help Controller -->          
-    <script src="js/controllers/helpController.js"></script>
+    <script src="js/controllers/helpController.js"></script>   
     <!-- load userApp -->
     <script src="https://app.userapp.io/js/userapp.client.js"></script>
     <script src="https://app.userapp.io/js/angularjs.userapp.js"></script>
