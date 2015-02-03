@@ -1,4 +1,4 @@
-var sideMenuApp = angular.module('app', ['ionic', 'sideMenuApp.services','sideMenuApp.controllers','UserApp','ui.bootstrap']);
+var sideMenuApp = angular.module('app', ['ionic', 'ngCordova','sideMenuApp.services','sideMenuApp.controllers','UserApp','ui.bootstrap']);
 
 sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
   $ionicPlatform.ready(function() {
@@ -13,7 +13,7 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
     }
   });
   user.init({ appId: '54c951838e11a' });
- 
+ console.log("navigator.geolocation works well");
 })
 
 sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
@@ -51,6 +51,16 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
         'menuContent': {
            templateUrl: 'partials/help.html',
            controller: 'helpController'
+          }
+      }
+    })
+     <!-- // test geo controller page -->
+     .state('app.geo', {
+      url: '/geo',
+      views: {
+        'menuContent': {
+           templateUrl: 'partials/geo.html',
+           controller: 'geoController'
           }
       }
     })
