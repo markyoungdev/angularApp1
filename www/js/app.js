@@ -1,4 +1,11 @@
-var sideMenuApp = angular.module('app', ['ionic', 'ngCordova','sideMenuApp.services','sideMenuApp.controllers','UserApp','ui.bootstrap']);
+var sideMenuApp = angular.module('app', 
+  ['ionic', 
+  'ngCordova',
+  'sideMenuApp.services',
+  'sideMenuApp.controllers',
+  'UserApp','ui.bootstrap',
+  'ionic.contrib.ui.tinderCards']
+  );
 
 sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
   $ionicPlatform.ready(function() {
@@ -74,6 +81,16 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
         }
       }
     })
+      <!-- // handle the Faqs -->
+     .state('app.newmatches', {
+      url: '/new-matches',
+      views: {
+        'menuContent': {
+           templateUrl: 'partials/new-matches.html',
+           controller: 'cardsController'
+          }
+      }
+    })
      <!-- // handle the matches -->
     .state('app.matches', {
       url: '/matches',
@@ -108,7 +125,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/app/profile');
+  $urlRouterProvider.otherwise('/login');
   
 
 });

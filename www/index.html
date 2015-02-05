@@ -17,6 +17,7 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     
     <link href="css/styles.css" rel="stylesheet">   
+    <link href="lib/ionic-ion-tinder-cards/ionic.tdcards.css" rel="stylesheet">  
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <!-- add cordova plugins init -->
@@ -29,6 +30,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap.js"></script>
      <!-- load services -->          
     <script src="js/services.js"></script>
+     <!-- load directives -->          
+    <script src="js/directives.js"></script>
     <!-- default controller -->
     <script src="js/controllers/mainController.js"></script>
     <!-- login modal controller -->
@@ -46,7 +49,13 @@
     <!-- help Controller -->          
     <script src="js/controllers/helpController.js"></script>   
      <!-- geo Controller -->          
-    <script src="js/controllers/geoController.js"></script>   
+    <script src="js/controllers/geoController.js"></script>  
+     <!-- cards Controller -->          
+    <script src="js/controllers/cardsController.js"></script>   
+    <!-- load collide -->
+    <script src="lib/collide/collide.js"></script>
+    <!-- load tinder cards -->
+    <script src="lib/ionic-ion-tinder-cards/ionic.tdcards.js"></script>
     <!-- load userApp -->
     <script src="https://app.userapp.io/js/userapp.client.js"></script>
     <script src="https://app.userapp.io/js/angularjs.userapp.js"></script>
@@ -56,19 +65,7 @@
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
-
-    <script>
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-
-
-
-    </script>
+   
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
     <ion-nav-view></ion-nav-view>
