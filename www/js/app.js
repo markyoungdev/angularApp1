@@ -4,7 +4,8 @@ var sideMenuApp = angular.module('app',
   'sideMenuApp.services',
   'sideMenuApp.controllers',
   'UserApp','ui.bootstrap',
-  'ionic.contrib.ui.tinderCards']
+  'ionic.contrib.ui.tinderCards',
+  'ngResource']
   );
 
 sideMenuApp.run(function($ionicPlatform, user, $rootScope) {

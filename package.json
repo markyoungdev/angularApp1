@@ -16,6 +16,11 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.geolocation",
-    "https://github.com/wymsee/cordova-imagePicker.git"
+    "https://github.com/wymsee/cordova-imagePicker.git",
+    "org.apache.cordova.console",
+    "org.apache.cordova.device",
+    "org.apache.cordova.dialogs",
+    "org.apache.cordova.file",
+    "org.apache.cordova.media"
   ]
 }
