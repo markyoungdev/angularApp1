@@ -5,10 +5,22 @@ angular.module('sideMenuApp.services', [])
       return url.query();
     })
 
-    .factory('matchService',['getMatches', function(getMatches) {
+    .factory('getMatch', function($resource) {
+        return{  getSingleMatch: function(matchId){
+              console.log(matchId);
+              var url = $resource('http://localhost:3000/api/match/:id',{id: matchId});
+                 return url.get();
+            }
+        }
+      
+    })
+
+    .factory('matchService',['getMatches','getMatch', function(getMatches, getMatch) {
 
         var matches = getMatches;
-        console.log(matches);
+        
+
+        //console.log(match);
        
         return {
             findAll: function() {
@@ -20,12 +32,9 @@ angular.module('sideMenuApp.services', [])
 
             findById: function(matchId) {
                 console.log(matchId);
-                getMatches.then(function(value){
-                    console.log(value);
-                });
-                var deferred = matches[matchId - 1];
-
-                return deferred;
+                //var deferred =   var url = $resource('http://localhost:3000/api/match/'+match);            
+                
+                return getMatch.getSingleMatch(matchId);
             },
         }
     }]);

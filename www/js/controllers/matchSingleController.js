@@ -6,8 +6,10 @@ angular.module('sideMenuApp.controllers').controller('matchSingleController', fu
         $ionicSideMenuDelegate.toggleLeft();
         $state.go(page);           
     };
-    
-        $scope.match = matchService.findById();
-        
-        console.log($scope.match);
+
+    var getMatch = function() {	    
+	    $scope.match = matchService.findById($stateParams.matchId);	        
+	    console.log($scope.match);
+	}
+	getMatch();
 });
