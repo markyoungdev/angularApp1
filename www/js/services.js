@@ -7,10 +7,6 @@ angular.module('sideMenuApp.services', [])
 
     .factory('matchService',['getMatches', function(getMatches) {
 
-        /*var matches = [
-            {name: 'Katie', date: 63.1, avatar:'/images/avatar.jpg', id: 1, distance: "2mi", messages: 10},
-            {name: 'Nia', date: 61.8, avatar:'/images/avatar2.jpg', id: 2, distance: "14mi", messages: 2}
-        ];*/
         var matches = getMatches;
         console.log(matches);
        
@@ -23,11 +19,13 @@ angular.module('sideMenuApp.services', [])
             },
 
             findById: function(matchId) {
-                var deferred = getMatches.defer();
-                var match = matches[matchId - 1];
-                console.log(match);
-                deferred.resolve(match);
-                return deferred.promise;
+                console.log(matchId);
+                getMatches.then(function(value){
+                    console.log(value);
+                });
+                var deferred = matches[matchId - 1];
+
+                return deferred;
             },
         }
     }]);

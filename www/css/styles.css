@@ -141,3 +141,14 @@ td-card img {
   transition: 0.2s opacity linear;
   opacity: 0;
 }
+/*=========Item avatars=============*/
+.item-avatar > img:first-child{
+	border-radius: 4px;
+	max-width: 100px;
+	max-height: 100px;
+	height: 75%;
+}
+.item-avatar{
+	padding-left: 134px;
+	border: 0;
+}

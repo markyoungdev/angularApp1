@@ -16,9 +16,10 @@ server.route({
     path: '/api/post',
     handler: function (request, reply) {
     	 var matches = [
-            {name: 'Katie', date: 63.1, avatar:'/images/avatar.jpg', id: 1, distance: "2mi", messages: 10},
-            {name: 'Nia', date: 61.8, avatar:'/images/avatar2.jpg', id: 2, distance: "14mi", messages: 2},
-            {name: 'Tayler', date: 61.8, avatar:'/images/avatar2.jpg', id: 2, distance: "14mi", messages: 2}
+            {name: 'Katie', date: 63.1, avatar:'/images/matches/img1.jpg', id: 1, distance: "2mi", messages: 10},
+            {name: 'Nia', date: 61.8, avatar:'/images/matches/img2.jpg', id: 2, distance: "14mi", messages: 2},
+            {name: 'Tayler', date: 61.8, avatar:'/images/matches/img3.jpg', id: 3, distance: "14mi", messages: 2},
+            {name: 'Tayler', date: 61.8, avatar:'/images/matches/img4.jpg', id: 4, distance: "14mi", messages: 2}
         ];
         reply(matches);
         //reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
