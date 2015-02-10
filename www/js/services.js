@@ -12,6 +12,12 @@ angular.module('sideMenuApp.services', [])
                  return url.get();
             }
         }
+    })
+
+    .factory('addMatch', function($resource) {
+      
+        var url = $resource('http://localhost:3000/api/add');
+        return url.save();
       
     })
 

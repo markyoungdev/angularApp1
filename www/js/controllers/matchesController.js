@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('matchesController', function ($scope, $location, $ionicSideMenuDelegate, $state, matchService, getMatches) {
+angular.module('sideMenuApp.controllers').controller('matchesController', function ($scope, $location, $ionicSideMenuDelegate, $state, matchService, getMatches, addMatch) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
     $scope.goTo = function(page) {
@@ -14,6 +14,9 @@ angular.module('sideMenuApp.controllers').controller('matchesController', functi
             console.log(test);
             $scope.matches = matches;
         });*/
+    }
+    $scope.addMatch = function() {
+        addMatch.addMatch;
     }
     getAllMatches();
      

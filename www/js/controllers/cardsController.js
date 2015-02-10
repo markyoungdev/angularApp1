@@ -1,6 +1,6 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('cardsController', function($scope, TDCardDelegate) {
+.controller('cardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch) {
   console.log('CARDS CTRL');
   var cardTypes = [
     { image: 'https://pbs.twimg.com/profile_images/546942133496995840/k7JAxvgq.jpeg' },
@@ -18,6 +18,7 @@ angular.module('sideMenuApp.controllers')
     var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
     newCard.id = Math.random();
     $scope.cards.push(angular.extend({}, newCard));
+     addMatch.addMatch;
   }
 })
 
@@ -30,5 +31,7 @@ angular.module('sideMenuApp.controllers')
   $scope.cardSwipedRight = function(index) {
     console.log('RIGHT SWIPE');
     $scope.addCard();
+   
+  
   };
 });
