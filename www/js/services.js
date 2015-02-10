@@ -1,7 +1,7 @@
 angular.module('sideMenuApp.services', [])
 
     .factory('getMatches', function($resource) {
-        var url = $resource('http://localhost:3000/api/post');
+        var url = $resource('http://localhost:3000/api/matches');
       return url.query();
     })
 

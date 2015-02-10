@@ -18,20 +18,22 @@ angular.module('sideMenuApp.controllers')
     var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
     newCard.id = Math.random();
     $scope.cards.push(angular.extend({}, newCard));
-     addMatch.addMatch;
+     //addMatch.addMatch;
   }
-})
 
-.controller('cardController', function($scope, TDCardDelegate) {
-    console.log('card controller');
   $scope.cardSwipedLeft = function(index) {
     console.log('LEFT SWIPE');
     $scope.addCard();
   };
-  $scope.cardSwipedRight = function(index) {
+  $scope.cardSwipedRight = function(index, card) {
     console.log('RIGHT SWIPE');
     $scope.addCard();
-   
-  
+    console.log(card);
+    //addMatch.addMatch;  
   };
+})
+
+.controller('cardController', function($scope, TDCardDelegate) {
+    console.log('card controller');
+  
 });
