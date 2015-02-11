@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 //Define the db schema
 var matchSchema = new mongoose.Schema({
-      name: { type: String },
+      name: { type: String }
     , date: Number
     , avatar: String
     , id: Number

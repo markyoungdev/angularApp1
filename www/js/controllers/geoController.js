@@ -14,13 +14,13 @@ sideMenuApp.controller('geoController', function($cordovaGeolocation,$scope) {
       // error
     });*/
     
-   $scope.getCurrentPosition = function () {
-     $cordovaGeolocation.getCurrentPosition().then(function(value){
+  $scope.getCurrentPosition = function () {
+    $cordovaGeolocation.getCurrentPosition().then(function(value){
       console.log(value);
       $scope.test = value.coords;
-     })
+    })
   };
-$scope.getCurrentPosition();
+  $scope.getCurrentPosition();
     //$scope.test = test;
 
  /* var watchOptions = {

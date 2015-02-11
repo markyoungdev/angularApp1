@@ -45,7 +45,7 @@ function getMatch(request,reply) {
 
 function addMatch(request,reply) {
     var addMatch = new matchObj({
-        name: 'Takeshia'
+        name: 'Tayler'
         , date: 64.5
         , avatar: '/images/matches/img3.jpg'  // Notice the use of a String rather than a Number - Mongoose will automatically convert this for us.
         , id: 5

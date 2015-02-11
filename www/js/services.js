@@ -1,5 +1,18 @@
 angular.module('sideMenuApp.services', [])
 
+    .factory('getCoords', function($resource, $cordovaGeolocation) {
+        return {
+            getUserCoord: function(){
+                console.log($cordovaGeolocation);
+                $cordovaGeolocation.getCurrentPosition().then(function(value){
+                console.log(value);
+                $scope.test = value.coords;
+                return value.coords;
+                })
+            }
+        }
+    })
+
     .factory('getMatches', function($resource) {
         var url = $resource('http://localhost:3000/api/matches');
       return url.query();
