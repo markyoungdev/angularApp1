@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('loginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user) {
+angular.module('sideMenuApp.controllers').controller('loginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getCoords) {
 
   $ionicModal.fromTemplateUrl('partials/login-modal.html', {
     scope: $scope,
@@ -28,7 +28,20 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
   $rootScope.$on('user.login', function() {
     $scope.modal.hide();
     $scope.modal.remove();
+    getCoords.getUserCoord().then(function(position){
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude 
+      console.log(position);
+      console.log(lat);
+      console.log(lng);         
+    });
   });
+
+  $scope.init = function () {
+    console.log('Ran: in loginModalController');
+  }
+ 
+  $scope.init();
 
    /*$scope.open = function (size) {
 

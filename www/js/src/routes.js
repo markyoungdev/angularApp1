@@ -16,27 +16,21 @@ module.exports = [
  	}
 ];
 
-function getMatches(request,reply) {
-  //console.log(request);
+function getMatches(request,reply) { 
     matchObj.find(function(err, matches) {
-        if (err) return console.error(err);
-        console.dir(matches);
-        var matchesArray = matches;
-        console.log(matchesArray);
+        if (err) return console.error(err);      
+        var matchesArray = matches;       
         reply(matchesArray);
     });          
 }
 
 function getMatch(request,reply) {
-    if (request.params.id) {
-        var matches = [
-            {name: 'Katie', date: 63.1, avatar:'/images/matches/img1.jpg', id: 1, distance: "2mi", messages: 10},
-            {name: 'Nia', date: 61.8, avatar:'/images/matches/img2.jpg', id: 2, distance: "14mi", messages: 2},
-            {name: 'Tayler', date: 61.8, avatar:'/images/matches/img3.jpg', id: 3, distance: "14mi", messages: 2},
-            {name: 'Tayler', date: 61.8, avatar:'/images/matches/img4.jpg', id: 4, distance: "14mi", messages: 2}
-        ];
-        var selected = matches[request.params.id - 1];
-        reply(selected);
+    if (request.params.id) {      
+      var id = request.params.id;
+      matchObj.findById(id, function(err, user){
+        var foundMatch = user;       
+        reply(foundMatch);
+      });       
     }
     else {
        console.log('No id provided');

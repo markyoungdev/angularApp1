@@ -31,6 +31,11 @@ angular.module('sideMenuApp.controllers')
     console.log(card);
     //addMatch.addMatch;  
   };
+  $scope.init = function () {
+    console.log('Ran: in cardsController');
+  }
+ 
+  $scope.init();
 })
 
 .controller('cardController', function($scope, TDCardDelegate) {

@@ -20,8 +20,7 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
       StatusBar.styleDefault();
     }
   });
-  user.init({ appId: '54c951838e11a' });
- console.log("navigator.geolocation works well");
+  user.init({ appId: '54c951838e11a' }); 
 })
 
 sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
