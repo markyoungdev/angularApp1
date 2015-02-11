@@ -14,12 +14,37 @@ module.exports = [
      path: '/api/add',
      config: { handler: addMatch /*payload: 'parse'*/ } 
  	},
-  { method: 'POST',
+    { method: 'POST',
      path: '/api/createtest/{name}/{img}',
      config: { handler: createTestUsers /*payload: 'parse'*/ } 
-  }
+  },
+    { method: 'GET',
+       path: '/api/user/{userID}',
+       config: { handler: getUserID /*payload: 'parse'*/ } 
+    }
 ];
 
+/*=============================================
+=               GET USER DATA                =
+=============================================*/
+function getUserID(request, reply){  
+    if (request.params.userID) {
+   var userID = request.params.userID;
+     matchObj.findOne({username: userID}, function(err, user) {
+      console.log(user);
+      reply(user);
+     });  
+
+    } else {
+      console.log('error, no user id provided!');
+    }
+
+}
+
+/*-----  End of GET USER DATA  ------*/
+/*=============================================
+=               MATCH GETTERS                 =
+=============================================*/
 function getMatches(request,reply) { 
     matchObj.find(function(err, matches) {
         if (err) return console.error(err);      
@@ -46,7 +71,11 @@ function getFreshMatches(request, reply) {
     var id = request.params.id
   }
 }
+/*-----  End of MATCH GETTERS  ------*/
 
+/*=============================================
+=               MATCH ADDING                 =
+=============================================*/
 function addMatch(request,reply) {   
   //console.log(request); 
     var addMatch = new matchObj({
@@ -88,3 +117,4 @@ function createTestUsers(request, reply) {
   });
   reply(addMatch);
 }
+/*-----  End of MATCH ADDING  ------*/

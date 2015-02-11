@@ -7,9 +7,19 @@ angular.module('sideMenuApp.services', [])
                   timeout: 10000, 
                   enableHighAccuracy: false
                 };
-                console.log($cordovaGeolocation);
-                console.log($cordovaGeolocation.getCurrentPosition(options));
+               // console.log($cordovaGeolocation);
+                //console.log($cordovaGeolocation.getCurrentPosition(options));
               return  $cordovaGeolocation.getCurrentPosition(options);                
+            }
+        }
+    })
+    // get user on login
+    .factory('getUser', function($resource) {
+        return {
+            getUserData: function(userId){
+                console.log(userId);
+                var url = $resource('http://localhost:3000/api/user/:id',{id: userId});
+                 return url.get();
             }
         }
     })
