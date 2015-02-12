@@ -31,8 +31,19 @@ function getUserID(request, reply){
     if (request.params.userID) {
    var userID = request.params.userID;
      matchObj.findOne({username: userID}, function(err, user) {
-      console.log(user);
-      reply(user);
+       if (err) {
+         console.log(err.name);
+         return;
+      }
+      if (!user) {
+        var user = {}
+        user.id = 0;
+         reply(user);
+         console.log('new user')
+      } else {
+        console.log(user);
+        reply(user);
+      }
      });  
 
     } else {

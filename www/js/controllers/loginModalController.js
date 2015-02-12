@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('loginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getCoords, getUser) {
+angular.module('sideMenuApp.controllers').controller('loginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getCoords, getUser, addNewUser) {
 
   $ionicModal.fromTemplateUrl('partials/login-modal.html', {
     scope: $scope,
@@ -35,12 +35,20 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
       console.log(lat);
       console.log(lng);         
     });
+ 
     // get user data from database
     var currentUser = user.current;
     if (currentUser.authenticated) {
       var username = currentUser.user_id;
       $scope.loggedInUser = getUser.getUserData(username);
-      console.log($scope.loggedInUser);      
+      //console.log($scope.loggedInUser);  
+      if($scope.loggedInUser.id == 0) {
+        var userData = {};
+        userData.name = username;
+        userData.img = 'img3';
+        addNewUser.addUser(userData);
+      }    
+      console.log($scope.loggedInUser.id);
     }    
   });
 

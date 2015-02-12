@@ -13,6 +13,16 @@ angular.module('sideMenuApp.services', [])
             }
         }
     })
+    // add user to the local mongoose db
+    .factory('addNewUser', function($resource) {
+        return {
+            addUser: function(userData){
+                console.log(userData);
+                var url = $resource('http://localhost:3000/api/createtest/:name/:img',{name: name, img: img});
+            }
+        }
+    })
+
     // get user on login
     .factory('getUser', function($resource) {
         return {
