@@ -18,7 +18,11 @@ angular.module('sideMenuApp.services', [])
         return {
             addUser: function(userData){
                 console.log(userData);
-                var url = $resource('http://localhost:3000/api/createtest/:name/:img',{name: name, img: img});
+                var name = userData.name;
+                var username = userData.username;
+                var img = userData.img;
+                var url = $resource('http://localhost:3000/api/createtest/:name/:img/:username',{name: name, img: img, username: username});
+                return url.save();
             }
         }
     })
@@ -29,7 +33,7 @@ angular.module('sideMenuApp.services', [])
             getUserData: function(userId){
                 console.log(userId);
                 var url = $resource('http://localhost:3000/api/user/:id',{id: userId});
-                 return url.get();
+                return url.get();                
             }
         }
     })

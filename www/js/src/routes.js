@@ -15,7 +15,7 @@ module.exports = [
      config: { handler: addMatch /*payload: 'parse'*/ } 
  	},
     { method: 'POST',
-     path: '/api/createtest/{name}/{img}',
+     path: '/api/createtest/{name}/{img}/{username}',
      config: { handler: createTestUsers /*payload: 'parse'*/ } 
   },
     { method: 'GET',
@@ -27,6 +27,16 @@ module.exports = [
 /*=============================================
 =               GET USER DATA                =
 =============================================*/
+/*function getUserID(request, reply){  
+  if (request.params.userID) {
+   var userID = request.params.userID;
+     reply(matchObj.findOne({username: userID}).exec());   
+
+  } else {
+    console.log('error, no user id provided!');
+  }
+
+}*/
 function getUserID(request, reply){  
     if (request.params.userID) {
    var userID = request.params.userID;
@@ -38,9 +48,9 @@ function getUserID(request, reply){
       if (!user) {
         var user = {}
         user.id = 0;
-         reply(user);
+         reply({data: user});
          console.log('new user')
-      } else {
+      } else {       
         console.log(user);
         reply(user);
       }
@@ -113,6 +123,7 @@ function addMatch(request,reply) {
 function createTestUsers(request, reply) {
   console.log(request);
   var name = request.params.name;
+  var username = request.params.username;
   var avatar = '/images/matches/'+request.params.img+'.jpg';
   var addMatch = new matchObj({
       name: name
@@ -120,6 +131,7 @@ function createTestUsers(request, reply) {
       , avatar: avatar  
       , distance: '30mi'
       , messages: 5
+      , username: username
   });
 
   addMatch.save(function(err, addMatch) {

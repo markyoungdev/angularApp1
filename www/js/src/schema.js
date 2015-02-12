@@ -13,6 +13,7 @@ var matchSchema = new mongoose.Schema({
     , avatar: String    
     , distance: String
     , messages: Number
+    , username: String
     , loc: {
     	type: [Number],
     	index: '2d'

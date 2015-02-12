@@ -39,16 +39,27 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
     // get user data from database
     var currentUser = user.current;
     if (currentUser.authenticated) {
+      console.log(currentUser);
       var username = currentUser.user_id;
-      $scope.loggedInUser = getUser.getUserData(username);
+      var name = currentUser.first_name;
+      getUser.getUserData(username)
+      .$promise.then(function(data){
+        if(!data._id){
+          var userData = {};
+          userData.username = username;
+          userData.name =  name;
+          userData.img = 'img3';
+          addNewUser.addUser(userData);
+          }
+      });
       //console.log($scope.loggedInUser);  
-      if($scope.loggedInUser.id == 0) {
+     /* if($scope.loggedInUser._id == '0') {
         var userData = {};
         userData.name = username;
         userData.img = 'img3';
         addNewUser.addUser(userData);
-      }    
-      console.log($scope.loggedInUser.id);
+      }*/    
+     //console.log( $scope.loggedInUser );
     }    
   });
 
