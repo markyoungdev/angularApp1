@@ -51,6 +51,15 @@ angular.module('sideMenuApp.services', [])
             }
         }
     })
+    // get new matches for associated user from the db
+    .factory('getNewMatches', function($resource) {
+        return{  get: function(matchId){
+              console.log(matchId);
+              var url = $resource('http://localhost:3000/api/newmatches/:id',{id: matchId});
+                 return url.query();
+            }
+        }
+    })
     // add a new match for the associated user into the db
     .factory('addMatch', function($resource) {      
         var url = $resource('http://localhost:3000/api/add');

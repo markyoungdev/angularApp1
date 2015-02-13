@@ -84,6 +84,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       <!-- // handle the Faqs -->
      .state('app.newmatches', {
       url: '/new-matches',
+      resolve: {},
       views: {
         'menuContent': {
            templateUrl: 'partials/new-matches.html',

@@ -7,6 +7,10 @@ module.exports = [
      config: { handler: getMatches } 
  	},
     { method: 'GET',
+     path: '/api/newmatches/{id}',
+     config: { handler: getFreshMatches } 
+  },
+    { method: 'GET',
      path: '/api/match/{id}',
      config: { handler: getMatch } 
  	},
@@ -21,6 +25,10 @@ module.exports = [
     { method: 'GET',
        path: '/api/user/{userID}',
        config: { handler: getUserID /*payload: 'parse'*/ } 
+    },
+    { method: 'GET',
+       path: '/api/freshmatches/{id}',
+       config: { handler: getFreshMatches /*payload: 'parse'*/ } 
     }
 ];
 
@@ -74,6 +82,20 @@ function getMatches(request,reply) {
     });          
 }
 
+function getNewMatches(request,reply) { 
+    if (request.params.id) {      
+      var id = request.params.id;
+      matchObj.find({ username: {'$ne':id+''} },function(err, matches) {     
+        var matchesArray = matches;
+        console.log(matchesArray);
+        reply(matchesArray);
+      });      
+    }
+    else {
+       console.log('No id provided');
+    }
+}
+
 function getMatch(request,reply) {
     if (request.params.id) {      
       var id = request.params.id;
@@ -89,7 +111,17 @@ function getMatch(request,reply) {
 
 function getFreshMatches(request, reply) {
   if (request.params.id) {
-    var id = request.params.id
+    var id = request.params.id;
+
+    var User =  new matchObj({ username: id });
+    User.getNonFriends(function (err, friends) {
+    if (err) throw err;
+
+    console.log('friends', friends);
+    reply(friends);
+    });
+    
+
   }
 }
 /*-----  End of MATCH GETTERS  ------*/

@@ -16,7 +16,7 @@ var matchSchema = new mongoose.Schema({
     , username: String
     , loc: {
     	type: [Number],
-    	index: '2d'
+    	index: '2dsphere'
     }
 });
 
