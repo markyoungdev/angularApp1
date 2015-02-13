@@ -84,7 +84,19 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       <!-- // handle the Faqs -->
      .state('app.newmatches', {
       url: '/new-matches',
-      resolve: {},
+      resolve: {
+        getCoordsInit: function(getCoords){
+            return getCoords.getUserCoord();
+        },
+        getNewMatchesInit: ['$state', 'getNewMatches','getUser','user',function($state, getNewMatches, getUser, user){
+          var currentUser = user.current;
+          var username = currentUser.user_id;
+          var id = user.getCurrent().then(function(currentUser){           
+            return currentUser.user_id;
+          });          
+          return getNewMatches.get(id);            
+        }]
+      },
       views: {
         'menuContent': {
            templateUrl: 'partials/new-matches.html',

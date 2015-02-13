@@ -119,6 +119,7 @@ function getFreshMatches(request, reply) {
 
     console.log('friends', friends);
     reply(friends);
+    
     });
     
 

@@ -1,13 +1,10 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('cardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch) {
-  console.log('CARDS CTRL');
-  var cardTypes = [
-    { image: 'https://pbs.twimg.com/profile_images/546942133496995840/k7JAxvgq.jpeg' },
-    { image: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png' },
-    { image: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg' },
-  ];
-
+.controller('cardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, getCoordsInit, getNewMatchesInit) {
+ 
+  $scope.cardObj = getNewMatchesInit;
+  var cardTypes = $scope.cardObj.data;
+  console.log(cardTypes);
   $scope.cards = Array.prototype.slice.call(cardTypes, 0);
 
   $scope.cardDestroyed = function(index) {
@@ -32,13 +29,15 @@ angular.module('sideMenuApp.controllers')
     //addMatch.addMatch;  
   };
   $scope.init = function () {
-    console.log('Ran: in cardsController');
+    //console.log('Ran: in cardsController');
   }
+  $scope.coords = getCoordsInit;
+  console.log($scope.coords);
  
   $scope.init();
 })
 
 .controller('cardController', function($scope, TDCardDelegate) {
-    console.log('card controller');
+   // console.log('card controller');
   
 });

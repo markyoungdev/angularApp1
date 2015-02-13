@@ -52,11 +52,14 @@ angular.module('sideMenuApp.services', [])
         }
     })
     // get new matches for associated user from the db
-    .factory('getNewMatches', function($resource) {
-        return{  get: function(matchId){
-              console.log(matchId);
-              var url = $resource('http://localhost:3000/api/newmatches/:id',{id: matchId});
-                 return url.query();
+    .factory('getNewMatches', function($resource,$http) {
+        return{  get: function(matchId){            
+              //var url = $resource('http://localhost:3000/api/newmatches/:id',{id: matchId},{method: 'GET',isArray: true});
+               var url = $http.get('http://localhost:3000/api/newmatches/:id',{                
+                    method: "GET",
+                    params: {id: matchId}
+                });
+               return url;              
             }
         }
     })
