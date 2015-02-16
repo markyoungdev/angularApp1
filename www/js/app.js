@@ -35,7 +35,20 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: "/app",
       abstract: true,
       templateUrl: "partials/menu.html",
-      controller: 'menuController'
+      controller: 'menuController',
+      resolve: {
+        getUserImage: ['user','getUserImages',function(user, getUserImages){
+          var currentUser = user.current;
+          var username = currentUser.user_id;
+          var id = user.getCurrent().then(function(currentUser){     
+            //console.log(currentUser.user_id);      
+           return getUserImages.get(currentUser.user_id);
+          }); 
+           
+          //console.log(id);
+           
+        }]
+      }
     })
     <!-- // handle the login -->
     .state('login', {

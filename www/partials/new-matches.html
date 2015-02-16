@@ -5,13 +5,21 @@
   <ion-nav-buttons side="right">
     <button class="button button-icon icon  ion-search"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header">    
+  <ion-content class="has-header" scroll="false">    
        <td-cards>
         <td-card ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index, card)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
           <div class="image">
             <div class="no-text">NOPE</div>
             <img ng-src="{{card.avatar}}">
             <div class="yes-text">LIKE</div>
+              <div class="buttons">
+                <button class="button button-stable">
+                  yes
+                </button>
+                <button class="button button-stable">
+                no
+              </button>
+            </div>
           </div>
         </td-card>
       </td-cards>      

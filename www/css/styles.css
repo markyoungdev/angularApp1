@@ -141,6 +141,11 @@ td-card img {
   transition: 0.2s opacity linear;
   opacity: 0;
 }
+.td-card .buttons {
+	width: 50%;
+	margin: 10px auto;
+	text-align:center;
+}
 /*=========Item avatars=============*/
 .item-avatar > img:first-child{
 	border-radius: 4px;

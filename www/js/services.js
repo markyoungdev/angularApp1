@@ -37,6 +37,36 @@ angular.module('sideMenuApp.services', [])
             }
         }
     })
+     // get user on login
+    .factory('updateUser', function($resource) {
+        return {
+            update: function(userData){
+                var id = userData.id;
+                var coords = userData.loc;
+                console.log(userData);
+                var url = $resource('http://localhost:3000/api/user/update/:id/:loc',{id: id, loc: coords});
+                //console.log(url.save());
+                return url.save();                
+            }
+        }
+    })
+    .factory('getUserImages', function($resource, $http, $q) {
+        return {
+            get: function(userId) {
+                deferred = $q.defer();
+                console.log(userId);
+                var url = $http.get('http://localhost:3000/api/user/image/'+userId,{                
+                    method: "GET"
+                })
+                console.log(url)
+                return url.data;
+               
+                /*var url = $resource('http://localhost:3000/api/user/image/:id',{id: userId});
+                console.log(url.query());*/
+                //return url;
+            }
+        }
+    })
     // get matches associated with user from the db
     .factory('getMatches', function($resource) {
         var url = $resource('http://localhost:3000/api/matches');

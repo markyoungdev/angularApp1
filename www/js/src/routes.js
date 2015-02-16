@@ -27,6 +27,14 @@ module.exports = [
        config: { handler: getUserID /*payload: 'parse'*/ } 
     },
     { method: 'GET',
+       path: '/api/user/update/{id}/{coords}',
+       config: { handler: updateUserData /*payload: 'parse'*/ } 
+    },
+    { method: 'GET',
+       path: '/api/user/image/{userID}',
+       config: { handler: getUserImage /*payload: 'parse'*/ } 
+    },
+    { method: 'GET',
        path: '/api/freshmatches/{id}',
        config: { handler: getFreshMatches /*payload: 'parse'*/ } 
     }
@@ -35,16 +43,19 @@ module.exports = [
 /*=============================================
 =               GET USER DATA                =
 =============================================*/
-/*function getUserID(request, reply){  
+function getUserImage(request, reply){  
   if (request.params.userID) {
    var userID = request.params.userID;
-     reply(matchObj.findOne({username: userID}).exec());   
+   matchObj.findOne({username: userID}, function(err, user) {
+    reply(user.avatar);
+    //console.log(user.avatar);
+   }); 
 
   } else {
     console.log('error, no user id provided!');
   }
 
-}*/
+}
 function getUserID(request, reply){  
     if (request.params.userID) {
    var userID = request.params.userID;
@@ -125,6 +136,21 @@ function getFreshMatches(request, reply) {
 
   }
 }
+/*=============================================
+=            Section comment block            =
+=============================================*/
+function updateUserData(request, reply) {
+  if (request.params.id) {
+    var id = request.params.id;
+    var coords = request.params.coords;
+    var query = { username: id };
+    matchObj.findOneAndUpdate(query, { loc: coords }).exec();
+    console.log(query);
+    reply(query);
+  }  
+}
+
+
 /*-----  End of MATCH GETTERS  ------*/
 
 /*=============================================

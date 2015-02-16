@@ -15,6 +15,8 @@ angular.module('sideMenuApp.controllers').controller('matchesController', functi
             $scope.matches = matches;
         });*/
     }
+
+
     $scope.addMatch = function() {
         addMatch.addMatch;
     }
@@ -22,6 +24,8 @@ angular.module('sideMenuApp.controllers').controller('matchesController', functi
     $scope.init = function () {
      console.log('Ran: in matchesController');
     }
+
+    
  
     $scope.init();
     getAllMatches();
