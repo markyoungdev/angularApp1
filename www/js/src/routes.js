@@ -15,7 +15,7 @@ module.exports = [
      config: { handler: getMatch } 
  	},
     { method: 'POST',
-     path: '/api/add',
+     path: '/api/match/add/{requestor}/{requestee}',
      config: { handler: addMatch /*payload: 'parse'*/ } 
  	},
     { method: 'POST',
@@ -26,8 +26,8 @@ module.exports = [
        path: '/api/user/{userID}',
        config: { handler: getUserID /*payload: 'parse'*/ } 
     },
-    { method: 'GET',
-       path: '/api/user/update/{id}/{coords}',
+    { method: 'POST',
+       path: '/api/user/update/{id}/{lat}/{lng}',
        config: { handler: updateUserData /*payload: 'parse'*/ } 
     },
     { method: 'GET',
@@ -143,13 +143,19 @@ function updateUserData(request, reply) {
   if (request.params.id) {
     var id = request.params.id;
     var coords = request.params.coords;
+    var lat = parseFloat(request.params.lat);
+    var lng = parseFloat(request.params.lng);
+    var update =  {'loc': coords};
     var query = { username: id };
-    matchObj.findOneAndUpdate(query, { loc: coords }).exec();
-    console.log(query);
-    reply(query);
-  }  
+    var options = { multi: true };
+    matchObj.update(query, { 'loc': {"lat": lat, 'lng': lng } }, { multi: true , upsert: true}, function (err, numberAffected, raw) {
+      if (err) return console.log(err);
+      console.log('The number of updated documents was %d', numberAffected);
+      console.log('The raw response from Mongo was ', raw);
+    });  
+    }
+    
 }
-
 
 /*-----  End of MATCH GETTERS  ------*/
 
@@ -158,27 +164,20 @@ function updateUserData(request, reply) {
 =============================================*/
 function addMatch(request,reply) {   
   //console.log(request); 
-    var addMatch = new matchObj({
-        name: 'Tayler'
-        , date: 64.5
-        , avatar: '/images/matches/img3.jpg'  // Notice the use of a String rather than a Number - Mongoose will automatically convert this for us.
-        , distance: '30mi'
-        , messages: 5
+   if (request.params.requestor) {
+    var requestor = request.params.requestor;
+    var requestee = request.params.requestee;
+    var request = new matchObj({ username: requestor });
+
+    request.friendRequest(requestee, function (err, request) {
+      if (err) throw err;
+   
+      console.log('request', request);     
     });
-
-    addMatch.friendRequest('54da52a2035258f65b9585bd', function (err, request) {
-    if (err) throw err;
- 
-    console.log('request', request);     
-    });
-
-
-    /*addMatch.save(function(err, addMatch) {
-      if (err) return console.error(err);
-      //console.dir(addMatch);
-    });*/
     reply(addMatch);
+  }
 }
+
 function createTestUsers(request, reply) {
   console.log(request);
   var name = request.params.name;

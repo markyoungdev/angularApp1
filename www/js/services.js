@@ -17,7 +17,7 @@ angular.module('sideMenuApp.services', [])
     .factory('addNewUser', function($resource) {
         return {
             addUser: function(userData){
-                console.log(userData);
+                //console.log(userData);
                 var name = userData.name;
                 var username = userData.username;
                 var img = userData.img;
@@ -31,7 +31,7 @@ angular.module('sideMenuApp.services', [])
     .factory('getUser', function($resource) {
         return {
             getUserData: function(userId){
-                console.log(userId);
+                //console.log(userId);
                 var url = $resource('http://localhost:3000/api/user/:id',{id: userId});
                 return url.get();                
             }
@@ -43,8 +43,10 @@ angular.module('sideMenuApp.services', [])
             update: function(userData){
                 var id = userData.id;
                 var coords = userData.loc;
-                console.log(userData);
-                var url = $resource('http://localhost:3000/api/user/update/:id/:loc',{id: id, loc: coords});
+                var lat = coords.lat;
+                var lng = coords.lng
+                console.log(userData.loc);
+                var url = $resource('http://localhost:3000/api/user/update/:id/:lat/:lng',{id: id, lat: lat, lng: lng});
                 //console.log(url.save());
                 return url.save();                
             }
@@ -54,11 +56,11 @@ angular.module('sideMenuApp.services', [])
         return {
             get: function(userId) {
                 deferred = $q.defer();
-                console.log(userId);
+               // console.log(userId);
                 var url = $http.get('http://localhost:3000/api/user/image/'+userId,{                
                     method: "GET"
                 })
-                console.log(url)
+               // console.log(url)
                 return url.data;
                
                 /*var url = $resource('http://localhost:3000/api/user/image/:id',{id: userId});
@@ -75,7 +77,7 @@ angular.module('sideMenuApp.services', [])
     // get single match for associated user from the db
     .factory('getMatch', function($resource) {
         return{  getSingleMatch: function(matchId){
-              console.log(matchId);
+             // console.log(matchId);
               var url = $resource('http://localhost:3000/api/match/:id',{id: matchId});
                  return url.get();
             }
@@ -94,9 +96,14 @@ angular.module('sideMenuApp.services', [])
         }
     })
     // add a new match for the associated user into the db
-    .factory('addMatch', function($resource) {      
-        var url = $resource('http://localhost:3000/api/add');
-        return url.save();      
+    .factory('addMatch', function($resource) {  
+        return{  add: function(userData){ 
+            var requestor = userData.requestor;  
+            var requestee = userData.requestee;    
+            var url = $resource('http://localhost:3000/api/match/add/:requestor/:requestee', {requestor: requestor, requestee: requestee});
+            return url.save();
+            }
+        }  
     })
     // helper function form finding matches
     .factory('matchService',['getMatches','getMatch', function(getMatches, getMatch) {
