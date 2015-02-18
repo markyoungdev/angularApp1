@@ -73,17 +73,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
            controller: 'helpController'
           }
       }
-    })
-     <!-- // test geo controller page -->
-     .state('app.geo', {
-      url: '/geo',
-      views: {
-        'menuContent': {
-           templateUrl: 'partials/geo.html',
-           controller: 'geoController'
-          }
-      }
-    })
+    })    
     <!-- // handle the settings -->
     .state('app.settings', {
       url: '/settings',
