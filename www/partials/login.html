@@ -1,14 +1,20 @@
- <ion-view title="navTitle" hide-back-button="false" left-buttons="leftButtons" right-buttons="rightButtons"
-      hide-back-button="false">
-      <ion-content class="login-page">
-	    
-	        <div class="login-image" style="display: inline-block;">
-	        	<div class="center">	        		
+<ion-view class="login-view">
+	<ion-content class="login-page" scroll="false">
+
+		<div class="top-content row">
+		  <div class="col col-center">
+		    <!--<img ng-src="img/logo.png">-->
+		  </div>
+		</div>	
+			<div class="bottom-content row">    
+	        <div class="login-image">
+	        	<div class="col col-center center">	        		
 	       			<a href="" class="login button button-stable button-block" ng-click="openModal()">Log In</a>
 	       			<p>or Login with a social network</p>
 	       			<a ua-oauth-link href="" class="social-login">
 	        		<button class="tour button button-stable button-block">Take a tour!</button>
 	        	</div>
 	        </div>
-	  </ion-content>
-  </ion-view>
+	    </div>
+	</ion-content>
+</ion-view>
