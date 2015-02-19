@@ -61,7 +61,7 @@ angular.module('sideMenuApp.controllers')
    // console.log(currentUser);
     var username = currentUser.user_id;
     getUser.getUserData(username)
-    .$promise.then(function(data){
+    .$promise.then(function(data){      
       console.log(data.loc.lat);
       if(parseFloat(data.loc.lat) != parseFloat(lat) || parseFloat(data.loc.lng) != parseFloat(lng)){
           var userData = {};

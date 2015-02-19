@@ -19,8 +19,10 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    //PushNotificationsService.register();
   });
   user.init({ appId: '54c951838e11a' }); 
+
 })
 
 sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
@@ -55,7 +57,12 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: '/login',
       templateUrl: 'partials/login.html',
       data: { login: true },
-      controller: 'loginModalController'
+      controller: 'loginModalController',
+      /*resolve: {
+        getCoordsInit: function(getCoords){
+          return getCoords.getUserCoord();
+        }
+      }*/
     })
      <!-- // handle the login -->
     .state('signup', {
@@ -63,6 +70,12 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: 'partials/signup.html',
       data: { public: true }
       //controller: 'AppCtrl'
+    })
+      <!-- // handle the forgot password -->
+     .state('forgot-password', {
+      url: "/forgot-password",
+      templateUrl: "partials/password-forgot.html",
+      controller: 'forgotPasswordCtrl'      
     })
      <!-- // handle the Faqs -->
      .state('app.help', {

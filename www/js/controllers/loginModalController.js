@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('loginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getUser, addNewUser) {
+angular.module('sideMenuApp.controllers').controller('loginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getUser, addNewUser, getCoords) {
 
   $ionicModal.fromTemplateUrl('partials/login-modal.html', {
     scope: $scope,
@@ -28,17 +28,27 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
   $rootScope.$on('user.login', function() {
     $scope.modal.hide();
     $scope.modal.remove();
-    /*getCoords.getUserCoord().then(function(position){
-      var lat = position.coords.latitude;
-      var lng = position.coords.longitude 
+    getCoords.getUserCoord().then(function(position){
+     $scope.lat = parseFloat(position.coords.latitude).toFixed(4);
+     $scope.lng = parseFloat(position.coords.longitude).toFixed(4);
+     $scope.geoJSON = {'lat': lat, 'lng': lng};
       console.log(position);
-      console.log(lat);
-      console.log(lng);         
-    });*/
+      console.log($scope.lat);
+      console.log($scope.lng);   
+
+    });
     //$scope.coords = getCoordsInit;
     //console.log($scope.coords);
  
     // get user data from database
+
+    /*$scope.coords = getCoords.getUserCoord();
+    var lat = parseFloat($scope.coords.coords.latitude).toFixed(4);
+    var lng = parseFloat($scope.coords.coords.longitude).toFixed(4);*/
+    //console.log($scope.coords.coords)
+
+    
+
     var currentUser = user.current;
     if (currentUser.authenticated) {
       console.log(currentUser);
@@ -51,6 +61,8 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
           userData.username = username;
           userData.name =  name;
           userData.img = 'img3';
+          userData.loc = $scope.geoJSON;
+          console.log('current lat:'+$scope.lat+ ' previous lat:'+data.loc.lat);
           addNewUser.addUser(userData);
           }
       });

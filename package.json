@@ -10,6 +10,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.1",
     "mongoose": "^3.8.22",
+    "mongoose-cachebox": "^1.2.0",
     "mongoose-friends": "^0.2.3"
   },
   "devDependencies": {

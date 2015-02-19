@@ -47,6 +47,8 @@ function getUserImage(request, reply){
   if (request.params.userID) {
    var userID = request.params.userID;
    matchObj.findOne({username: userID}, function(err, user) {
+    if(err) return err;
+    
     reply(user.avatar);
     //console.log(user.avatar);
    }); 
