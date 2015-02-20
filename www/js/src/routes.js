@@ -19,7 +19,7 @@ module.exports = [
      config: { handler: addMatch /*payload: 'parse'*/ } 
  	},
     { method: 'POST',
-     path: '/api/createtest/{name}/{img}/{username}',
+     path: '/api/createtest/{name}/{img}/{username}/{lat}/{lng}',
      config: { handler: createTestUsers /*payload: 'parse'*/ } 
   },
     { method: 'GET',
@@ -184,6 +184,8 @@ function createTestUsers(request, reply) {
   console.log(request);
   var name = request.params.name;
   var username = request.params.username;
+  var lat = parseFloat(request.params.lat);
+  var lng = parseFloat(request.params.lng);
   var avatar = '/images/matches/'+request.params.img+'.jpg';
   var addMatch = new matchObj({
       name: name
@@ -192,6 +194,7 @@ function createTestUsers(request, reply) {
       , distance: '30mi'
       , messages: 5
       , username: username
+      , loc: {"lat": lat, 'lng': lng } 
   });
 
   addMatch.save(function(err, addMatch) {

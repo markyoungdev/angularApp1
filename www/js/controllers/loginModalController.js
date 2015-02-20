@@ -31,10 +31,32 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
     getCoords.getUserCoord().then(function(position){
      $scope.lat = parseFloat(position.coords.latitude).toFixed(4);
      $scope.lng = parseFloat(position.coords.longitude).toFixed(4);
-     $scope.geoJSON = {'lat': lat, 'lng': lng};
+     $scope.geoJSON = {'lat': $scope.lat, 'lng': $scope.lng};
       console.log(position);
       console.log($scope.lat);
       console.log($scope.lng);   
+
+       var currentUser = user.current;
+    if (currentUser.authenticated) {
+      console.log(currentUser);
+      var username = currentUser.user_id;
+      var name = currentUser.first_name;
+      getUser.getUserData(username)
+      .$promise.then(function(data){
+        if(!data._id){
+          var userData = {};
+          userData.username = username;
+          userData.name =  name;
+          userData.img = 'img3';
+          userData.loc = $scope.geoJSON;
+          console.log(userData);
+          //console.log(userData);
+          //console.log('current lat:'+$scope.lat+ ' previous lat:'+data.loc.lat);
+          addNewUser.addUser(userData);
+          }
+      });
+     
+    }   
 
     });
     //$scope.coords = getCoordsInit;
@@ -49,32 +71,7 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
 
     
 
-    var currentUser = user.current;
-    if (currentUser.authenticated) {
-      console.log(currentUser);
-      var username = currentUser.user_id;
-      var name = currentUser.first_name;
-      getUser.getUserData(username)
-      .$promise.then(function(data){
-        if(!data._id){
-          var userData = {};
-          userData.username = username;
-          userData.name =  name;
-          userData.img = 'img3';
-          userData.loc = $scope.geoJSON;
-          console.log('current lat:'+$scope.lat+ ' previous lat:'+data.loc.lat);
-          addNewUser.addUser(userData);
-          }
-      });
-      //console.log($scope.loggedInUser);  
-     /* if($scope.loggedInUser._id == '0') {
-        var userData = {};
-        userData.name = username;
-        userData.img = 'img3';
-        addNewUser.addUser(userData);
-      }*/    
-     //console.log( $scope.loggedInUser );
-    }    
+    
   });
 
   $scope.init = function () {

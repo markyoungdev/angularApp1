@@ -20,8 +20,11 @@ angular.module('sideMenuApp.services', [])
                 //console.log(userData);
                 var name = userData.name;
                 var username = userData.username;
+                var coords = userData.loc;
+                var lat = coords.lat;
+                var lng = coords.lng
                 var img = userData.img;
-                var url = $resource('http://localhost:3000/api/createtest/:name/:img/:username',{name: name, img: img, username: username});
+                var url = $resource('http://localhost:3000/api/createtest/:name/:img/:username/:lat/:lng',{name: name, img: img, username: username, lat: lat, lng: lng});
                 return url.save();
             }
         }
