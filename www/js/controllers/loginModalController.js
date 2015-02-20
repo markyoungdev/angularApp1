@@ -38,7 +38,7 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
 
        var currentUser = user.current;
     if (currentUser.authenticated) {
-      console.log(currentUser);
+      //console.log(currentUser);
       var username = currentUser.user_id;
       var name = currentUser.first_name;
       getUser.getUserData(username)
@@ -52,26 +52,13 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
           console.log(userData);
           //console.log(userData);
           //console.log('current lat:'+$scope.lat+ ' previous lat:'+data.loc.lat);
-          addNewUser.addUser(userData);
+          //addNewUser.addUser(userData);
           }
       });
      
     }   
 
-    });
-    //$scope.coords = getCoordsInit;
-    //console.log($scope.coords);
- 
-    // get user data from database
-
-    /*$scope.coords = getCoords.getUserCoord();
-    var lat = parseFloat($scope.coords.coords.latitude).toFixed(4);
-    var lng = parseFloat($scope.coords.coords.longitude).toFixed(4);*/
-    //console.log($scope.coords.coords)
-
-    
-
-    
+    });    
   });
 
   $scope.init = function () {

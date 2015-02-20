@@ -14,7 +14,7 @@ angular.module('sideMenuApp.services', [])
         }
     })
     // add user to the local mongoose db
-    .factory('addNewUser', function($resource) {
+    .factory('addNewUser', function($resource, $rootScope) {
         return {
             addUser: function(userData){
                 //console.log(userData);
@@ -26,6 +26,8 @@ angular.module('sideMenuApp.services', [])
                 var img = userData.img;
                 var url = $resource('http://localhost:3000/api/createtest/:name/:img/:username/:lat/:lng',{name: name, img: img, username: username, lat: lat, lng: lng});
                 return url.save();
+                $rootScope.$broadcast('addNewUser:userAdded');
+                $scope.$apply();
             }
         }
     })

@@ -1,10 +1,35 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('cardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser) {
- 
+.controller('cardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, getUserInit) {
+  /**
+  *
+  * Define scope variables that
+  * have been passed from the state resolve
+  *
+  **/  
   $scope.cardObj = getNewMatchesInit;
-  var cardTypes = $scope.cardObj.data;
-  //console.log(cardTypes);
+  $scope.userData = JSON.parse(angular.toJson(getUserInit));  
+  var cardTypes = $scope.cardObj.data;  
+
+  /**
+  *
+  * Test to see if the $scope.userData variable returned without data 
+  * and requery the user if so.
+  *
+  **/
+  if($scope.userData.data.id){
+    var currentUser = user.current;
+       user.getCurrent().then(function(currentUser){                    
+       var user = getUser.getUserData(currentUser.user_id);
+       $scope.userData = JSON.parse(angular.toJson(user));
+    });     
+  }
+      
+  /**
+  *
+  * Generate cards
+  *
+  **/    
   $scope.cards = Array.prototype.slice.call(cardTypes, 1);
 
   $scope.cardDestroyed = function(index) {
@@ -44,38 +69,52 @@ angular.module('sideMenuApp.controllers')
         matchData.requestee = requestee;
         addMatch.add(matchData);
       }
-  }
-  
+  }  
   $scope.init = function () {
     //console.log('Ran: in cardsController');
   }
+  /**
+  *
+  * Get the current coordinates
+  *
+  **/  
   $scope.coords = getCoordsInit;
   var lat = parseFloat($scope.coords.coords.latitude).toFixed(4);
   var lng = parseFloat($scope.coords.coords.longitude).toFixed(4);
-  //console.log($scope.coords.coords)
-
+  /**
+  *
+  * Add the current coordinates to an object
+  *
+  **/
   var geoJSON = {'lat': lat, 'lng': lng};
-
+  /**
+  *
+  * Update the user if the location has changed 
+  *
+  **/  
   var currentUser = user.current;
   if (currentUser.authenticated) {
-   // console.log(currentUser);
-    var username = currentUser.user_id;
-    getUser.getUserData(username)
-    .$promise.then(function(data){      
-      console.log(data.loc.lat);
-      if(parseFloat(data.loc.lat) != parseFloat(lat) || parseFloat(data.loc.lng) != parseFloat(lng)){
+    console.log($scope.userData);     
+      //console.log(data.loc.lat);
+      if(parseFloat($scope.userData.loc.lat) != parseFloat(lat) || parseFloat($scope.userData.loc.lng) != parseFloat(lng)){
           var userData = {};
-          userData.id = username;
+          userData.id = $scope.userData.username;
           userData.loc = geoJSON;
-          console.log('current lat:'+lat+ ' previous lat:'+data.loc.lat);
-          updateUser.update(userData);
+          console.log('current lat:'+lat+ ' previous lat:'+$scope.userData.loc.lat);
+          updateUser.update(userData);          
       } else {
         console.log('location hasn\'t changed');
       }
         
-    });
+
   }
- 
+
+  $scope.pollNewUsers = function() {
+     $scope.$on('addNewUser:userAdded', function() {
+      console.log('New User added');
+     });
+  }
+  $scope.pollNewUsers();
   $scope.init();
 })
 

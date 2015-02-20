@@ -60,7 +60,10 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       controller: 'loginModalController',
       /*resolve: {
         getCoordsInit: function(getCoords){
-          return getCoords.getUserCoord();
+          //return getCoords.getUserCoord();
+        },
+        getUserInit: function() {
+          
         }
       }*/
     })
@@ -104,7 +107,37 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
         getCoordsInit: function(getCoords){
             return getCoords.getUserCoord();
         },
-        getNewMatchesInit: ['$state', 'getNewMatches','getUser','user',function($state, getNewMatches, getUser, user){
+        getUserInit: ['getUser', 'user','getCoordsInit','addNewUser', function(getUser, user, getCoordsInit, addNewUser) {
+          var currentUser = user.current;
+          var id = user.getCurrent().then(function(currentUser){                    
+            getUser.getUserData(currentUser.user_id)
+            .$promise
+            .then(function(response){
+              var data = JSON.parse(angular.toJson(response));
+              console.log(data);
+              if(!data._id) {
+                var username = currentUser.user_id;
+                var name = currentUser.first_name;
+                var lat = parseFloat(getCoordsInit.coords.latitude).toFixed(4);
+                var lng = parseFloat(getCoordsInit.coords.longitude).toFixed(4);
+                var geoJSON = {'lat': lat, 'lng': lng};
+                console.log(getCoordsInit);
+                console.log(name);
+                var userData = {};
+                userData.username = username;
+                userData.name =  name;
+                userData.img = 'img3';
+                userData.loc = geoJSON;
+                addNewUser.addUser(userData);
+              } 
+            });
+          });    
+          //console.log(id);
+          return id;
+          
+        }],
+        getNewMatchesInit: ['$state', 'getNewMatches','getUser','user','getUserInit',function($state, getNewMatches, getUser, user, getUserInit){
+         // console.log(getUserInit);
           var currentUser = user.current;
           var username = currentUser.user_id;
           var id = user.getCurrent().then(function(currentUser){           
