@@ -49,14 +49,38 @@ angular.module('sideMenuApp.services', [])
                 var id = userData.id;
                 var coords = userData.loc;
                 var lat = coords.lat;
-                var lng = coords.lng
-                console.log(userData.loc);
+                var lng = coords.lng                
                 var url = $resource('http://localhost:3000/api/user/update/:id/:lat/:lng',{id: id, lat: lat, lng: lng});
                 //console.log(url.save());
                 return url.save();                
             }
         }
     })
+      // get user on login
+    .factory('updateUserSettings', function($resource) {
+        return {
+            update: function(userData){               
+                console.log(userData);
+                var id = userData.userID;
+                var visibility = userData.profileHidden;
+                var searchRange = userData.rangeValue;
+                var url = $resource('http://localhost:3000/api/user/settings/:id/:visibility/:searchRange',{id: id, visibility: visibility, searchRange: searchRange});
+                //console.log(url.save());
+                return url.save();                
+            }
+        }
+    })
+
+    // get settings associated with user from the db
+    .factory('getUserSettings', function($resource) {
+        return{
+            get: function(userId){
+                var url = $resource('http://localhost:3000/api/user/settings/:id',{id: userId});
+                return url.get();
+            }
+        }       
+    })
+
     .factory('getUserImages', function($resource, $http, $q) {
         return {
             get: function(userId) {

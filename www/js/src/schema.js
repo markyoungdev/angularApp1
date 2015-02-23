@@ -18,6 +18,8 @@ var matchSchema = new mongoose.Schema({
     , distance: String
     , messages: Number
     , username: String
+    , hidden: Boolean
+    , searchRadius: Number
     , loc: {
     	type: {},
     	index: '2dsphere',

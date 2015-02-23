@@ -37,7 +37,16 @@ module.exports = [
     { method: 'GET',
        path: '/api/freshmatches/{id}',
        config: { handler: getFreshMatches /*payload: 'parse'*/ } 
+    },
+    { method: 'POST',
+       path: '/api/user/settings/{id}/{visibility}/{searchRange}',
+       config: { handler: updateUserSettings /*payload: 'parse'*/ } 
+    },
+    { method: 'GET',
+       path: '/api/user/settings/{id}',
+       config: { handler: getUserSettings /*payload: 'parse'*/ } 
     }
+
 ];
 
 /*=============================================
@@ -138,8 +147,8 @@ function getFreshMatches(request, reply) {
 
   }
 }
-/*=============================================
-=            Section comment block            =
+/*============================================
+=                UpdateUserData              =
 =============================================*/
 function updateUserData(request, reply) {
   if (request.params.id) {
@@ -159,8 +168,36 @@ function updateUserData(request, reply) {
     
 }
 
-/*-----  End of MATCH GETTERS  ------*/
+/*=============================================
+=            Update user settings            =
+=============================================*/
+function updateUserSettings(request, reply) {
+  var id        = request.params.id;
+  var distance  = request.params.searchRange;
+  var hidden    = request.params.visibility;
+  var query     = { username: id };
+  var options   = { multi: true, upsert: true };
+  var update    = { 'distance': distance, 'hidden': hidden }
+  matchObj.update(query, update, options, function (err, numberAffected, raw) {
+    if (err) return console.log(err);
+    console.log('The number of updated documents was %d', numberAffected);
+    console.log('The raw response from Mongo was ', raw);
+  });
+}
 
+/*=============================================
+=               Get user settings            =
+=============================================*/
+
+function getUserSettings(request, reply) {
+  var id        = request.params.id;
+  console.log(id);
+ matchObj.findOne({username: id}, 'distance hidden', function(err, settings) {
+  reply( settings );
+ 
+ })
+      
+}
 /*=============================================
 =               MATCH ADDING                 =
 =============================================*/

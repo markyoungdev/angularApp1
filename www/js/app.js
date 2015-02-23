@@ -23,6 +23,12 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
   });
   user.init({ appId: '54c951838e11a' }); 
 
+  $rootScope.setAuthenticatedUser = function(user){
+    user.getCurrent().then(function(currentUser){  
+      console.log(currentUser.user);
+    });
+  }
+
 })
 
 sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
@@ -97,7 +103,19 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
         'menuContent': {
           templateUrl: 'partials/settings.html',
           controller: 'settingsController'
-        }
+        },
+      },
+      resolve: {        
+        loadUser: ['user', 'getUser', function( user, getUser ) {
+          var user = user.getCurrent().then(function(currentUser) {  
+            return currentUser;
+          });
+          return user;
+        }],
+        getSettings: ['getUserSettings','loadUser',function(getUserSettings, loadUser) {
+          var id = loadUser.user_id;          
+          return getUserSettings.get(id);
+        }],
       }
     })
       <!-- // handle the Faqs -->
