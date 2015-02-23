@@ -8,7 +8,8 @@ angular.module('sideMenuApp.controllers')
   *
   **/  
   $scope.cardObj = getNewMatchesInit;
-  $scope.userData = JSON.parse(angular.toJson(getUserInit));  
+  console.log(getUserInit);
+  $scope.userData = getUserInit;  
   var cardTypes = $scope.cardObj.data;  
 
   /**
@@ -17,11 +18,11 @@ angular.module('sideMenuApp.controllers')
   * and requery the user if so.
   *
   **/
-  if($scope.userData.data.id){
+  if(!$scope.userData.usernmae){
     var currentUser = user.current;
        user.getCurrent().then(function(currentUser){                    
-       var user = getUser.getUserData(currentUser.user_id);
-       $scope.userData = JSON.parse(angular.toJson(user));
+       $scope.userData = getUser.getUserData(currentUser.user_id);
+      
     });     
   }
       

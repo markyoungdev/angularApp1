@@ -6,4 +6,15 @@ angular.module('sideMenuApp.controllers').controller('settingsController', funct
         $ionicSideMenuDelegate.toggleLeft();
         $state.go(page);           
     };
+
+    $scope.rangeValue = 0;
+    
+    $scope.$watch('settings.rangeValue',function(val,old){
+       $scope.rangeValue = parseInt(val); 
+        
+    });
+
+    $scope.saveSettings = function(settings) {
+    	console.log(settings);
+    }
 });

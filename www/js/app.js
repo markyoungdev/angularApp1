@@ -109,7 +109,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
         },
         getUserInit: ['getUser', 'user','getCoordsInit','addNewUser', function(getUser, user, getCoordsInit, addNewUser) {
           var currentUser = user.current;
-          var id = user.getCurrent().then(function(currentUser){                    
+          var test = user.getCurrent().then(function(currentUser){                    
             getUser.getUserData(currentUser.user_id)
             .$promise
             .then(function(response){
@@ -130,10 +130,13 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
                 userData.loc = geoJSON;
                 addNewUser.addUser(userData);
               } 
+              return data;
             });
+           
           });    
-          //console.log(id);
-          return id;
+          if(!test.values){
+              return getUser.getUserData(currentUser.user_id);
+          }
           
         }],
         getNewMatchesInit: ['$state', 'getNewMatches','getUser','user','getUserInit',function($state, getNewMatches, getUser, user, getUserInit){
