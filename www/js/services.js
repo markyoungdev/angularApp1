@@ -21,10 +21,12 @@ angular.module('sideMenuApp.services', [])
                 var name = userData.name;
                 var username = userData.username;
                 var coords = userData.loc;
+                var distance = userData.distance;
+                var hidden = userData.hidden;
                 var lat = coords.lat;
                 var lng = coords.lng
                 var img = userData.img;
-                var url = $resource('http://localhost:3000/api/createtest/:name/:img/:username/:lat/:lng',{name: name, img: img, username: username, lat: lat, lng: lng});
+                var url = $resource('http://localhost:3000/api/createtest/:name/:img/:username/:lat/:lng/:distance/:hidden',{name: name, img: img, username: username, lat: lat, lng: lng, distance: distance, hidden: hidden});
                 return url.save();
                 $rootScope.$broadcast('addNewUser:userAdded');
                 $scope.$apply();

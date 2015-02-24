@@ -17,7 +17,7 @@ var matchSchema = new mongoose.Schema({
     , avatar: String    
     , distance: String
     , messages: Number
-    , username: String
+    //, username: String
     , hidden: Boolean
     , searchRadius: Number
     , loc: {

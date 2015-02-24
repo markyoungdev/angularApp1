@@ -132,20 +132,22 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
             .$promise
             .then(function(response){
               var data = JSON.parse(angular.toJson(response));
-              console.log(data);
+              //console.log(data);
               if(!data._id) {
                 var username = currentUser.user_id;
                 var name = currentUser.first_name;
                 var lat = parseFloat(getCoordsInit.coords.latitude).toFixed(4);
                 var lng = parseFloat(getCoordsInit.coords.longitude).toFixed(4);
                 var geoJSON = {'lat': lat, 'lng': lng};
-                console.log(getCoordsInit);
-                console.log(name);
+                //console.log(getCoordsInit);
+                //console.log(name);
                 var userData = {};
                 userData.username = username;
                 userData.name =  name;
                 userData.img = 'img3';
                 userData.loc = geoJSON;
+                userData.distance = 10;
+                userData.hidden = false;
                 addNewUser.addUser(userData);
               } 
               return data;

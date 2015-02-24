@@ -19,7 +19,7 @@ module.exports = [
      config: { handler: addMatch /*payload: 'parse'*/ } 
  	},
     { method: 'POST',
-     path: '/api/createtest/{name}/{img}/{username}/{lat}/{lng}',
+     path: '/api/createtest/{name}/{img}/{username}/{lat}/{lng}/{distance}/{hidden}',
      config: { handler: createTestUsers /*payload: 'parse'*/ } 
   },
     { method: 'GET',
@@ -104,7 +104,7 @@ function getMatches(request,reply) {
     });          
 }
 
-function getNewMatches(request,reply) { 
+/*function getNewMatches(request,reply) { 
     if (request.params.id) {      
       var id = request.params.id;
       matchObj.find({ username: {'$ne':id+''} },function(err, matches) {     
@@ -116,7 +116,7 @@ function getNewMatches(request,reply) {
     else {
        console.log('No id provided');
     }
-}
+}*/
 
 function getMatch(request,reply) {
     if (request.params.id) {      
@@ -134,17 +134,15 @@ function getMatch(request,reply) {
 function getFreshMatches(request, reply) {
   if (request.params.id) {
     var id = request.params.id;
-
     var User =  new matchObj({ username: id });
-    User.getNonFriends(function (err, friends) {
+    //User.getNonFriends(function (err, friends) {
+    User.getNonFriendsNonPending(function (err, friends) {
     if (err) throw err;
 
     console.log('friends', friends);
     reply(friends);
     
     });
-    
-
   }
 }
 /*============================================
@@ -207,13 +205,13 @@ function addMatch(request,reply) {
     var requestor = request.params.requestor;
     var requestee = request.params.requestee;
     var request = new matchObj({ username: requestor });
-
+    console.log(request);
     request.friendRequest(requestee, function (err, request) {
       if (err) throw err;
-   
-      console.log('request', request);     
+    
+      //console.log('request', request);     
     });
-    reply(addMatch);
+    //reply(addMatch);
   }
 }
 
@@ -223,14 +221,17 @@ function createTestUsers(request, reply) {
   var username = request.params.username;
   var lat = parseFloat(request.params.lat);
   var lng = parseFloat(request.params.lng);
+  var distance = parseInt(request.params.distance);
+  var hidden = request.params.hidden;
   var avatar = '/images/matches/'+request.params.img+'.jpg';
   var addMatch = new matchObj({
       name: name
       , date: 64.5
       , avatar: avatar  
-      , distance: '30mi'
+      , distance: distance
       , messages: 5
       , username: username
+      , hidden: hidden
       , loc: {"lat": lat, 'lng': lng } 
   });
 

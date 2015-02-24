@@ -49,6 +49,8 @@ angular.module('sideMenuApp.controllers').controller('loginModalController', fun
           userData.name =  name;
           userData.img = 'img3';
           userData.loc = $scope.geoJSON;
+          userData.distance = 10;
+          userData.hidden = false;
           console.log(userData);
           //console.log(userData);
           //console.log('current lat:'+$scope.lat+ ' previous lat:'+data.loc.lat);
