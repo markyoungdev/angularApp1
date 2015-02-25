@@ -122,6 +122,12 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
      .state('app.newmatches', {
       url: '/new-matches',
       resolve: {
+        loadUser: ['user', 'getUser', function( user, getUser ) {
+          var user = user.getCurrent().then(function(currentUser) {  
+            return currentUser;
+          });
+          return user;
+        }],
         getCoordsInit: function(getCoords){
             return getCoords.getUserCoord();
         },
@@ -163,10 +169,12 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
          // console.log(getUserInit);
           var currentUser = user.current;
           var username = currentUser.user_id;
-          var id = user.getCurrent().then(function(currentUser){           
-            return currentUser.user_id;
-          });          
-          return getNewMatches.get(id);            
+          var id = getUserInit.$promise.then(function(currentUser){                   
+            //return currentUser._id;
+             return getNewMatches.get(currentUser._id);  
+          });    
+        return id;    
+                   
         }]
       },
       views: {

@@ -18,7 +18,7 @@ angular.module('sideMenuApp.controllers')
   * and requery the user if so.
   *
   **/
-  if(!$scope.userData.usernmae){
+  if(!$scope.userData.username){
     var currentUser = user.current;
        user.getCurrent().then(function(currentUser){                    
        $scope.userData = getUser.getUserData(currentUser.user_id);
@@ -63,8 +63,8 @@ angular.module('sideMenuApp.controllers')
   $scope.addMatch = function(requestee) {
      var currentUser = user.current;
       if (currentUser.authenticated) {
-        // console.log(currentUser);
-        var username = currentUser.user_id;
+        console.log($scope.userData._id);
+        var username = $scope.userData._id;
         var matchData = {};
         matchData.requestor = username;
         matchData.requestee = requestee;
