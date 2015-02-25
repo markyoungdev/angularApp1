@@ -1,13 +1,14 @@
 var mongoose = require("mongoose");
-var options = {
+var friends = require("mongoose-friends")
+/*var options = {
     accountName: 'Match',
     friendshipName: 'Buddy'
-};
+};*/
 /*var cacheOptions = {
     cache: true,
     ttl: 45
 }*/
-var friendsOfFriends = require('friends-of-friends')(options);
+//var friendsOfFriends = require('friends-of-friends')(options);
 
 //Define the db schema
 var matchSchema = new mongoose.Schema({
@@ -27,11 +28,14 @@ var matchSchema = new mongoose.Schema({
     }
 });
 
+matchSchema.plugin(friends({pathName: "friends"}));
+
 // apply friends-of-friends plugin to your User schema 
-matchSchema.plugin(friendsOfFriends.plugin, options);
+//matchSchema.plugin(friendsOfFriends.plugin, options);
 // add caching 
 //mongooseCachebox(mongoose, cacheOptions);
 // Compile a 'Match' model using the movieSchema as the structure.
 // Mongoose also creates a MongoDB collection called 'Match' for these documents.
-var Match = mongoose.model(options.accountName, matchSchema);
+//var Match = mongoose.model(options.accountName, matchSchema);
+var Match = mongoose.model("Match", matchSchema);
 module.exports.Match = Match;

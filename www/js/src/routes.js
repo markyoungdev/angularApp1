@@ -81,7 +81,7 @@ function getUserID(request, reply){
          reply({data: user});
          console.log('new user')
       } else {       
-        console.log(user);
+       // console.log(user);
         reply(user);
       }
      });  
@@ -134,17 +134,25 @@ function getMatch(request,reply) {
 function getFreshMatches(request, reply) {
   if (request.params.id) {
     var id = request.params.id;
-    var User =  new matchObj({ username: id });
+    //var User =  new matchObj({ username: id });
     //User.getNonFriends(function (err, friends) {
-    User.getNonFriendsNonPending(function (err, friends) {
+    /*User.getNonFriendsNonPending(function (err, friends) {
     if (err) throw err;
-
-    console.log('friends', friends);
+    console.log('Non-friends: ' +friends);
+    //console.log('friends', friends);
     reply(friends);
     
+    });*/
+
+    matchObj.getFriends('54e806ababae290ec4f90bda',function (err, friendships) {
+      console.log(friendships);
     });
+    /*matchObj.requestFriend('54e806ababae290ec4f90bda', '54e806f4abae290ec4f90bdd', function(data){
+      console.log(data);
+    });*/
   }
 }
+
 /*============================================
 =                UpdateUserData              =
 =============================================*/
@@ -204,13 +212,17 @@ function addMatch(request,reply) {
    if (request.params.requestor) {
     var requestor = request.params.requestor;
     var requestee = request.params.requestee;
-    var request = new matchObj({ username: requestor });
-    console.log(request);
-    request.friendRequest(requestee, function (err, request) {
+    //var request = new matchObj();
+    //console.log(request);
+    /*request.friendRequest('54e806f4abae290ec4f90bdd', function (err, request) {
       if (err) throw err;
+      console.log(request);
     
       //console.log('request', request);     
-    });
+    });*/
+     matchObj.requestFriend(requestor, requestee, function(data){
+      console.log(data);
+     });
     //reply(addMatch);
   }
 }
