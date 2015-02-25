@@ -150,7 +150,7 @@ function getFreshMatches(request, reply) {
     console.log(idsArray);
     var test = matchObj.find({
     //'friends': { '$elemMatch': { _id: { $ne: '54e7b567e70415b3214f96df' } } } }).exec()
-   'friends._ids': {  $nin: idsArray }  }).exec()
+   'friends._id': {  $nin: idsArray }  }).exec()
     console.log(test);
     reply(test);
      
