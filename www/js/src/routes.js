@@ -143,30 +143,20 @@ function getMatch(request,reply) {
 
 function getFreshMatches(request, reply) {
   if (request.params.id) {
-    var id = request.params.id;
-    //var User =  new matchObj({ username: id });
-    //User.getNonFriends(function (err, friends) {
-    /*User.getNonFriendsNonPending(function (err, friends) {
-    if (err) throw err;
-    console.log('Non-friends: ' +friends);
-    //console.log('friends', friends);
-    reply(friends);
-    
-    });*/
-    //diet: { '$elemMatch': { _id: '1', status: 'A' } }
-    //_id : { $nin : ids }   
+    var id = request.params.id;    
     var ids = mongoose.Types.ObjectId(id);
     var idsArray = new Array(ids);
     console.log(idsArray);
     var test = matchObj.find({
     //'friends': { '$elemMatch': { _id: { $ne: '54e7b567e70415b3214f96df' } } } }).exec()
-   'friends._id': {  $nin: idsArray }  }).exec()
+    $and: [
+      {'_id' : { $ne: ids } }, 
+      {'friends._id': {  $nin: idsArray } } ]
+    })
+    .exec();
+  
     console.log(test);
-    reply(test);
-     
-    /*matchObj.requestFriend('54e806ababae290ec4f90bda', '54e806f4abae290ec4f90bdd', function(data){
-      console.log(data);
-    });*/
+    reply(test);    
   }
 }
 

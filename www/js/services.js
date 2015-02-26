@@ -35,24 +35,32 @@ angular.module('sideMenuApp.services', [])
     })
 
     // get user on login
-    .factory('getUser', function($resource) {
-        return {
-            getUserData: function(userId){
-                //console.log(userId);
-                var url = $resource('http://localhost:3000/api/user/:id',{id: userId});
+    .factory('getUser', function($resource, user) {
+        return {           
+            getUserData: function(){
+                var userID = user.current.user_id;               
+                var url = $resource('http://localhost:3000/api/user/:id',{id: userID});
                 return url.get();                
             }
         }
     })
      // get user on login
-    .factory('updateUser', function($resource) {
+    .factory('updateUser', function($resource, getCoords, user) {
         return {
             update: function(userData){
-                var id = userData.id;
+                var coordsObj = getCoords.getUserCoord();
+                lat;
+                coordsObj.then(function(data){                    
+                    var lat = parseFloat(data.coords.latitude).toFixed(4);
+                    var lng = parseFloat(data.coords.longitude).toFixed(4);
+                })
+                console.log(lat);
+                var userID = user.current.user_id;
+               // var id = userData.id;
                 var coords = userData.loc;
-                var lat = coords.lat;
+                //var lat = coords.lat;
                 var lng = coords.lng                
-                var url = $resource('http://localhost:3000/api/user/update/:id/:lat/:lng',{id: id, lat: lat, lng: lng});
+                var url = $resource('http://localhost:3000/api/user/update/:id/:lat/:lng',{id: userID, lat: lat, lng: lng});
                 //console.log(url.save());
                 return url.save();                
             }
@@ -90,13 +98,9 @@ angular.module('sideMenuApp.services', [])
                // console.log(userId);
                 var url = $http.get('http://localhost:3000/api/user/image/'+userId,{                
                     method: "GET"
-                })
-               // console.log(url)
-                return url.data;
-               
-                /*var url = $resource('http://localhost:3000/api/user/image/:id',{id: userId});
-                console.log(url.query());*/
-                //return url;
+                })            
+                return url.data;               
+             
             }
         }
     })
