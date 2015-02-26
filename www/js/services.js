@@ -102,8 +102,12 @@ angular.module('sideMenuApp.services', [])
     })
     // get matches associated with user from the db
     .factory('getMatches', function($resource) {
-        var url = $resource('http://localhost:3000/api/matches');
-      return url.query();
+        return { 
+            getMatched: function(userId){
+                var url = $resource('http://localhost:3000/api/matches/:id',{id: userId});
+                return url.query();
+            }
+        }
     })
     // get single match for associated user from the db
     .factory('getMatch', function($resource) {

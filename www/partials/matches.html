@@ -7,14 +7,14 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="match in matches" href="#/app/match/{{match._id}}">
+      <ion-item ng-repeat="match in matches" href="#/app/match/{{match.friend._id}}">
         <div class="list">
           <div class="item item-avatar">
-            <img src="{{match.avatar}}">
-            <h2>{{match.name}}</h2>
-            <p>{{match.date}}</p>
-            <p>{{match.distance}}</p>
-            <p>{{match.messages}}</p>
+            <img src="{{match.friend.avatar}}">
+            <h2>{{match.friend.name}}</h2>
+            <p>{{match.friend.date}}</p>
+            <p>{{match.friend.distance}}</p>
+            <p>{{match.friend.messages}}</p>
           </div>
         </div>        
       </ion-item>

@@ -3,7 +3,7 @@ var Match = require('./schema');
 var matchObj = Match.Match;
 module.exports = [
     { method: 'GET',
-     path: '/api/matches',
+     path: '/api/matches/{id}',
      config: { handler: getMatches } 
  	},
     { method: 'GET',
@@ -96,12 +96,22 @@ function getUserID(request, reply){
 /*=============================================
 =               MATCH GETTERS                 =
 =============================================*/
-function getMatches(request,reply) { 
-    matchObj.find(function(err, matches) {
+function getMatches(request,reply) {
+ if (request.params.id) {  
+  var id = request.params.id;
+  console.log(id);
+  matchObj.getFriends(id, function (err, friendships) {
+    console.log(friendships);
+    reply(friendships);
+    // friendships looks like:
+    // [{status: "requested", added: <Date added>, friend: user2}]
+  });
+}
+   /* matchObj.find(function(err, matches) {
         if (err) return console.error(err);      
         var matchesArray = matches;       
         reply(matchesArray);
-    });          
+    });*/          
 }
 
 /*function getNewMatches(request,reply) { 

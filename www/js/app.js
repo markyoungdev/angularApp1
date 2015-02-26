@@ -192,6 +192,28 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: 'partials/matches.html',
           controller: 'matchesController'
         }
+      },
+      resolve: {
+        loadUser: ['user', 'getUser', function( user, getUser ) {
+          var user = user.getCurrent().then(function(currentUser) {  
+            //return currentUser;
+            return getUser.getUserData(currentUser.user_id);
+          });
+          // return getUser.getUserData(user.user_id);
+          return user;
+        }],
+        getMatchesInit: ['getMatches','loadUser', function(getMatches, loadUser){
+          console.log(loadUser);
+          var matches = loadUser.$promise.then(function(data){
+            console.log(data);
+            //return data._id;
+            return getMatches.getMatched(data._id);
+          });
+          console.log(matches);
+         return matches;
+          
+          
+        }]
       }
     })
      <!-- // handle the profile -->
