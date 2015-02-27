@@ -127,17 +127,20 @@ angular.module('sideMenuApp.services', [])
         }
     })
     // get new matches for associated user from the db
-    .factory('getNewMatches', function($resource,$http) {
-        return{  get: function(matchId){     
-
-              //var url = $resource('http://localhost:3000/api/newmatches/:id',{id: matchId},{method: 'GET',isArray: true});
-              /* var url = $http.get('http://localhost:3000/api/newmatches/',{                
-                    method: "GET",
-                    params: {id: matchId}
-                });*/
-                var url = $http.get('http://localhost:3000/api/newmatches/'+matchId)
-               console.log(url);
-               return url;              
+    .factory('getNewMatches', function($resource, $http, getCoords, user, getUser) {
+        return{  get: function(userId){     
+                var coordsObj = getCoords.getUserCoord();                
+                var matches = coordsObj.then(function(data){                    
+                    var lat = parseFloat(data.coords.latitude).toFixed(4);
+                    var lng = parseFloat(data.coords.longitude).toFixed(4);
+                    var radius = 50;                     
+                     var url = $http.get('http://localhost:3000/api/newmatches/'+userId+'/'+lat+'/'+lng+'/'+radius);
+                    console.log(url);
+                    return url;  
+                });
+                console.log(matches);
+                return matches;
+                          
             }
         }
     })

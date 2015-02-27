@@ -7,7 +7,7 @@ module.exports = [
      config: { handler: getMatches } 
  	},
     { method: 'GET',
-     path: '/api/newmatches/{id}',
+     path: '/api/newmatches/{id}/{lat}/{lng}/{radius}',
      config: { handler: getFreshMatches } 
   },
     { method: 'GET',
@@ -146,10 +146,19 @@ function getFreshMatches(request, reply) {
     var id = request.params.id;    
     var ids = mongoose.Types.ObjectId(id);
     var idsArray = new Array(ids);
-    console.log(idsArray);
+    var lat = parseFloat(request.params.lat);
+    var lng = parseFloat(request.params.lng);
+    var radius = parseInt(request.params.radius);   
     var test = matchObj.find({
     //'friends': { '$elemMatch': { _id: { $ne: '54e7b567e70415b3214f96df' } } } }).exec()
     $and: [
+      //{loc: {$near: [-122.418, 37.775], $maxDistance:10000/69}},
+      { loc: 
+        { $near: 
+          { $geometry: { type: "Point", coordinates: [lng, lat] }, $maxDistance: radius  },
+          
+        }
+      },
       {'_id' : { $ne: ids } }, 
       {'friends._id': {  $nin: idsArray } } ]
     })
