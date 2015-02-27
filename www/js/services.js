@@ -49,20 +49,24 @@ angular.module('sideMenuApp.services', [])
         return {
             update: function(userData){
                 var coordsObj = getCoords.getUserCoord();
-                lat;
-                coordsObj.then(function(data){                    
+                
+                var coords = coordsObj.then(function(data){                    
                     var lat = parseFloat(data.coords.latitude).toFixed(4);
                     var lng = parseFloat(data.coords.longitude).toFixed(4);
+                    console.log(lat);
+                    var userID = user.current.user_id;
+                    // var id = userData.id;
+                    var coords = userData.loc;
+                    //var lat = coords.lat;
+                    var lng = coords.lng                
+                    var url = $resource('http://localhost:3000/api/user/update/:id/:lat/:lng',{id: userID, lat: lat, lng: lng});
+                    //console.log(url.save());
+                    return url.save(); 
                 })
-                console.log(lat);
-                var userID = user.current.user_id;
-               // var id = userData.id;
-                var coords = userData.loc;
-                //var lat = coords.lat;
-                var lng = coords.lng                
-                var url = $resource('http://localhost:3000/api/user/update/:id/:lat/:lng',{id: userID, lat: lat, lng: lng});
+                console.log(coords);
+                return coords;
                 //console.log(url.save());
-                return url.save();                
+                             
             }
         }
     })

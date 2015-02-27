@@ -5,7 +5,14 @@
   <ion-nav-buttons side="right">
     <button class="button button-icon icon  ion-search"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header" scroll="false">    
+  <ion-content class="has-header" scroll="false"> 
+    <div class="searching">
+      <div class="spinner">
+        <div class="dot1"></div>
+        <div class="dot2"></div>
+      </div>   
+      <p>Searching for potential matches</p>
+    </div>
        <td-cards>
         <td-card ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index, card)" on-swipe-right="cardSwipedRight($index, card)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
           <div class="image" >
