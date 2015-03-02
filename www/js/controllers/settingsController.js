@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('settingsController', function ($scope, $location, $ionicSideMenuDelegate, $state, user, getUser, loadUser, updateUserSettings, getSettings) {
+angular.module('sideMenuApp.controllers').controller('SettingsController', function ($scope, $location, $ionicSideMenuDelegate, $state, user, getUser, loadUser, updateUserSettings, getSettings) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
     $scope.goTo = function(page) {

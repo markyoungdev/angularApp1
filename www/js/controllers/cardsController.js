@@ -1,6 +1,6 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('cardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, getUserInit) {
+.controller('CardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, getUserInit) {
   /**
   *
   * Define scope variables that
@@ -99,9 +99,10 @@ angular.module('sideMenuApp.controllers')
       //console.log(data.loc.lat);
       if(parseFloat($scope.userData.loc.lat) != parseFloat(lat) || parseFloat($scope.userData.loc.lng) != parseFloat(lng)){
           var userData = {};
-          userData.id = $scope.userData.username;
+          userData.id = $scope.userData._id;
           userData.loc = geoJSON;
           console.log('current lat:'+lat+ ' previous lat:'+$scope.userData.loc.lat);
+          console.log(userData);
           updateUser.update(userData);          
       } else {
         console.log('location hasn\'t changed');
@@ -119,7 +120,7 @@ angular.module('sideMenuApp.controllers')
   $scope.init();
 })
 
-.controller('cardController', function($scope, $ionicSwipeCardDelegate) {
+.controller('CardController', function($scope, $ionicSwipeCardDelegate) {
    $scope.goAway = function() {
     var card = $ionicSwipeCardDelegate.getSwipebleCard($scope);
     card.swipe();

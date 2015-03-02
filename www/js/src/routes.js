@@ -81,7 +81,7 @@ function getUserID(request, reply){
          reply({data: user});
          console.log('new user')
       } else {       
-       // console.log(user);
+       //console.log(user);
         reply(user);
       }
      });  
@@ -149,10 +149,8 @@ function getFreshMatches(request, reply) {
     var lat = parseFloat(request.params.lat);
     var lng = parseFloat(request.params.lng);
     var radius = parseInt(request.params.radius);   
-    var test = matchObj.find({
-    //'friends': { '$elemMatch': { _id: { $ne: '54e7b567e70415b3214f96df' } } } }).exec()
-    $and: [
-      //{loc: {$near: [-122.418, 37.775], $maxDistance:10000/69}},
+    var test = matchObj.find({    
+    $and: [      
       { loc: 
         { $near: 
           { $geometry: { type: "Point", coordinates: [lng, lat] }, $maxDistance: radius  },
@@ -168,7 +166,6 @@ function getFreshMatches(request, reply) {
     reply(test);    
   }
 }
-
 /*============================================
 =                UpdateUserData              =
 =============================================*/
@@ -179,15 +176,14 @@ function updateUserData(request, reply) {
     var lat = parseFloat(request.params.lat);
     var lng = parseFloat(request.params.lng);
     var update =  {'loc': coords};
-    var query = { username: id };
+    var query = { _id: id };
     var options = { multi: true };
     matchObj.update(query, { 'loc': {"lat": lat, 'lng': lng } }, { multi: true , upsert: true}, function (err, numberAffected, raw) {
       if (err) return console.log(err);
       console.log('The number of updated documents was %d', numberAffected);
       console.log('The raw response from Mongo was ', raw);
     });  
-    }
-    
+    }    
 }
 
 /*=============================================

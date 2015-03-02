@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('loginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getUser, addNewUser, getCoords) {
+angular.module('sideMenuApp.controllers').controller('LoginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getUser, addNewUser, getCoords) {
 
   $ionicModal.fromTemplateUrl('partials/login-modal.html', {
     scope: $scope,

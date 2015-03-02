@@ -43,7 +43,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: "/app",
       abstract: true,
       templateUrl: "partials/menu.html",
-      controller: 'menuController',
+      controller: 'MenuController',
       resolve: {
         getUserImage: ['user','getUserImages',function(user, getUserImages){
           var currentUser = user.current;
@@ -63,7 +63,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: '/login',
       templateUrl: 'partials/login.html',
       data: { login: true },
-      controller: 'loginModalController',
+      controller: 'LoginModalController',
       /*resolve: {
         getCoordsInit: function(getCoords){
           //return getCoords.getUserCoord();
@@ -84,25 +84,27 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
      .state('forgot-password', {
       url: "/forgot-password",
       templateUrl: "partials/password-forgot.html",
-      controller: 'forgotPasswordCtrl'      
+      controller: 'ForgotPasswordCtrl'      
     })
      <!-- // handle the Faqs -->
      .state('app.help', {
       url: '/help',
+      data: { public: false },
       views: {
         'menuContent': {
            templateUrl: 'partials/help.html',
-           controller: 'helpController'
+           controller: 'HelpController'
           }
       }
     })    
     <!-- // handle the settings -->
     .state('app.settings', {
       url: '/settings',
+      data: { public: false },
       views: {
         'menuContent': {
           templateUrl: 'partials/settings.html',
-          controller: 'settingsController'
+          controller: 'SettingsController'
         },
       },
       resolve: {        
@@ -121,76 +123,75 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       <!-- // handle the Faqs -->
      .state('app.newmatches', {
       url: '/new-matches',
+      data: { public: false },
       resolve: {
-        loadUser: ['user', 'getUser', function( user, getUser ) {
-          var user = user.getCurrent().then(function(currentUser) {  
+        loadUser: ['user', 'getUser', function ( user, getUser ) {
+          var user = user.getCurrent().then(function (currentUser) {            
             return currentUser;
-          });
+          });         
           return user;
+        }],
+        loadDbUser: ['loadUser', 'getUser', function ( loadUser, getUser) {          
+          return getUser.getUserData(loadUser.user_id);
         }],
         getCoordsInit: function(getCoords){
             return getCoords.getUserCoord();
         },
-        getUserInit: ['getUser', 'user','getCoordsInit','addNewUser', function(getUser, user, getCoordsInit, addNewUser) {
-          var currentUser = user.current;
-          var test = user.getCurrent().then(function(currentUser){                    
-            getUser.getUserData(currentUser.user_id)
-            .$promise
-            .then(function(response){
-              var data = JSON.parse(angular.toJson(response));
-              //console.log(data);
-              if(!data._id) {
-                var username = currentUser.user_id;
-                var name = currentUser.first_name;
-                var lat = parseFloat(getCoordsInit.coords.latitude).toFixed(4);
-                var lng = parseFloat(getCoordsInit.coords.longitude).toFixed(4);
-                var geoJSON = {'lat': lat, 'lng': lng};
-                //console.log(getCoordsInit);
-                //console.log(name);
-                var userData = {};
-                userData.username = username;
-                userData.name =  name;
-                userData.img = 'img3';
-                userData.loc = geoJSON;
-                userData.distance = 10;
-                userData.hidden = false;
-                addNewUser.addUser(userData);
-              } 
-              return data;
-            });
-           
-          });    
-          if(!test.values){
-              return getUser.getUserData(currentUser.user_id);
-          }
+        getUserInit: ['loadDbUser','getCoordsInit','addNewUser', function (loadDbUser, getCoordsInit, addNewUser) {                   
+         // var test = user.getCurrent().then(function (currentUser){                           
+        var test = loadDbUser
+                .$promise
+                .then(function(response){                  
+                  var data = JSON.parse(angular.toJson(response));                          
+                  if(!data._id) {               
+                    var username = response.username;
+                    var name = response.name;
+                    var lat = parseFloat(getCoordsInit.coords.latitude).toFixed(4);
+                    var lng = parseFloat(getCoordsInit.coords.longitude).toFixed(4);
+                    var geoJSON = {'lat': lat, 'lng': lng};              
+                    var userData = {};
+                    userData.username = username;
+                    userData.name =  name;
+                    userData.img = 'img3';
+                    userData.loc = geoJSON;
+                    userData.distance = 10;
+                    userData.hidden = false;
+                    addNewUser.addUser(userData);
+                  } 
+                  return data;
+                });           
+         // });          
+         // if(!test.value){
+            //console.log(loadDbUser);
+            return test;              
+         // }
           
         }],
-        getNewMatchesInit: ['$state', 'getNewMatches','getUser','user','getUserInit',function($state, getNewMatches, getUser, user, getUserInit){
-         // console.log(getUserInit);
-          var currentUser = user.current;
-          var username = currentUser.user_id;
-          var id = getUserInit.$promise.then(function(currentUser){                   
-            //return currentUser._id;
+        getNewMatchesInit: ['$state', 'getNewMatches','getUser','getUserInit',function($state, getNewMatches, getUser, getUserInit){                
+         var userID = getUserInit._id;
+          /*var id = getUserInit.$promise.then(function(currentUser){  
+            console.log(currentUser);          
              return getNewMatches.get(currentUser._id);  
-          });    
-        return id;    
+          });*/    
+        return getNewMatches.get(userID);    
                    
         }]
       },
       views: {
         'menuContent': {
            templateUrl: 'partials/new-matches.html',
-           controller: 'cardsController'
+           controller: 'CardsController'
           }
       }
     })
      <!-- // handle the matches -->
     .state('app.matches', {
       url: '/matches',
+      data: { public: false },
       views: {
         'menuContent': {
           templateUrl: 'partials/matches.html',
-          controller: 'matchesController'
+          controller: 'MatchesController'
         }
       },
       resolve: {
@@ -219,20 +220,22 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
      <!-- // handle the profile -->
     .state('app.profile', {
       url: '/profile',
+      data: { public: false },
       views: {
         'menuContent': {
            templateUrl: 'partials/profile.html',
-           controller: 'profileController'
+           controller: 'ProfileController'
           }
       }
     })
       <!-- // handle the profile -->
     .state('app.match', {
       url: '/match/:matchId',
+      data: { public: false },
       views: {
         'menuContent': {
            templateUrl: 'partials/match-single.html',
-           controller: 'matchSingleController'
+           controller: 'MatchSingleController'
           }
       },
     })

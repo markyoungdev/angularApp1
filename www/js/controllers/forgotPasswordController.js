@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('forgotPasswordCtrl', function ($scope, $ionicSideMenuDelegate, $state, $stateParams) {
+angular.module('sideMenuApp.controllers').controller('ForgotPasswordCtrl', function ($scope, $ionicSideMenuDelegate, $state, $stateParams) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
     $scope.goTo = function(page) {

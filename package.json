@@ -11,7 +11,8 @@
     "gulp-sass": "^0.7.1",
     "mongoose": "^3.8.22",
     "mongoose-cachebox": "^1.2.0",
-    "mongoose-friends": "^0.2.3"
+    "mongoose-friends": "^0.2.3",
+    "swiper": "^3.0.3"
   },
   "devDependencies": {
     "bower": "^1.3.3",

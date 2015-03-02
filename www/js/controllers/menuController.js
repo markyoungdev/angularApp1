@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('menuController', function ($scope, $location, $ionicSideMenuDelegate, $state, getUserImage, user, getUser) {
+angular.module('sideMenuApp.controllers').controller('MenuController', function ($scope, $location, $ionicSideMenuDelegate, $state, getUserImage, user, getUser) {
        
     $scope.goTo = function(page) {
         console.log('Going to ' + page);

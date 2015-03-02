@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('profileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker) {
+angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
     $scope.goTo = function(page) {

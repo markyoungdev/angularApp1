@@ -38,9 +38,11 @@ angular.module('sideMenuApp.services', [])
     .factory('getUser', function($resource, user) {
         return {           
             getUserData: function(){
-                var userID = user.current.user_id;               
+                var userID = user.current.user_id;   
+                //console.log(userID);            
                 var url = $resource('http://localhost:3000/api/user/:id',{id: userID});
-                return url.get();                
+                return url.get();     
+                console.log(url.get());           
             }
         }
     })
