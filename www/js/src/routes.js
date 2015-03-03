@@ -158,6 +158,7 @@ function getFreshMatches(request, reply) {
         }
       },
       {'_id' : { $ne: ids } }, 
+      {'hidden' : { $ne: true } },
       {'friends._id': {  $nin: idsArray } } ]
     })
     .exec();

@@ -1,4 +1,13 @@
 angular.module('sideMenuApp.services', [])
+    //error handling
+    .factory('$exceptionHandler', function ($injector) {
+        return function (exception, cause) {
+            var $rootScope = $injector.get('$rootScope');
+            $rootScope.errors = $rootScope.errors || [];
+            $rootScope.errors.push(exception.message);
+            console.log($rootScope.errors);
+        }
+    })
     // get user coordinates
     .factory('getCoords', function($resource, $cordovaGeolocation) {
         return {
@@ -55,7 +64,7 @@ angular.module('sideMenuApp.services', [])
                 var coords = coordsObj.then(function(data){                    
                     var lat = parseFloat(data.coords.latitude).toFixed(4);
                     var lng = parseFloat(data.coords.longitude).toFixed(4);
-                    console.log(lat);
+                    //console.log(lat);
                     var userID = user.current.user_id;
                     // var id = userData.id;
                     var coords = userData.loc;
@@ -76,7 +85,7 @@ angular.module('sideMenuApp.services', [])
     .factory('updateUserSettings', function($resource) {
         return {
             update: function(userData){               
-                console.log(userData);
+                //console.log(userData);
                 var id = userData.userID;
                 var visibility = userData.profileHidden;
                 var searchRange = userData.rangeValue;
@@ -137,7 +146,7 @@ angular.module('sideMenuApp.services', [])
                     var lng = parseFloat(data.coords.longitude).toFixed(4);
                     var radius = 50;                     
                      var url = $http.get('http://localhost:3000/api/newmatches/'+userId+'/'+lat+'/'+lng+'/'+radius);
-                    console.log(url);
+                    //console.log(url);
                     return url;  
                 });
                 console.log(matches);
@@ -165,7 +174,7 @@ angular.module('sideMenuApp.services', [])
                 return deferred;
             },
             findById: function(matchId) {
-                console.log(matchId);                
+                //console.log(matchId);                
                 return getMatch.getSingleMatch(matchId);
             },
         }

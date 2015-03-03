@@ -12,3 +12,25 @@ var sideMenuApp = angular.module('app')
     }
   }
 })
+
+.directive('swiper', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+        	var mySwiper = new Swiper(".swiper-container", {		    	
+		    	effect: 'coverflow',
+		    	centeredSlide: true,
+		    	slidePerView: 'auto',
+		    	coverflow: {
+				  rotate: 50,
+				  stretch: 0,
+				  depth: 100,
+				  modifier: 1,
+				  slideShadows : true
+				}
+		    });
+		    console.log(mySwiper)
+            //angular.element(element).'pluginActivationFunction'(scope.$eval(attrs.directiveName));
+        }
+    };
+}); 
