@@ -1,6 +1,6 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('CardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, getUserInit) {
+.controller('CardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, declineMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, getUserInit) {
   /**
   *
   * Define scope variables that
@@ -49,6 +49,8 @@ angular.module('sideMenuApp.controllers')
     console.log('LEFT SWIPE');
     $scope.addCard();
     $scope.cardDestroyed();
+    console.log(card._id);
+    $scope.denyMatch(card._id);  
     //card.swipe();
   };
   $scope.cardSwipedRight = function(index, card) {
@@ -69,6 +71,17 @@ angular.module('sideMenuApp.controllers')
         matchData.requestor = username;
         matchData.requestee = requestee;
         addMatch.add(matchData);
+      }
+  }  
+  $scope.denyMatch = function(requestee) {
+     var currentUser = user.current;
+      if (currentUser.authenticated) {
+        console.log($scope.userData._id);
+        var username = $scope.userData._id;
+        var matchData = {};
+        matchData.requestor = username;
+        matchData.requestee = requestee;
+        declineMatch.deny(matchData);
       }
   }  
   $scope.init = function () {

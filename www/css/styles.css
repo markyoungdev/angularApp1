@@ -182,6 +182,7 @@ td-card img {
 	margin: 10px auto;
 	text-align:center;
 }
+ 
 /*=========Item avatars=============*/
 .item-avatar > img:first-child{
 	border-radius: 4px;

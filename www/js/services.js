@@ -23,7 +23,7 @@ angular.module('sideMenuApp.services', [])
         }
     })
     // add user to the local mongoose db
-    .factory('addNewUser', function($resource, $rootScope) {
+    .factory('addNewUser', function($resource, $rootScope, user) {
         return {
             addUser: function(userData){
                 //console.log(userData);
@@ -161,6 +161,16 @@ angular.module('sideMenuApp.services', [])
             var requestor = userData.requestor;  
             var requestee = userData.requestee;    
             var url = $resource('http://localhost:3000/api/match/add/:requestor/:requestee', {requestor: requestor, requestee: requestee});
+            return url.save();
+            }
+        }  
+    })
+    // decline a new match for the associated user into the db
+    .factory('declineMatch', function($resource) {  
+        return{  deny: function(userData){ 
+            var requestor = userData.requestor;  
+            var requestee = userData.requestee;    
+            var url = $resource('http://localhost:3000/api/match/deny/:requestor/:requestee', {requestor: requestor, requestee: requestee});
             return url.save();
             }
         }  

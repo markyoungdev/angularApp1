@@ -14,12 +14,11 @@ var friends = require("mongoose-friends")
 var matchSchema = new mongoose.Schema({
     username: { type: String, unique: true }
     , name: { type: String }
-    , date: Number
+    , date: {type: Date, default: Date.now }
     , avatar: String    
-    , distance: String
-    , messages: Number
-    //, username: String
-    , hidden: Boolean
+    , distance: {type: Number, default: 30 }
+    , messages: {type: Number, default: 1 }   
+    , hidden: {type: Boolean, default: false }
     , searchRadius: Number
     , loc: {
     	type: {},

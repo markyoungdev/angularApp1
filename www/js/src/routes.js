@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var Match = require('./schema');
 var matchObj = Match.Match;
+mongoose.set('debug', true);
 module.exports = [
     { method: 'GET',
      path: '/api/matches/{id}',
@@ -18,6 +19,10 @@ module.exports = [
      path: '/api/match/add/{requestor}/{requestee}',
      config: { handler: addMatch /*payload: 'parse'*/ } 
  	},
+  { method: 'POST',
+     path: '/api/match/deny/{requestor}/{requestee}',
+     config: { handler: denyMatch /*payload: 'parse'*/ } 
+  },
     { method: 'POST',
      path: '/api/createtest/{name}/{img}/{username}/{lat}/{lng}/{distance}/{hidden}',
      config: { handler: createTestUsers /*payload: 'parse'*/ } 
@@ -55,6 +60,7 @@ module.exports = [
 function getUserImage(request, reply){  
   if (request.params.userID) {
    var userID = request.params.userID;
+  // console.log('userID = '+userID);
    matchObj.findOne({username: userID}, function(err, user) {
     if(err) return err;
     
@@ -81,7 +87,7 @@ function getUserID(request, reply){
          reply({data: user});
          console.log('new user')
       } else {       
-       //console.log(user);
+       //console.log('This is the user func:'+user);
         reply(user);
       }
      });  
@@ -101,7 +107,7 @@ function getMatches(request,reply) {
   var id = request.params.id;
   console.log(id);
   matchObj.getFriends(id, function (err, friendships) {
-    console.log(friendships);
+   // console.log(friendships);
     reply(friendships);
     // friendships looks like:
     // [{status: "requested", added: <Date added>, friend: user2}]
@@ -131,6 +137,7 @@ function getMatches(request,reply) {
 function getMatch(request,reply) {
     if (request.params.id) {      
       var id = request.params.id;
+      console.log('line 139:'+id);
       matchObj.findById(id, function(err, user){
         var foundMatch = user;       
         reply(foundMatch);
@@ -143,7 +150,8 @@ function getMatch(request,reply) {
 
 function getFreshMatches(request, reply) {
   if (request.params.id) {
-    var id = request.params.id;    
+    var id = request.params.id;   
+    console.log('ID = '+id); 
     var ids = mongoose.Types.ObjectId(id);
     var idsArray = new Array(ids);
     var lat = parseFloat(request.params.lat);
@@ -158,8 +166,9 @@ function getFreshMatches(request, reply) {
         }
       },
       {'_id' : { $ne: ids } }, 
-      {'hidden' : { $ne: true } },
-      {'friends._id': {  $nin: idsArray } } ]
+      {'hidden' : { $ne: true } },      
+      {'friends._id': {  $nin: idsArray } } 
+      ]
     })
     .exec();
   
@@ -223,19 +232,23 @@ function addMatch(request,reply) {
   //console.log(request); 
    if (request.params.requestor) {
     var requestor = request.params.requestor;
-    var requestee = request.params.requestee;
-    //var request = new matchObj();
-    //console.log(request);
-    /*request.friendRequest('54e806f4abae290ec4f90bdd', function (err, request) {
-      if (err) throw err;
-      console.log(request);
-    
-      //console.log('request', request);     
-    });*/
+    var requestee = request.params.requestee;    
      matchObj.requestFriend(requestor, requestee, function(data){
       console.log(data);
-     });
-    //reply(addMatch);
+     });  
+  }
+}
+/*=============================================
+=               MATCH Denying                 =
+=============================================*/
+function denyMatch(request,reply) {   
+  //console.log(request); 
+   if (request.params.requestor) {
+    var requestor = request.params.requestor;
+    var requestee = request.params.requestee;    
+     matchObj.declineFriend(requestor, requestee, function(data){
+      console.log(data);
+     });  
   }
 }
 
@@ -244,18 +257,12 @@ function createTestUsers(request, reply) {
   var name = request.params.name;
   var username = request.params.username;
   var lat = parseFloat(request.params.lat);
-  var lng = parseFloat(request.params.lng);
-  var distance = parseInt(request.params.distance);
-  var hidden = request.params.hidden;
+  var lng = parseFloat(request.params.lng); 
   var avatar = '/images/matches/'+request.params.img+'.jpg';
   var addMatch = new matchObj({
-      name: name
-      , date: 64.5
-      , avatar: avatar  
-      , distance: distance
-      , messages: 5
-      , username: username
-      , hidden: hidden
+      name: name      
+      , avatar: avatar       
+      , username: username      
       , loc: {"lat": lat, 'lng': lng } 
   });
 

@@ -13,6 +13,7 @@
       </div>   
       <p>Searching for potential matches</p>
     </div>
+        <!-- Slides -->       
        <td-cards>
         <td-card ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index, card)" on-swipe-right="cardSwipedRight($index, card)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
           <div class="image" >
@@ -29,6 +30,7 @@
             </div>
           </div>
         </td-card>
-      </td-cards>      
+      </td-cards>   
+      
   </ion-content>
 </ion-view>
