@@ -44,7 +44,7 @@ module.exports = [
        config: { handler: getFreshMatches /*payload: 'parse'*/ } 
     },
     { method: 'POST',
-       path: '/api/user/settings/{id}/{visibility}/{searchRange}',
+       path: '/api/user/settings/{id}/{visibility}/{searchRange}/{bio}',
        config: { handler: updateUserSettings /*payload: 'parse'*/ } 
     },
     { method: 'GET',
@@ -60,9 +60,9 @@ module.exports = [
 function getUserImage(request, reply){  
   if (request.params.userID) {
    var userID = request.params.userID;
-  // console.log('userID = '+userID);
+  //console.log('userID = '+userID);
    matchObj.findOne({username: userID}, function(err, user) {
-    if(err) return err;
+    //if(err) return err;
     
     reply(user.avatar);
     //console.log(user.avatar);
@@ -108,31 +108,10 @@ function getMatches(request,reply) {
   console.log(id);
   matchObj.getFriends(id, function (err, friendships) {
    // console.log(friendships);
-    reply(friendships);
-    // friendships looks like:
-    // [{status: "requested", added: <Date added>, friend: user2}]
+    reply(friendships);    
   });
+} 
 }
-   /* matchObj.find(function(err, matches) {
-        if (err) return console.error(err);      
-        var matchesArray = matches;       
-        reply(matchesArray);
-    });*/          
-}
-
-/*function getNewMatches(request,reply) { 
-    if (request.params.id) {      
-      var id = request.params.id;
-      matchObj.find({ username: {'$ne':id+''} },function(err, matches) {     
-        var matchesArray = matches;
-        console.log(matchesArray);
-        reply(matchesArray);
-      });      
-    }
-    else {
-       console.log('No id provided');
-    }
-}*/
 
 function getMatch(request,reply) {
     if (request.params.id) {      
@@ -157,19 +136,26 @@ function getFreshMatches(request, reply) {
     var lat = parseFloat(request.params.lat);
     var lng = parseFloat(request.params.lng);
     var radius = parseInt(request.params.radius);   
-    var test = matchObj.find({    
-    $and: [      
-      { loc: 
-        { $near: 
-          { $geometry: { type: "Point", coordinates: [lng, lat] }, $maxDistance: radius  },
-          
-        }
-      },
-      {'_id' : { $ne: ids } }, 
-      {'hidden' : { $ne: true } },      
-      {'friends._id': {  $nin: idsArray } } 
-      ]
-    })
+    var test = matchObj.aggregate([
+    {
+      $geoNear: {
+         near: { type: "Point", coordinates: [lng, lat] },
+         distanceField: "dist.calculated",
+         includeLocs: "dist.location",
+         maxDistance: radius,
+         num: 50,
+         spherical: true,
+         query: { 
+          hidden: false, 
+          _id : { $ne: ids },
+          $or: [
+            { 'friends._id': { $exists: false } },
+            { 'friends._id': { $exists: true, $nin: idsArray } }             
+          ]
+         }
+      }
+    }   
+  ])
     .exec();
   
     console.log(test);
@@ -203,9 +189,11 @@ function updateUserSettings(request, reply) {
   var id        = request.params.id;
   var distance  = request.params.searchRange;
   var hidden    = request.params.visibility;
+  var bio       = request.params.bio;
+  console.log(bio);
   var query     = { username: id };
   var options   = { multi: true, upsert: true };
-  var update    = { 'distance': distance, 'hidden': hidden }
+  var update    = { 'distance': distance, 'hidden': hidden, 'bio': bio }
   matchObj.update(query, update, options, function (err, numberAffected, raw) {
     if (err) return console.log(err);
     console.log('The number of updated documents was %d', numberAffected);
@@ -220,7 +208,7 @@ function updateUserSettings(request, reply) {
 function getUserSettings(request, reply) {
   var id        = request.params.id;
   console.log(id);
- matchObj.findOne({username: id}, 'distance hidden', function(err, settings) {
+ matchObj.findOne({username: id}, 'distance hidden bio', function(err, settings) {
   reply( settings );
  
  })      

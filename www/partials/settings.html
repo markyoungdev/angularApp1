@@ -2,7 +2,7 @@
  <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header">
+  <ion-content class="has-header" scroll="false">
    	<div class="settings-wrap">
    		<form ng-submit="saveSettings(settings)">
 	   		<ul class="list">
@@ -15,6 +15,10 @@
 			        <input type="range" name="volume" min="0" max="100" value="{{settings.rangeValue}}" ng-model="settings.rangeValue">
 			    	<span class="distance">Within {{settings.rangeValue}} Miles</span>
 			    </div>
+
+		    	<div class="item item-divider">About Me</div>
+			        <i class="icon ion-chatbox item"></i>
+			        <textarea name="bio" ng-model="settings.bio" class="item">{{settings.bio}}</textarea>	    
 
 			    <button class="button button-balanced settings-button">
 				  Save changes

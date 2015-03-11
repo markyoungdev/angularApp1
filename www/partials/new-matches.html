@@ -21,10 +21,10 @@
             <img ng-src="{{card.avatar}}">
             <div class="yes-text">LIKE</div>
               <div class="buttons">
-                <button class="button button-balanced">
+                <button class="button button-balanced" ng-click="cardSwipedRight($index, card)">
                   yes
                 </button>
-                <button class="button button-assertive">
+                <button class="button button-assertive" ng-click="cardSwipedLeft($index, card)">
                 no
               </button>
             </div>

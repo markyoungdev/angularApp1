@@ -89,7 +89,9 @@ angular.module('sideMenuApp.services', [])
                 var id = userData.userID;
                 var visibility = userData.profileHidden;
                 var searchRange = userData.rangeValue;
-                var url = $resource('http://localhost:3000/api/user/settings/:id/:visibility/:searchRange',{id: id, visibility: visibility, searchRange: searchRange});
+                var bio = userData.bio;
+                console.log(bio);
+                var url = $resource('http://localhost:3000/api/user/settings/:id/:visibility/:searchRange/:bio',{id: id, visibility: visibility, searchRange: searchRange, bio: bio});
                 //console.log(url.save());
                 return url.save();                
             }

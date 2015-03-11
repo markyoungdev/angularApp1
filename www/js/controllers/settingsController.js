@@ -10,12 +10,15 @@ angular.module('sideMenuApp.controllers').controller('SettingsController', funct
     $scope.userCurrent = loadUser;
     getSettings.$promise.then(function(settings){
        $scope.oldSettings = settings;
+       console.log(settings);
        if($scope.oldSettings){
             $scope.settings.rangeValue = $scope.oldSettings.distance;
             $scope.settings.profileHidden  = $scope.oldSettings.hidden;   
+            $scope.settings.bio  = $scope.oldSettings.bio;
         } else {
             $scope.settings.rangeValue = 10;
             $scope.settings.profileHidden  = false;  
+            $scope.settings.bio = '';
         }    
 
     });
@@ -25,11 +28,13 @@ angular.module('sideMenuApp.controllers').controller('SettingsController', funct
 
     
     $scope.$watch('settings.rangeValue',function(val,old){
-       $scope.rangeValue = parseInt(val); 
-        
+       $scope.rangeValue = parseInt(val);         
     });
 
+  
+
     $scope.saveSettings = function(settings) {
+        console.log(settings)
     	updateUserSettings.update(settings);
     }
 });

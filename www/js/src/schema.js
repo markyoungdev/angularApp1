@@ -20,6 +20,7 @@ var matchSchema = new mongoose.Schema({
     , messages: {type: Number, default: 1 }   
     , hidden: {type: Boolean, default: false }
     , searchRadius: Number
+    , bio: {type: String, default: null}
     , loc: {
     	type: {},
     	index: '2dsphere',
