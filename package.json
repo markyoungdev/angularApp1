@@ -21,7 +21,9 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.geolocation",
+    "org.apache.cordova.inappbrowser",
     "https://github.com/wymsee/cordova-imagePicker.git",
+    "https://github.com/phonegap-build/PushPlugin.git",
     "org.apache.cordova.console",
     "org.apache.cordova.device",
     "org.apache.cordova.dialogs",
