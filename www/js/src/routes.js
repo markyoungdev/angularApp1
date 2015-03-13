@@ -23,6 +23,10 @@ module.exports = [
      path: '/api/match/deny/{requestor}/{requestee}',
      config: { handler: denyMatch /*payload: 'parse'*/ } 
   },
+   { method: 'POST',
+     path: '/api/match/restrict/{requestor}/{requestee}',
+     config: { handler: restrictMatch /*payload: 'parse'*/ } 
+  },
     { method: 'POST',
      path: '/api/createtest/{name}/{img}/{username}/{lat}/{lng}/{distance}/{hidden}',
      config: { handler: createTestUsers /*payload: 'parse'*/ } 
@@ -63,8 +67,11 @@ function getUserImage(request, reply){
   //console.log('userID = '+userID);
    matchObj.findOne({username: userID}, function(err, user) {
     //if(err) return err;
-    
-    reply(user.avatar);
+    if(user.avatar){
+     reply(user.avatar);
+    } else {
+      reply( user );
+    }
     //console.log(user.avatar);
    }); 
 
@@ -240,6 +247,27 @@ function denyMatch(request,reply) {
   }
 }
 
+/*=============================================
+=               MATCH Restrict                 =
+=============================================*/
+function restrictMatch(request,reply) {   
+  //console.log(request); 
+   if (request.params.requestor) {
+    var requestor = request.params.requestor;
+    var requestee = request.params.requestee; 
+    var requestor_id = mongoose.Types.ObjectId(requestor);
+    var requestee_id = mongoose.Types.ObjectId(requestee);
+    var currentDate = Date.now();
+    var options   = { multi: false, upsert: true };
+    var update    = { $push: { 'restricted': { _id: requestee_id, created: currentDate  } } }    
+    matchObj.update(requestor_id, update, options, function (err, numberAffected, raw) {
+      if (err) return console.log(err);
+      console.log('The number of updated documents was %d', numberAffected);
+      console.log('The raw response from Mongo was ', raw);
+    });
+  }
+}
+
 function createTestUsers(request, reply) {
   console.log(request);
   var name = request.params.name;
@@ -247,7 +275,7 @@ function createTestUsers(request, reply) {
   var lat = parseFloat(request.params.lat);
   var lng = parseFloat(request.params.lng); 
   var avatar = '/images/matches/'+request.params.img+'.jpg';
-  var addMatch = new matchObj({
+  var addMatch = matchObj({
       name: name      
       , avatar: avatar       
       , username: username      
@@ -255,7 +283,7 @@ function createTestUsers(request, reply) {
   });
 
   addMatch.save(function(err, addMatch) {
-    if (err) return console.error(err);
+    if (err) return console.error(err);   
     //console.dir(addMatch);
   });
   reply(addMatch);

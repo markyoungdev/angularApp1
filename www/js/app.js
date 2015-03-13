@@ -8,7 +8,7 @@ var sideMenuApp = angular.module('app',
   'ngResource']
   );
 
-sideMenuApp.run(function($ionicPlatform, user, $rootScope, $cordovaPush) {
+sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)

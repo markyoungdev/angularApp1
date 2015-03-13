@@ -15,16 +15,16 @@ var MongooseRattlePlugin = require('mongoose-rattle-plugin');
 var matchSchema = new mongoose.Schema({
     username        : { type: String, unique: true },
     email           : { type: String, default: null, index: { unique: true } },
-    name            : { type: String },
-    visits          : Number,    
-    avatar          : String, 
-    profile_image   : String, 
-    images          : Array, 
-    distance        : {type: Number, default: 30 },
-    messages        : {type: Number, default: 1 },   
-    hidden          : {type: Boolean, default: false },
-    searchRadius    : Number,
-    restricted      : Array,
+    name            : { type: String, default: null },
+    visits          : { type: Number, default: null },    
+    avatar          : { type: String, default: null }, 
+    profile_image   : { type: String, default: null }, 
+    images          : { type: Array, default: null },
+    distance        : { type: Number, default: 30 },
+    messages        : { type: Number, default: 1 },   
+    hidden          : { type: Boolean, default: false },
+    searchRadius    : { type: Number, default: 30 },
+    restricted      : { type: Array, default: null },
     created         : {type: Date, default: Date.now },
     modified        : { type : Date, default : Date.now },
     bio             : {type: String, default: null},
@@ -36,13 +36,13 @@ var matchSchema = new mongoose.Schema({
 });
 
 matchSchema.plugin(friends({pathName: "friends"}));
-matchSchema.plugin(MongooseRattlePlugin);
+//matchSchema.plugin(MongooseRattlePlugin);
 
 //ADD FIELDS  using mongoose rattlesnake.
 
-matchSchema.add({
+/*matchSchema.add({
   'myPersonalField': String
-});
+});*/
 
 // apply friends-of-friends plugin to your User schema 
 //matchSchema.plugin(friendsOfFriends.plugin, options);

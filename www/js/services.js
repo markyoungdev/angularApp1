@@ -177,6 +177,16 @@ angular.module('sideMenuApp.services', [])
             }
         }  
     })
+    // Add user into restricted array
+    .factory('addToRestricted', function($resource) {  
+        return{  add: function(userData){ 
+            var requestor = userData.requestor;  
+            var requestee = userData.requestee;    
+            var url = $resource('http://localhost:3000/api/match/restrict/:requestor/:requestee', {requestor: requestor, requestee: requestee});
+            return url.save();
+            }
+        }  
+    })
     // helper function form finding matches
     .factory('matchService',['getMatches','getMatch', function(getMatches, getMatch) {
         var matches = getMatches;             

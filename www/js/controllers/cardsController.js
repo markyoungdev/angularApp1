@@ -81,7 +81,8 @@ angular.module('sideMenuApp.controllers')
         var matchData = {};
         matchData.requestor = username;
         matchData.requestee = requestee;
-        declineMatch.deny(matchData);
+        addToRestricted.add(matchData);
+        //declineMatch.deny(matchData);
       }
   }  
   $scope.init = function () {
