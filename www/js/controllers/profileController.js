@@ -27,4 +27,13 @@ angular.module('sideMenuApp.controllers').controller('ProfileController', functi
 	      // error getting photos
       });
 	}
+
+	$scope.uploadFile = function() {
+		Upload.fileTo('http://localhost:3000/upload/images').then(
+			function(res) {
+				// Success
+			}, function(err) {
+				// Error
+		});
+	};
 });

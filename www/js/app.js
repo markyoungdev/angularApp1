@@ -58,6 +58,13 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
         }]
       }
     })
+    <!-- // walkthrough -->
+    .state('/', {
+      url: '/',
+      templateUrl: 'partials/walkthrough.html',
+      data: { public: true },
+      controller: 'WalkthroughController'      
+    })
     <!-- // handle the login -->
     .state('login', {
       url: '/login',
@@ -249,7 +256,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/app/new-matches');
+  $urlRouterProvider.otherwise('/');
   
 
 });
