@@ -1,6 +1,4 @@
 {
-  "directory": "www/lib",
-  "strict-ssl": false,
-  "https-proxy": ""
+  "directory": "www/lib"  
 }
 
