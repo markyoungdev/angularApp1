@@ -3,33 +3,26 @@
     <div class="row">
       <div class="col col-center">
         <div class="card login-container" content-tabs tabsdata='tabsdata'>
-          <form name="login_form" class="" novalidate ua-login>
+          <form name="login_form" class="" ua-login>
             <my-tabs>
               <my-tab title="Email">
                 <div class="list">
                   <label class="item item-input">
-                    <input type="email" placeholder="Email" name="user_email" ng-model="user.email" required>
+                    <input type="text" placeholder="Username" name="login">
                   </label>
                   <label class="item item-input">
-                    <input type="password" placeholder="Password" name="user_password" ng-model="user.password" required show-hide>
+                    <input type="password" placeholder="Password" name="password">
                   </label>
                 </div>
-              </my-tab>
-              <my-tab title="Phone">
-                <div class="list">
-                  <label class="item item-input">
-                    <input type="text" placeholder="Phone number" name="user_phone" ng-model="user.phone" required>
-                  </label>
-                  <label class="item item-input">
-                    <input type="password" placeholder="PIN" name="user_pin" ng-model="user.pin" required valid-pin="user.pin" show-hide>
-                  </label>
-                </div>
-              </my-tab>
+              </my-tab>            
             </my-tabs>
             <div class="item item-body bottom-content">
-              <button type="submit" class="button button-positive button-block" ng-click="doLogIn()" ng-disabled="(selected_tab=='Email') ? (login_form.user_email.$invalid || login_form.user_password.$invalid) : ((selected_tab=='Phone') ? (login_form.user_phone.$invalid || login_form.user_pin.$invalid) : false)">
-                Log In
-              </button>
+              <p><button type="submit" class="button button-block button-positive">Log in</button></p>
+              <div class="text-center"> 
+                <p> or <a href="" ua-oauth-link="google" class="button button-block button-assertive">Log in with Google</a></p>
+                <p ng-show="loading"><img src="https://app.userapp.io/img/ajax-loader-transparent.gif"></p>
+                <p ng-show="error">{{ error.message }}</p>
+              </div>
             </div>
           </form>
         </div>

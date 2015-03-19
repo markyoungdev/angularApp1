@@ -1,6 +1,6 @@
 angular.module('sideMenuApp.controllers').controller('LoginModalController', function ($scope, $location,$ionicSideMenuDelegate, $state, $ionicModal, $rootScope, user, getUser, addNewUser, getCoords) {
 
-  $ionicModal.fromTemplateUrl('partials/login-modal.html', {
+  /*$ionicModal.fromTemplateUrl('partials/login-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -23,11 +23,10 @@ angular.module('sideMenuApp.controllers').controller('LoginModalController', fun
   // Execute action on remove modal
   $scope.$on('modal.removed', function() {
     // Execute action
-  });
-
+  });*/
   $rootScope.$on('user.login', function() {
-    $scope.modal.hide();
-    $scope.modal.remove();
+    //$scope.modal.hide();
+    //$scope.modal.remove();
     getCoords.getUserCoord().then(function(position){
      $scope.lat = parseFloat(position.coords.latitude).toFixed(4);
      $scope.lng = parseFloat(position.coords.longitude).toFixed(4);
