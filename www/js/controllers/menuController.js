@@ -9,10 +9,19 @@ angular.module('sideMenuApp.controllers').controller('MenuController', function 
     var username = currentUser.user_id;
     var name = currentUser.first_name;
     
-    getUser.getUserData(username)
+   /* getUser.getUserData(username)
  	.$promise.then(function(results){
  		$scope.currentUserAvatar = results['avatar'];
  		console.log(results['avatar']);
- 	});
+ 	});*/
       
+    $scope.init = function () {
+        getUser.getUserData(username)
+         .$promise.then(function(results){
+            $scope.currentUserAvatar = results['avatar'];
+            console.log(results['avatar']);
+        });
+    }
+ 
+  $scope.init();
     });

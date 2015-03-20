@@ -6,11 +6,16 @@
     <button class="button button-icon icon  ion-search"></button>
   </ion-nav-buttons>
   <ion-content class="has-header" scroll="false"> 
+  <ion-refresher
+    pulling-text="Pull to refresh..."
+    on-refresh="doRefresh()">
+  </ion-refresher>
     <div class="searching">
-      <div class="spinner">
+      <!--<div class="spinner">
         <div class="dot1"></div>
         <div class="dot2"></div>
-      </div>   
+      </div>-->
+      <ion-spinner class="spinner" icon="lines"></ion-spinner>  
       <p>Searching for potential matches</p>
     </div>
         <!-- Slides -->       

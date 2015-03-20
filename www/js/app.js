@@ -5,11 +5,16 @@ var sideMenuApp = angular.module('app',
   'sideMenuApp.controllers',
   'UserApp','ui.bootstrap',
   'ionic.contrib.ui.tinderCards',
+  //'com.unarin.cordova.proximity.quickstart.monitoring',
+  //'com.unarin.cordova.proximity.quickstart.eventlog',
+  //'com.unarin.cordova.proximity.quickstart.ranging',
   'ngResource']
   );
 
 sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
+ // console.debug('Running com.unarin.cordova.proximity.quickstart');
   $ionicPlatform.ready(function() {
+    //angular.bootstrap(document, ['com.unarin.cordova.proximity.quickstart']);
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -21,13 +26,7 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
     }
     //PushNotificationsService.register();
   });
-  user.init({ appId: '54c951838e11a' }); 
-
-  $rootScope.setAuthenticatedUser = function(user){
-    user.getCurrent().then(function(currentUser){  
-      console.log(currentUser.user);
-    });
-  }
+  user.init({ appId: '54c951838e11a' });  
 
 })
 
@@ -37,6 +36,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
+ // window.console.debug('Configuring com.unarin.cordova.proximity.quickstart');
   $stateProvider
     
     .state('app', {

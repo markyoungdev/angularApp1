@@ -67,11 +67,13 @@ function getUserImage(request, reply){
   //console.log('userID = '+userID);
    matchObj.findOne({username: userID}, function(err, user) {
     //if(err) return err;
-    if(user.avatar){
-     reply(user.avatar);
-    } else {
-      reply( user );
-    }
+    if(user){
+      if(user.avatar){
+       reply(user.avatar);
+      } else {
+        reply( user );
+      }
+    } 
     //console.log(user.avatar);
    }); 
 
