@@ -202,7 +202,7 @@ angular.module('sideMenuApp.services', [])
         }
     }])
 
-    .factory('Upload', function($q, $cordovaCamera, $cordovaFile, Constants) {
+    .factory('Upload', function($q, $cordovaCamera, $cordovaFile) {
 
     return {
 

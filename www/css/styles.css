@@ -220,18 +220,18 @@ textarea.item {
 .searching {
 	text-align: center;
 	position: absolute;
-	margin: 0 auto;
+	margin: 40px auto;
 	left: 0%;
 	width:100%;
 }
 .searching p{
-	margin-top: -40px;
+	margin-top: 0px;
 }
 .searching p:after{
   overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4,end) 5200ms infinite;      
+  /*-webkit-animation: ellipsis steps(4,end) 5200ms infinite;      
   animation: ellipsis steps(4,end) 5200ms infinite;
   content: "\2026"; /* ascii code for the ellipsis character */
   width: 0px;

@@ -130,7 +130,7 @@ angular.module('sideMenuApp.controllers')
       console.log('New User added');
      });
   }
-  $scope.pollNewUsers();
+  //$scope.pollNewUsers();
   $scope.init();
 })
 

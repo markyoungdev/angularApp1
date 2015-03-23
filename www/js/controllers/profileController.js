@@ -1,10 +1,11 @@
-angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer) {
+angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer, Upload) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
+        
     $scope.goTo = function(page) {
-        console.log('Going to ' + page);
-        $ionicSideMenuDelegate.toggleLeft();
-        $state.go(page);           
+        console.log('Going to ' + page);       
+        $state.go(page);       
+         $ionicSideMenuDelegate.toggleLeft();    
     };
 
     
@@ -29,23 +30,27 @@ angular.module('sideMenuApp.controllers').controller('ProfileController', functi
 	}
 
 	$scope.uploadFile = function() {
-		Upload.fileTo('http://localhost:3000/upload/images').then(
-			function(res) {
+		Upload.fileTo('http://localhost:3000/api/user/upload/image/').then(
+			function(res) {				
+				console.log('success: '+res);
 				// Success
-			}, function(err) {
+			}, function(err) {				
+				console.log('fail: '+err);
 				// Error
 		});
 	};
 
-	 document.addEventListener('deviceready', function () {
+	 /*document.addEventListener('deviceready', function () {
 
 	    var url = "http://cdn.wall-pix.net/albums/art-space/00030109.jpg";
 	    var targetPath = cordova.file.documentsDirectory + "testImage.png";
+	    //var targetPath = '../images/downloads/testImage.png';
 	    var trustHosts = true
-	    var options = {};
+	    var options = {};	    
 
 	    $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
 	      .then(function(result) {
+	      	console.log(result);
 	        // Success!
 	      }, function(err) {
 	        // Error
@@ -55,11 +60,11 @@ angular.module('sideMenuApp.controllers').controller('ProfileController', functi
 	        })
 	      });
 
-	   }, false);
+	   }, false);*/
 
 
-	  document.addEventListener('deviceready', function () {
-
+	  /*document.addEventListener('deviceready', function () {
+	  	var server = 'http://localhost:3000/upload/images';
 	    $cordovaFileTransfer.upload(server, filePath, options)
 	      .then(function(result) {
 	        // Success!
@@ -69,5 +74,5 @@ angular.module('sideMenuApp.controllers').controller('ProfileController', functi
 	        // constant progress updates
 	      });
 
-	  }, false);
+	  }, false);*/
 });

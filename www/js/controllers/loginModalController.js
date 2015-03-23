@@ -24,7 +24,7 @@ angular.module('sideMenuApp.controllers').controller('LoginModalController', fun
   $scope.$on('modal.removed', function() {
     // Execute action
   });*/
-  $rootScope.$on('user.login', function() {
+  /*$rootScope.$on('user.login', function() {
     //$scope.modal.hide();
     //$scope.modal.remove();
     getCoords.getUserCoord().then(function(position){
@@ -60,7 +60,7 @@ angular.module('sideMenuApp.controllers').controller('LoginModalController', fun
     }   
 
     });    
-  });
+  });*/
 
   $scope.init = function () {
     console.log('Ran: in loginModalController');

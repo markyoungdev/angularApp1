@@ -54,6 +54,18 @@ module.exports = [
     { method: 'GET',
        path: '/api/user/settings/{id}',
        config: { handler: getUserSettings /*payload: 'parse'*/ } 
+    },
+    { method: 'POST',
+       path: '/api/user/upload/image/',
+       config: { 
+        handler: getUserSettings /*payload: 'parse'*/,
+        payload: {
+           output: 'file',
+           maxBytes: 209715200,
+           //allow: 'multipart/form-data',
+           parse: true //or just remove this line since true is the default
+        } 
+      } 
     }
 
 ];

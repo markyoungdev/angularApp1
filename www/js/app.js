@@ -44,7 +44,13 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       abstract: true,
       templateUrl: "partials/menu.html",
       controller: 'MenuController',
-      resolve: {
+      getUserImage:{
+        getUserImages: function(){
+          var test = {};
+          return test;
+        }
+      }
+      /*resolve: {
         getUserImage: ['user','getUserImages',function(user, getUserImages){
           var currentUser = user.current;
           var username = currentUser.user_id;
@@ -56,7 +62,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
           //console.log(id);
            
         }]
-      }
+      }*/
     })
     <!-- // walkthrough -->
     .state('walkthrough', {
