@@ -1,4 +1,6 @@
 var fs = require('fs');
+var mkdirp = require('mkdirp');
+var uuid = require('node-uuid');
 var im = require('imagemagick-stream');
 var mongoose = require("mongoose");
 var Match = require('./schema');
@@ -82,9 +84,6 @@ function uploadImage(request, reply) {
       var path = __dirname + "/uploads/" + name;     
       var path_rsz = __dirname + "/uploads/rsz_" + name; 
       var file = fs.createWriteStream(path);
-      
-
-
       file.on('error', function (err) { 
           console.error(err) 
       });
@@ -105,8 +104,6 @@ function uploadImage(request, reply) {
       })
   }
 }
-
-
 
 /*=============================================
 =               GET USER DATA                =

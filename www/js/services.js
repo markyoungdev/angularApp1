@@ -201,7 +201,69 @@ angular.module('sideMenuApp.services', [])
             },
         }
     }])
+    // take pictures with camera
+   .factory('Camera', function($q, $cordovaCamera, $cordovaFile) {
 
+    return {
+
+        fileTo: function(serverURL) {
+
+            var deferred = $q.defer();
+
+            if (ionic.Platform.isWebView()) {
+
+                var options =   {
+                    quality: 100,
+                    targetWidth: 551,
+                    targetHeight: 260,
+                    allowEdit: true,
+                    saveToPhotoAlbum: true, 
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    encodingType: Camera.EncodingType.JPEG
+
+                }
+
+                $cordovaCamera.getPicture(options).then(
+
+                    function(fileURL) {
+
+                        var uploadOptions = new FileUploadOptions();
+                        uploadOptions.fileKey = "file";
+                        uploadOptions.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+                        uploadOptions.mimeType = "image/jpeg";
+                        uploadOptions.chunkedMode = false;
+
+                        $cordovaFile.uploadFile(serverURL, fileURL, uploadOptions).then(
+
+                            function(result) {
+                                deferred.resolve(result);
+                            }, function(err) {
+                                deferred.reject(err);
+                            })
+
+                        ;
+
+                    }, function(err){
+                        deferred.reject(err);
+                    })
+
+                ;
+
+            }
+            else {
+                deferred.reject('Uploading not supported in browser');
+            }
+
+            return deferred.promise;
+
+            }
+
+        }
+
+    })
+
+    // upload pictures from camera 
     .factory('Upload', function($q, $cordovaCamera, $cordovaFile) {
 
     return {
@@ -213,10 +275,15 @@ angular.module('sideMenuApp.services', [])
             if (ionic.Platform.isWebView()) {
 
                 var options =   {
-                    quality: 100
-                    , destinationType: Camera.DestinationType.FILE_URI
-                    , sourceType: Camera.PictureSourceType.PHOTOLIBRARY
-                    , encodingType: Camera.EncodingType.JPEG
+                    quality: 100,
+                    allowEdit: true,
+                    saveToPhotoAlbum: false, 
+                    targetWidth: 551,
+                    targetHeight: 260,
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                    encodingType: Camera.EncodingType.JPEG
+
                 }
 
                 $cordovaCamera.getPicture(options).then(

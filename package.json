@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "crowdDater: An Ionic project",
   "scripts": {
-     "start": "node www/js/server.js"
+    "start": "node www/js/server.js"
   },
   "dependencies": {
     "friends-of-friends": "^1.0.3",
@@ -12,9 +12,11 @@
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.1",
+    "mkdirp": "^0.5.0",
     "mongoose": "^3.8.x",
     "mongoose-cachebox": "^1.2.0",
     "mongoose-friends": "^0.2.3",
+    "node-uuid": "^1.4.3",
     "swiper": "^3.0.3",
     "underscore": "^1.8.2"
   },
@@ -35,6 +37,7 @@
     "org.apache.cordova.media",
     "https://github.com/petermetz/cordova-plugin-ibeacon.git",
     "org.apache.cordova.file-transfer",
-    "org.apache.cordova.camera"
+    "org.apache.cordova.camera",
+    "org.apache.cordova.media-capture"
   ]
 }

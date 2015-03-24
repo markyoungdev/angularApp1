@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer, Upload) {
+angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer, Upload, Camera, loadDbUser) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
         
@@ -7,11 +7,11 @@ angular.module('sideMenuApp.controllers').controller('ProfileController', functi
         $state.go(page);       
          $ionicSideMenuDelegate.toggleLeft();    
     };
-
+    console.log(loadDbUser);
     
 
-	 $scope.getPicturest = function() {
-	 	console.log($cordovaImagePicker.getPictures());
+	 /*$scope.getPicturest = function() {
+	 console.log($cordovaImagePicker.getPictures());
 	  var options = {
 	   maximumImagesCount: 10,
 	   width: 800,
@@ -27,9 +27,21 @@ angular.module('sideMenuApp.controllers').controller('ProfileController', functi
 	    }, function(error) {
 	      // error getting photos
       });
-	}
+	}*/	
+
+	$scope.getPhoto = function() {		
+	    Camera.fileTo('http://localhost:3000/api/user/upload/image/').then(
+			function(res) {				
+				console.log('success: '+res);
+				// Success
+			}, function(err) {				
+				console.log('fail: '+err);
+				// Error
+		});
+	};
 
 	$scope.uploadFile = function() {
+
 		Upload.fileTo('http://localhost:3000/api/user/upload/image/').then(
 			function(res) {				
 				console.log('success: '+res);

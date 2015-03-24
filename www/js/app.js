@@ -240,6 +240,17 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
     .state('app.profile', {
       url: '/profile',
       data: { public: false },
+      resolve: {
+        loadUser: ['user', 'getUser', function ( user, getUser ) {
+          var user = user.getCurrent().then(function (currentUser) {            
+            return currentUser;
+          });         
+          return user;
+        }],
+        loadDbUser: ['loadUser', 'getUser', function ( loadUser, getUser) {          
+          return getUser.getUserData(loadUser.user_id);
+        }],
+      }
       views: {
         'menuContent': {
            templateUrl: 'partials/profile.html',
