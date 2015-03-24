@@ -2,6 +2,9 @@
   "name": "crowddater",
   "version": "1.0.0",
   "description": "crowdDater: An Ionic project",
+  "scripts": {
+     "start": "node www/js/server.js"
+  },
   "dependencies": {
     "friends-of-friends": "^1.0.3",
     "gulp": "^3.5.6",

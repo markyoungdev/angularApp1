@@ -1,3 +1,5 @@
+var fs = require('fs');
+var im = require('imagemagick-stream');
 var mongoose = require("mongoose");
 var Match = require('./schema');
 var matchObj = Match.Match;
@@ -58,17 +60,53 @@ module.exports = [
     { method: 'POST',
        path: '/api/user/upload/image/',
        config: { 
-        handler: getUserSettings /*payload: 'parse'*/,
+        handler: uploadImage /*payload: 'parse'*/,
         payload: {
-           output: 'file',
+           output: 'stream',
            maxBytes: 209715200,
-           //allow: 'multipart/form-data',
+           allow: 'multipart/form-data',
            parse: true //or just remove this line since true is the default
         } 
       } 
     }
 
 ];
+
+/*=============================================
+=                 Upload Image               =
+=============================================*/
+function uploadImage(request, reply) {
+   var data = request.payload;
+   if (data.file) {
+      var name = data.file.hapi.filename;
+      var path = __dirname + "/uploads/" + name;     
+      var path_rsz = __dirname + "/uploads/rsz_" + name; 
+      var file = fs.createWriteStream(path);
+      
+
+
+      file.on('error', function (err) { 
+          console.error(err) 
+      });
+
+      data.file.pipe(file);
+
+      data.file.on('end', function (err) { 
+          var orig = fs.createReadStream(path);
+          var resize = im().resize('551').quality(90);
+          var out = fs.createWriteStream(path_rsz);
+          orig.pipe(resize).pipe(out);
+          var ret = {
+              filename: data.file.hapi.filename,
+              headers: data.file.hapi.headers
+          }
+          console.log(JSON.stringify(ret));
+          reply(JSON.stringify(ret));
+      })
+  }
+}
+
+
 
 /*=============================================
 =               GET USER DATA                =
