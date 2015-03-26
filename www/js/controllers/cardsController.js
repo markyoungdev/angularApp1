@@ -9,6 +9,7 @@ angular.module('sideMenuApp.controllers')
   **/  
   $scope.cardObj = getNewMatchesInit;
   console.log(getUserInit);
+  console.log(getNewMatchesInit);
   $scope.userData = getUserInit;  
   var cardTypes = $scope.cardObj.data;  
 

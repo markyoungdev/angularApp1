@@ -60,7 +60,7 @@ module.exports = [
        config: { handler: getUserSettings /*payload: 'parse'*/ } 
     },
     { method: 'POST',
-       path: '/api/user/upload/image/',
+       path: '/api/user/upload/image/{userID}',
        config: { 
         handler: uploadImage /*payload: 'parse'*/,
         payload: {
@@ -74,16 +74,31 @@ module.exports = [
 
 ];
 
+
+
 /*=============================================
 =                 Upload Image               =
 =============================================*/
 function uploadImage(request, reply) {
    var data = request.payload;
+   var userID = request.params.userID;
+   var id = mongoose.Types.ObjectId(userID);
    if (data.file) {
+
+      var unique = uuid.v4();
+      // step 2. make the directory
+      mkdirp(__dirname+'/uploads/'+unique, function (err) {
+          if (err) console.error(err)
+          else console.log('pow!')
+     
       var name = data.file.hapi.filename;
-      var path = __dirname + "/uploads/" + name;     
-      var path_rsz = __dirname + "/uploads/rsz_" + name; 
+      var path = __dirname + "/uploads/" + unique + '/' + name;     
+      //var path_rsz = __dirname + "/uploads/" + unique + '/rsz_' + name; 
+
+      
+      // step 3. create the file writeStream
       var file = fs.createWriteStream(path);
+
       file.on('error', function (err) { 
           console.error(err) 
       });
@@ -91,17 +106,27 @@ function uploadImage(request, reply) {
       data.file.pipe(file);
 
       data.file.on('end', function (err) { 
-          var orig = fs.createReadStream(path);
-          var resize = im().resize('551').quality(90);
-          var out = fs.createWriteStream(path_rsz);
-          orig.pipe(resize).pipe(out);
+          //var orig = fs.createReadStream(path);
+          //var resize = im().resize('551').quality(90);
+          //var out = fs.createWriteStream(path_rsz);
+          //orig.pipe(resize).pipe(out);
           var ret = {
               filename: data.file.hapi.filename,
               headers: data.file.hapi.headers
           }
+
+            var query = { _id: id };
+            var options = { multi: true };
+            matchObj.update(query, { $push: { images: path }}, { multi: true , upsert: true}, function (err, numberAffected, raw) {
+              if (err) return console.log(err);
+              console.log('The number of updated documents was %d', numberAffected);
+              console.log('The raw response from Mongo was ', raw);
+            });  
           console.log(JSON.stringify(ret));
           reply(JSON.stringify(ret));
       })
+    });
+
   }
 }
 

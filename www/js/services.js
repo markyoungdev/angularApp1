@@ -8,6 +8,62 @@ angular.module('sideMenuApp.services', [])
             console.log($rootScope.errors);
         }
     })
+     // load user
+    .factory('loadUser', function($resource, user, $q) {  
+        return {
+            get: function() {  
+                 var deferred = $q.defer();
+                 user.getCurrent().then(function (currentUser) {  
+                    //console.log(currentUser.user_id);          
+                    deferred.resolve( currentUser.user_id );
+                });        
+                return deferred.promise;
+            }
+        }
+          
+    })
+    // load DB user
+    .factory('loadDbUser', function($resource, loadUser, getUser, $q) {  
+        return {
+            get: function() {  
+                //console.log(loadUser.get());
+                var deferred = $q.defer();
+                //console.log(loadUser);
+                var test = loadUser.get().then(function(data){
+                   console.log(data);
+                    return  $q.when(getUser.getUserData(data));
+                  
+                });
+                console.log(test);
+                return  test;
+
+               
+            }
+
+        }
+          
+    })
+    // getUserInit
+    .factory('getUserDataInit', function($resource, loadDbUser, $q) {  
+       
+        return { 
+            get: function() {  
+                var deferred = $q.defer();    
+                return loadDbUser.get();
+            }          
+        }
+          
+    })
+    // get user coordinates
+    .factory('getUserCoords', function($resource, $cordovaGeolocation) {
+        return  function() {
+                var options = {
+                  timeout: 10000, 
+                  enableHighAccuracy: false
+                };
+              return  $cordovaGeolocation.getCurrentPosition(options);                
+        }
+    })
     // get user coordinates
     .factory('getCoords', function($resource, $cordovaGeolocation) {
         return {
@@ -20,6 +76,69 @@ angular.module('sideMenuApp.services', [])
                 //console.log($cordovaGeolocation.getCurrentPosition(options));
               return  $cordovaGeolocation.getCurrentPosition(options);                
             }
+        }
+    })
+    // get user coordinates
+    .factory('getNewMatchesInit', function($resource, getUserDataInit, getNewMatches,$q) {
+        console.log(getUserDataInit.get());
+        return {
+            get: function() {
+                var deferred = $q.defer();
+               
+                getUserDataInit.get().then(function(data){
+                    console.log(data);
+                    if(!data._id){
+                        var userID = function(getUserDataInit) {
+                            getUserDataInit.then(function(data){
+                                return data._id;
+                            })
+                        }
+                    } else {              
+                        var userID = getUserDataInit._id;
+                    }
+                    console.log(data);
+                    console.log(getNewMatches.get(userID));
+                    return getNewMatches.get(userID); 
+
+                })
+               
+                  //console.log(userID);          
+               
+            }  
+        }
+    })
+     // get user Init
+    .factory('getUserInit', function($resource, loadDbUser, loadUser, getUserCoords, addNewUser) {
+        return function() {
+            var test = loadDbUser
+                .$promise
+                .then(function(response){                  
+                  var data = JSON.parse(angular.toJson(response));                   
+                  if(!data._id) {       
+                    //console.log(loadUser);        
+                    var username = loadUser.user_id;
+                    var name = loadUser.first_name;
+                    var lat = parseFloat(getUserCoords.coords.latitude).toFixed(4);
+                    var lng = parseFloat(getUserCoords.coords.longitude).toFixed(4);
+                    var geoJSON = {'lat': lat, 'lng': lng};              
+                    var userData = {};
+                    userData.username = username;
+                    userData.name =  name;
+                    userData.img = 'img3';
+                    userData.loc = geoJSON;
+                    userData.distance = 10;
+                    userData.hidden = false; 
+                    var newUser = addNewUser.addUser(userData);   
+                    var userData = newUser.$promise.then(function(data){                     
+                      return JSON.parse(angular.toJson(data));
+                    });                    
+                    return userData;                    
+                  } else { 
+                    return data;
+                  }
+                });                
+            return test;    
+
         }
     })
     // add user to the local mongoose db
@@ -44,13 +163,13 @@ angular.module('sideMenuApp.services', [])
     })
 
     // get user on login
-    .factory('getUser', function($resource, user) {
+    .factory('getUser', function($resource, user, $q) {
         return {           
             getUserData: function(){
                 var userID = user.current.user_id;   
                 //console.log(userID);            
                 var url = $resource('http://localhost:3000/api/user/:id',{id: userID});
-                return url.get();     
+                return $q.when(url.get());     
                 console.log(url.get());           
             }
         }

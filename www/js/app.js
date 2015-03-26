@@ -44,12 +44,12 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       abstract: true,
       templateUrl: "partials/menu.html",
       controller: 'MenuController',
-      getUserImage:{
+     /* getUserImage:{
         getUserImages: function(){
           var test = {};
           return test;
         }
-      }
+      }*/
       /*resolve: {
         getUserImage: ['user','getUserImages',function(user, getUserImages){
           var currentUser = user.current;
@@ -138,63 +138,14 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: '/new-matches',
       data: { public: false },
       resolve: {
-        loadUser: ['user', 'getUser', function ( user, getUser ) {
-          var user = user.getCurrent().then(function (currentUser) {            
-            return currentUser;
-          });         
-          return user;
-        }],
-        loadDbUser: ['loadUser', 'getUser', function ( loadUser, getUser) {          
-          return getUser.getUserData(loadUser.user_id);
-        }],
-        getCoordsInit: function(getCoords){
-            return getCoords.getUserCoord();
-        },
-        getUserInit: ['loadDbUser','getCoordsInit','addNewUser','loadUser', function (loadDbUser, getCoordsInit, addNewUser, loadUser) {                   
-         // var test = user.getCurrent().then(function (currentUser){ 
-        var test = loadDbUser
-                .$promise
-                .then(function(response){                  
-                  var data = JSON.parse(angular.toJson(response));                   
-                  if(!data._id) {       
-                    //console.log(loadUser);        
-                    var username = loadUser.user_id;
-                    var name = loadUser.first_name;
-                    var lat = parseFloat(getCoordsInit.coords.latitude).toFixed(4);
-                    var lng = parseFloat(getCoordsInit.coords.longitude).toFixed(4);
-                    var geoJSON = {'lat': lat, 'lng': lng};              
-                    var userData = {};
-                    userData.username = username;
-                    userData.name =  name;
-                    userData.img = 'img3';
-                    userData.loc = geoJSON;
-                    userData.distance = 10;
-                    userData.hidden = false; 
-                    var newUser = addNewUser.addUser(userData);   
-                    var userData = newUser.$promise.then(function(data){                     
-                      return JSON.parse(angular.toJson(data));
-                    });                    
-                    return userData;                    
-                  } else { 
-                    return data;
-                  }
-                });                
-            return test;           
-        }],
-        getNewMatchesInit: ['$state', 'getNewMatches','getUser','getUserInit',function($state, getNewMatches, getUser, getUserInit){ 
-          if(!getUserInit._id){
-            var userID = function(getUserInit) {
-              getUserInit.then(function(data){
-                return data._id;
-              })
-            }
-          } else {              
-            var userID = getUserInit._id;
-          }
-          //console.log(userID);          
-        return getNewMatches.get(userID);    
-                   
-        }]
+        loadUser: 'loadUser',
+        loadDbUser: 'loadDbUser',
+        getCoordsInit: 'getUserCoords',
+        getUserInit: 'getUserInit',
+        getNewMatchesInit: function(getNewMatchesInit){
+          
+          return getNewMatchesInit.get();
+        }
       },
       views: {
         'menuContent': {
@@ -214,14 +165,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
         }
       },
       resolve: {
-        loadUser: ['user', 'getUser', function( user, getUser ) {
-          var user = user.getCurrent().then(function(currentUser) {  
-            //return currentUser;
-            return getUser.getUserData(currentUser.user_id);
-          });
-          // return getUser.getUserData(user.user_id);
-          return user;
-        }],
+        loadUser: 'loadUser',
         getMatchesInit: ['getMatches','loadUser', function(getMatches, loadUser){
           console.log(loadUser);
           var matches = loadUser.$promise.then(function(data){
@@ -241,16 +185,10 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: '/profile',
       data: { public: false },
       resolve: {
-        loadUser: ['user', 'getUser', function ( user, getUser ) {
-          var user = user.getCurrent().then(function (currentUser) {            
-            return currentUser;
-          });         
-          return user;
-        }],
-        loadDbUser: ['loadUser', 'getUser', function ( loadUser, getUser) {          
-          return getUser.getUserData(loadUser.user_id);
-        }],
-      }
+        loadUser: 'loadUser',
+        loadDbUser: 'loadDbUser',
+        getUserInit: 'getUserInit',
+      },
       views: {
         'menuContent': {
            templateUrl: 'partials/profile.html',

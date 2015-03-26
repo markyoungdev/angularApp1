@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('MatchesController', function ($scope, $location, $ionicSideMenuDelegate, $state, matchService, getMatches, addMatch, getMatchesInit, getUserInit) {
+angular.module('sideMenuApp.controllers').controller('MatchesController', function ($scope, $location, $ionicSideMenuDelegate, $state, matchService, getMatches, addMatch, getMatchesInit) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
     $scope.goTo = function(page) {
@@ -17,7 +17,7 @@ angular.module('sideMenuApp.controllers').controller('MatchesController', functi
         });*/
     }
 
-    $scope.doRefresh = function() {
+   /* $scope.doRefresh = function() {
         var userID = getetUserInit._id
         getNewMatches.get(userID) 
          .finally(function() {
@@ -25,7 +25,7 @@ angular.module('sideMenuApp.controllers').controller('MatchesController', functi
           $scope.$broadcast('scroll.refreshComplete'); 
          });
 
-    } 
+    }*/ 
     $scope.addMatch = function() {
         addMatch.addMatch;
     }
