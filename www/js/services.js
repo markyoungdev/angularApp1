@@ -33,7 +33,7 @@ angular.module('sideMenuApp.services', [])
                 var test = loadUser.get().then(function(data){
                     //console.log(data);
                     var userdata = getUser.getUserData(data).then(function(user){
-
+                        console.log(user);
                         return user;
                     });
                     //console.log(userdata);
@@ -92,7 +92,7 @@ angular.module('sideMenuApp.services', [])
         }
     })
     // get user coordinates
-    .factory('getNewMatchesInit', function($resource, getUserDataInit, getNewMatches,$q) {
+    .factory('getNewMatchesInit', function($resource, getUserDataInit, getNewMatches, addNewUser, loadUser, getUserCoords, $q) {
         console.log(getUserDataInit.get());
         return {
             get: function() {
@@ -101,8 +101,25 @@ angular.module('sideMenuApp.services', [])
                 var matches = getUserDataInit.get().then(function(data){
                         console.log(data);
                         if(!data._id){
-                            var userID = 0; 
-                            console.log('failed to get userID for new matches');                  
+                            //var userID = 0; 
+                            var username = loadUser.user_id;
+                            var name = loadUser.first_name;
+                            var lat = parseFloat(getUserCoords.coords.latitude).toFixed(4);
+                            var lng = parseFloat(getUserCoords.coords.longitude).toFixed(4);
+                            var geoJSON = {'lat': lat, 'lng': lng};              
+                            var userData = {};
+                            userData.username = username;
+                            userData.name =  name;
+                            userData.img = 'img3';
+                            userData.loc = geoJSON;
+                            userData.distance = 10;
+                            userData.hidden = false; 
+                            var newUser = addNewUser.addUser(userData);   
+                            var userData = newUser.$promise.then(function(data){                     
+                              return JSON.parse(angular.toJson(data));
+                            }); 
+                            var userID = userData._id;
+
                         } else {              
                             var userID = data._id;
                             ////console.log(userID);
@@ -120,7 +137,9 @@ angular.module('sideMenuApp.services', [])
     })
      // get user Init
     .factory('getUserInit', function($resource, loadDbUser, loadUser, getUserCoords, addNewUser) {
-        return function() {
+        return{
+        add: function() {
+            console.log(loadDbUser);
             var test = loadDbUser
                 .$promise
                 .then(function(response){                  
@@ -149,7 +168,7 @@ angular.module('sideMenuApp.services', [])
                   }
                 });                
             return test;    
-
+            }
         }
     })
     // add user to the local mongoose db

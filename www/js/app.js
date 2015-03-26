@@ -139,17 +139,15 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       data: { public: false },
       resolve: {
         loadUser: 'loadUser',
-        loadDbUser: 'loadDbUser',
-        getCoordsInit: function(getUserCoords, $q){
-          
+        loadDbUser: 'loadDbUser',      
+        getCoordsInit: function(getUserCoords){
           return getUserCoords.get();
         }, 
         getUserInit: function(getUserDataInit, $q){
           var deferred = $q.defer();
           getUserDataInit.get().then(function(data){
-            deferred.resolve(data);
-            //console.log(data);
-          })         
+            deferred.resolve(data);            
+          });         
           return deferred.promise;
         },     
         getNewMatchesInit: function(getNewMatchesInit){
