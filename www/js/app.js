@@ -140,10 +140,20 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       resolve: {
         loadUser: 'loadUser',
         loadDbUser: 'loadDbUser',
-        getCoordsInit: 'getUserCoords',
-        getUserInit: 'getUserInit',
-        getNewMatchesInit: function(getNewMatchesInit){
+        getCoordsInit: function(getUserCoords, $q){
           
+          return getUserCoords.get();
+        }, 
+        getUserInit: function(getUserDataInit, $q){
+          var deferred = $q.defer();
+          getUserDataInit.get().then(function(data){
+            deferred.resolve(data);
+            //console.log(data);
+          })         
+          return deferred.promise;
+        },     
+        getNewMatchesInit: function(getNewMatchesInit){
+          console.log(getNewMatchesInit.get());
           return getNewMatchesInit.get();
         }
       },

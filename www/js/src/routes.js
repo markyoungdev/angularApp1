@@ -223,8 +223,9 @@ function getFreshMatches(request, reply) {
          near: { type: "Point", coordinates: [lng, lat] },
          distanceField: "dist.calculated",
          includeLocs: "dist.location",
-         maxDistance: radius,
-         num: 50,
+         maxDistance: radius * 1609.344,
+         distanceMultiplier: 1 / 1609.344,
+         num: 100,
          spherical: true,
          query: { 
           hidden: false, 

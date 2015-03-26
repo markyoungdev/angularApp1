@@ -23,19 +23,26 @@ angular.module('sideMenuApp.services', [])
           
     })
     // load DB user
-    .factory('loadDbUser', function($resource, loadUser, getUser, $q) {  
+    .factory('loadDbUser', function($resource, loadUser, getUser, $q) { 
+    console.log(loadUser.get()) 
         return {
             get: function() {  
                 //console.log(loadUser.get());
                 var deferred = $q.defer();
                 //console.log(loadUser);
                 var test = loadUser.get().then(function(data){
-                   console.log(data);
-                    return  $q.when(getUser.getUserData(data));
-                  
+                    //console.log(data);
+                    var userdata = getUser.getUserData(data).then(function(user){
+
+                        return user;
+                    });
+                    //console.log(userdata);
+                    //return  $q.when(getUser.getUserData(data));
+                  return userdata;
                 });
-                console.log(test);
-                return  test;
+                deferred.resolve(test);
+                //console.log(deferred.promise);
+                return  deferred.promise;
 
                
             }
@@ -48,20 +55,26 @@ angular.module('sideMenuApp.services', [])
        
         return { 
             get: function() {  
-                var deferred = $q.defer();    
-                return loadDbUser.get();
+                var deferred = $q.defer(); 
+                loadDbUser.get().then(function(data){
+                    deferred.resolve(data);
+                   
+                })   
+                return deferred.promise;
             }          
         }
           
     })
     // get user coordinates
     .factory('getUserCoords', function($resource, $cordovaGeolocation) {
-        return  function() {
+        return{
+            get:  function() {
                 var options = {
                   timeout: 10000, 
                   enableHighAccuracy: false
                 };
               return  $cordovaGeolocation.getCurrentPosition(options);                
+            }
         }
     })
     // get user coordinates
@@ -85,23 +98,21 @@ angular.module('sideMenuApp.services', [])
             get: function() {
                 var deferred = $q.defer();
                
-                getUserDataInit.get().then(function(data){
-                    console.log(data);
-                    if(!data._id){
-                        var userID = function(getUserDataInit) {
-                            getUserDataInit.then(function(data){
-                                return data._id;
-                            })
+                var matches = getUserDataInit.get().then(function(data){
+                        console.log(data);
+                        if(!data._id){
+                            var userID = 0; 
+                            console.log('failed to get userID for new matches');                  
+                        } else {              
+                            var userID = data._id;
+                            ////console.log(userID);
                         }
-                    } else {              
-                        var userID = getUserDataInit._id;
-                    }
-                    console.log(data);
-                    console.log(getNewMatches.get(userID));
-                    return getNewMatches.get(userID); 
+                        console.log(userID);
+                        console.log(getNewMatches.get(userID));
+                        return getNewMatches.get(userID); 
 
-                })
-               
+                    })
+               return matches;
                   //console.log(userID);          
                
             }  
@@ -169,8 +180,12 @@ angular.module('sideMenuApp.services', [])
                 var userID = user.current.user_id;   
                 //console.log(userID);            
                 var url = $resource('http://localhost:3000/api/user/:id',{id: userID});
-                return $q.when(url.get());     
-                console.log(url.get());           
+                 var query = url.get().$promise.then(function(data){
+                    return data;
+                 }); 
+                 return query;    
+                   
+                     
             }
         }
     })
@@ -260,14 +275,14 @@ angular.module('sideMenuApp.services', [])
     })
     // get new matches for associated user from the db
     .factory('getNewMatches', function($resource, $http, getCoords, user, getUser) {
-        return{  get: function(userId){     
+        return{  get: function(userId){                    
                 var coordsObj = getCoords.getUserCoord();                
                 var matches = coordsObj.then(function(data){                    
                     var lat = parseFloat(data.coords.latitude).toFixed(4);
                     var lng = parseFloat(data.coords.longitude).toFixed(4);
                     var radius = 50;                     
                      var url = $http.get('http://localhost:3000/api/newmatches/'+userId+'/'+lat+'/'+lng+'/'+radius);
-                    //console.log(url);
+                    console.log(url);
                     return url;  
                 });
                 console.log(matches);
