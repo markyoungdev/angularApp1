@@ -23,7 +23,7 @@ angular.module('sideMenuApp.services', [])
           
     })
     // load DB user
-    .factory('loadDbUser', function($resource, loadUser, getUser, $q) { 
+    .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) { 
     console.log(loadUser.get()) 
         return {
             get: function() {  
@@ -31,10 +31,40 @@ angular.module('sideMenuApp.services', [])
                 var deferred = $q.defer();
                 //console.log(loadUser);
                 var test = loadUser.get().then(function(data){
-                    //console.log(data);
-                    var userdata = getUser.getUserData(data).then(function(user){
-                        console.log(user);
-                        return user;
+                   console.log(getUserCoords.get());
+                    var userdata = getUser.getUserData(data).then(function(user){  
+                    console.log(data);                      
+                        if(user.data){                            
+                            if(user.data.id == 0){  
+                               var coordsObj = getUserCoords.get().then(function(coordElm){                                
+                                    var username = data;
+                                    var name = loadUser.first_name;
+                                    var lat = parseFloat(coordElm.coords.latitude).toFixed(4);
+                                    var lng = parseFloat(coordElm.coords.longitude).toFixed(4);                                
+                                    var geoJSON = {'lat': lat, 'lng': lng};              
+                                    var userData = {};
+                                    userData.username = data;
+                                    userData.name =  data;
+                                    userData.img = 'img3';
+                                    userData.loc = geoJSON;
+                                    userData.distance = 30;
+                                    userData.hidden = false; 
+                                    console.log(userData);
+                                    var newUser = addNewUser.addUser(userData);   
+                                    var userObj = newUser.$promise.then(function(data){                     
+                                      return JSON.parse(angular.toJson(data));
+                                    });  
+                                });                           
+                                
+                            } else {
+                                var userObj = user;
+                            }
+                            console.log(userObj);
+                            return userObj;
+                        } else {
+                            return user;
+                        }
+                        
                     });
                     //console.log(userdata);
                     //return  $q.when(getUser.getUserData(data));
@@ -100,25 +130,8 @@ angular.module('sideMenuApp.services', [])
                
                 var matches = getUserDataInit.get().then(function(data){
                         console.log(data);
-                        if(!data._id){
-                            //var userID = 0; 
-                            var username = loadUser.user_id;
-                            var name = loadUser.first_name;
-                            var lat = parseFloat(getUserCoords.coords.latitude).toFixed(4);
-                            var lng = parseFloat(getUserCoords.coords.longitude).toFixed(4);
-                            var geoJSON = {'lat': lat, 'lng': lng};              
-                            var userData = {};
-                            userData.username = username;
-                            userData.name =  name;
-                            userData.img = 'img3';
-                            userData.loc = geoJSON;
-                            userData.distance = 10;
-                            userData.hidden = false; 
-                            var newUser = addNewUser.addUser(userData);   
-                            var userData = newUser.$promise.then(function(data){                     
-                              return JSON.parse(angular.toJson(data));
-                            }); 
-                            var userID = userData._id;
+                        if(data._id == 0){
+                            var userID = 0;                            
 
                         } else {              
                             var userID = data._id;
