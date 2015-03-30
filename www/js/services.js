@@ -8,67 +8,81 @@ angular.module('sideMenuApp.services', [])
             console.log($rootScope.errors);
         }
     })
+
      // load user
-    .factory('loadUser', function($resource, user, $q) {  
+
+    .factory('loadUser', function($resource, user, $q) { 
+         var id = {};
+        function getId(){
+             user.getCurrent().then(function (currentUser) {  
+            var deferred = $q.defer();
+            //console.log(currentUser.user_id);          
+            deferred.resolve( currentUser );
+
+                id.id = deferred.promise;
+                console.log(id);
+
+            });
+            return id; 
+        }  
+
+          
         return {
-            get: function() {  
-                 var deferred = $q.defer();
-                 user.getCurrent().then(function (currentUser) {  
-                    //console.log(currentUser.user_id);          
-                    deferred.resolve( currentUser.user_id );
-                });        
-                return deferred.promise;
-            }
+            data:getId()       
         }
+        
           
     })
     // load DB user
     .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) { 
-    console.log(loadUser.get()) 
+        console.log(loadDbUser);
         return {
-            get: function() {  
+            get: function() {
+              console.log(loadUser.data);
                 //console.log(loadUser.get());
                 var deferred = $q.defer();
                 //console.log(loadUser);
                 var test = loadUser.get().then(function(data){
-                   console.log(getUserCoords.get());
+                   //console.log(getUserCoords.get());
                     var userdata = getUser.getUserData(data).then(function(user){  
-                    console.log(data);                      
-                        if(user.data){                            
-                            if(user.data.id == 0){  
-                               var coordsObj = getUserCoords.get().then(function(coordElm){                                
-                                    var username = data;
-                                    var name = loadUser.first_name;
-                                    var lat = parseFloat(coordElm.coords.latitude).toFixed(4);
-                                    var lng = parseFloat(coordElm.coords.longitude).toFixed(4);                                
-                                    var geoJSON = {'lat': lat, 'lng': lng};              
-                                    var userData = {};
-                                    userData.username = data;
-                                    userData.name =  data;
-                                    userData.img = 'img3';
-                                    userData.loc = geoJSON;
-                                    userData.distance = 30;
-                                    userData.hidden = false; 
-                                    console.log(userData);
-                                    var newUser = addNewUser.addUser(userData);   
-                                    var userObj = newUser.$promise.then(function(data){                     
-                                      return JSON.parse(angular.toJson(data));
-                                    });  
-                                });                           
-                                
-                            } else {
-                                var userObj = user;
-                            }
-                            console.log(userObj);
-                            return userObj;
-                        } else {
-                            return user;
-                        }
+                    // console.log(data);                      
+                        return user;
                         
                     });
+                    console.log($q.when(userdata));
+                    console.log(userdata);
+                    if(userdata.failed){
+                                               
+                        var coordsObj = getUserCoords.get().then(function(coordElm){                                
+                            var username = data;
+                            var name = loadUser.first_name;
+                            var lat = parseFloat(coordElm.coords.latitude).toFixed(4);
+                            var lng = parseFloat(coordElm.coords.longitude).toFixed(4);                                
+                            var geoJSON = {'lat': lat, 'lng': lng};              
+                            var userData = {};
+                            userData.username = data;
+                            userData.name =  data;
+                            userData.img = 'img3';
+                            userData.loc = geoJSON;
+                            userData.distance = 30;
+                            userData.hidden = false; 
+                            //console.log(userData);
+                            var newUser = addNewUser.addUser(userData);   
+                            var userObj = newUser.$promise.then(function(data){                     
+                              return JSON.parse(angular.toJson(data));
+                            });  
+                        });                           
+                        var userdata = coordsObj;
+                        console.log(userdata);
+                        
+                        console.log(userdata);
+                       // return userObj;
+                    }
+                 
                     //console.log(userdata);
                     //return  $q.when(getUser.getUserData(data));
-                  return userdata;
+                        return userdata;
+                 
                 });
                 deferred.resolve(test);
                 //console.log(deferred.promise);
@@ -123,13 +137,13 @@ angular.module('sideMenuApp.services', [])
     })
     // get user coordinates
     .factory('getNewMatchesInit', function($resource, getUserDataInit, getNewMatches, addNewUser, loadUser, getUserCoords, $q) {
-        console.log(getUserDataInit.get());
+        //console.log(getUserDataInit.get());
         return {
             get: function() {
                 var deferred = $q.defer();
                
                 var matches = getUserDataInit.get().then(function(data){
-                        console.log(data);
+                       // console.log(data);
                         if(data._id == 0){
                             var userID = 0;                            
 
@@ -137,8 +151,8 @@ angular.module('sideMenuApp.services', [])
                             var userID = data._id;
                             ////console.log(userID);
                         }
-                        console.log(userID);
-                        console.log(getNewMatches.get(userID));
+                        //console.log(userID);
+                        //console.log(getNewMatches.get(userID));
                         return getNewMatches.get(userID); 
 
                     })
@@ -152,7 +166,7 @@ angular.module('sideMenuApp.services', [])
     .factory('getUserInit', function($resource, loadDbUser, loadUser, getUserCoords, addNewUser) {
         return{
         add: function() {
-            console.log(loadDbUser);
+            //console.log(loadDbUser);
             var test = loadDbUser
                 .$promise
                 .then(function(response){                  

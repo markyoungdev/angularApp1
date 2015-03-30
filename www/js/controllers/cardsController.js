@@ -127,12 +127,6 @@ angular.module('sideMenuApp.controllers')
 
   }
 
-  $scope.pollNewUsers = function() {
-     $scope.$on('addNewUser:userAdded', function() {
-      console.log('New User added');
-     });
-  }
-  //$scope.pollNewUsers();
   $scope.init();
 })
 

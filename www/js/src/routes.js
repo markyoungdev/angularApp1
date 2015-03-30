@@ -165,7 +165,7 @@ function getUserID(request, reply){
       if (!user) {
         var user = {}
         user.id = 0;
-         reply({data: user});
+         reply({failed: 1});
          console.log('new user')
       } else {       
        //console.log('This is the user func:'+user);

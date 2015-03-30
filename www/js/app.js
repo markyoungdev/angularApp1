@@ -11,7 +11,7 @@ var sideMenuApp = angular.module('app',
   'ngResource']
   );
 
-sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
+sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http) {
  // console.debug('Running com.unarin.cordova.proximity.quickstart');
   $ionicPlatform.ready(function() {
     //angular.bootstrap(document, ['com.unarin.cordova.proximity.quickstart']);
@@ -27,6 +27,13 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
     //PushNotificationsService.register();
   });
   user.init({ appId: '54c951838e11a' });  
+  $rootScope.$on('user.login', function() {
+    $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
+  });
+
+  $rootScope.$on('user.logout', function() {
+      $http.defaults.headers.common.Authorization = null;
+  });
 
 })
 
@@ -69,14 +76,18 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
       url: '/walkthrough',
       templateUrl: 'partials/walkthrough.html',
       data: { public: true },
-      controller: 'WalkthroughController'      
+      public: true,
+      controller: 'WalkthroughController',
+      resolve:{}      
     })
     <!-- // handle the login -->
     .state('login', {
       url: '/login',
       templateUrl: 'partials/login.html',
       data: { login: true },
+      public: true,
       controller: 'LoginModalController',
+      resolve:{}
       /*resolve: {
         getCoordsInit: function(getCoords){
           //return getCoords.getUserCoord();
@@ -90,14 +101,17 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
     .state('signup', {
       url: '/signup',
       templateUrl: 'partials/signup.html',
-      data: { public: true }
+      data: { public: true },
+      public: true
       //controller: 'AppCtrl'
     })
       <!-- // handle the forgot password -->
      .state('forgot-password', {
       url: "/forgot-password",
       templateUrl: "partials/password-forgot.html",
-      controller: 'ForgotPasswordCtrl'      
+      controller: 'ForgotPasswordCtrl',
+      data: { public: true },
+      public: true      
     })
      <!-- // handle the Faqs -->
      .state('app.help', {
@@ -114,6 +128,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
     .state('app.settings', {
       url: '/settings',
       data: { public: false },
+      public: false,
       views: {
         'menuContent': {
           templateUrl: 'partials/settings.html',
@@ -137,9 +152,13 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
      .state('app.newmatches', {
       url: '/new-matches',
       data: { public: false },
+      public: false,
       resolve: {
         loadUser: 'loadUser',
-        loadDbUser: 'loadDbUser',      
+        loadDbUser: function(loadDbUser){
+          console.log(loadDbUser);
+          return loadDbUser.get();
+        } ,     
         getCoordsInit: function(getUserCoords){
           return getUserCoords.get();
         }, 
@@ -166,6 +185,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
     .state('app.matches', {
       url: '/matches',
       data: { public: false },
+      public: false,
       views: {
         'menuContent': {
           templateUrl: 'partials/matches.html',
@@ -192,6 +212,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
     .state('app.profile', {
       url: '/profile',
       data: { public: false },
+      public: false,
       resolve: {
         loadUser: 'loadUser',
         loadDbUser: 'loadDbUser',
@@ -208,6 +229,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
     .state('app.match', {
       url: '/match/:matchId',
       data: { public: false },
+      public: false,
       views: {
         'menuContent': {
            templateUrl: 'partials/match-single.html',
@@ -219,7 +241,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/app/new-matches');
+  $urlRouterProvider.otherwise('/login');
   
 
 });
