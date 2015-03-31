@@ -5,6 +5,7 @@ var sideMenuApp = angular.module('app',
   'sideMenuApp.controllers',
   'UserApp','ui.bootstrap',
   'ionic.contrib.ui.tinderCards',
+  'LocalStorageModule',
   //'com.unarin.cordova.proximity.quickstart.monitoring',
   //'com.unarin.cordova.proximity.quickstart.eventlog',
   //'com.unarin.cordova.proximity.quickstart.ranging',
@@ -30,13 +31,20 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope) {
 
 })
 
-sideMenuApp.config(function($stateProvider, $urlRouterProvider) {
+sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
  // window.console.debug('Configuring com.unarin.cordova.proximity.quickstart');
+ // Set localStorage type
+ localStorageServiceProvider
+ .setPrefix('crowdDate')
+ .setStorageType('sessionStorage')
+ .setNotify(true, true);
+
+
   $stateProvider
     
     .state('app', {

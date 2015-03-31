@@ -6,6 +6,7 @@
     "start": "node www/js/server.js"
   },
   "dependencies": {
+    "angular-local-storage": "^0.1.5",
     "friends-of-friends": "^1.0.3",
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",

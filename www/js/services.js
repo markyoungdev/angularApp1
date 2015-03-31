@@ -8,31 +8,57 @@ angular.module('sideMenuApp.services', [])
             console.log($rootScope.errors);
         }
     })
-     // load user
-    .factory('loadUser', function($resource, user, $q) {  
-        return {
-            get: function() {  
-                 var deferred = $q.defer();
-                 user.getCurrent().then(function (currentUser) {  
-                    //console.log(currentUser.user_id);          
-                    deferred.resolve( currentUser.user_id );
-                });        
-                return deferred.promise;
-            }
+
+    .service('LoggedInUser', function($resource, user, $q, localStorageService, getUser){
+        this.set = function(){             
+            var test = user.getCurrent().then(function (currentUser) { 
+
+                if(localStorageService.isSupported) {
+                   localStorageService.set('user_id', currentUser.user_id);
+                    
+                }                 
+                                             
+                return currentUser.user_id;
+            }); 
+            return test;
         }
-          
+        this.getUsername = function(){
+
+            return localStorageService.get('user_id');
+        }
+        this.getUserData = function(){            
+            return JSON.parse(localStorageService.get('userDbObj'));
+        }
+        this.setQueryUser = function(){            
+            var username = this.getUsername();          
+            return getUser.getUserData(username).then(function(user){
+                localStorageService.set('userDbObj', JSON.stringify(user));
+            });
+        }
+    })
+     // load user
+    .factory('loadUser', function($resource, user, $q, LoggedInUser) {       
+        //run LoggedInUser function
+        LoggedInUser.set();
+        var userAppID = LoggedInUser.getUsername();
+        var localAppID = LoggedInUser.getUserData();
+        var setDbUser = LoggedInUser.setQueryUser();
+        console.log(setDbUser);
+
+
+        return {
+            get: userAppID   
+        }          
     })
     // load DB user
-    .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) { 
-    console.log(loadUser.get()) 
+    .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) {          
+         console.log(loadUser.get);
+         var userAppID = loadUser.get;
         return {
-            get: function() {  
-                //console.log(loadUser.get());
-                var deferred = $q.defer();
-                //console.log(loadUser);
-                var test = loadUser.get().then(function(data){
-                   console.log(getUserCoords.get());
-                    var userdata = getUser.getUserData(data).then(function(user){  
+            get: function() {               
+                var deferred = $q.defer();                    
+                   
+                    var userdata = getUser.getUserData(userAppID).then(function(user){  
                     console.log(data);                      
                         if(user.data){                            
                             if(user.data.id == 0){  
@@ -68,10 +94,8 @@ angular.module('sideMenuApp.services', [])
                     });
                     //console.log(userdata);
                     //return  $q.when(getUser.getUserData(data));
-                  return userdata;
-                });
-                deferred.resolve(test);
-                //console.log(deferred.promise);
+                  return userdata;               
+               
                 return  deferred.promise;
 
                
