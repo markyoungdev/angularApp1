@@ -41,5 +41,8 @@
     "org.apache.cordova.camera",
     "org.apache.cordova.media-capture",
     "org.apache.cordova.network-information"
+  ],
+  "cordovaPlatforms": [
+    "ios"
   ]
 }

@@ -29,9 +29,18 @@ angular.module('sideMenuApp.services', [])
 
             return localStorageService.get('user_id');
         }
-        this.getUserData = function(){ 
+        this.getUserData = function(){  
+            this.setQueryUser();                  
+            //console.log(localStorageService.get('userDbObj').failed)
+            if( localStorageService.get('userDbObj') == null || localStorageService.get('userDbObj').hasOwnProperty('failed')){
+                this.addNewUser();
+                return localStorageService.get('userDbObj');
+            } else {
+                console.log('already set');
+                 return localStorageService.get('userDbObj');
+            }
                
-            return JSON.parse(localStorageService.get('userDbObj'));
+           
         }
         this.setQueryUser = function(){            
             var username = this.getUsername();          
@@ -41,7 +50,7 @@ angular.module('sideMenuApp.services', [])
         }
         this.addNewUser = function(){ 
           
-             getUserCoords.get().then(function(coordElm){  
+            return getUserCoords.get().then(function(coordElm){  
                 var username = user.current.user_id;
                 var name = user.current.first_name;
                 var lat = parseFloat(coordElm.coords.latitude).toFixed(4);
@@ -58,20 +67,19 @@ angular.module('sideMenuApp.services', [])
                 var newUser = addNewUser.addUser(userData);   
                 var userObj = newUser.$promise.then(function(data){                     
                   localStorageService.set('userDbObj', JSON.stringify(data));
-                  return JSON.parse(angular.toJson(data));
+                 // return JSON.parse(angular.toJson(data));
                 });  
             });   
 
         }
     })
      // load user
-    .factory('loadUser', function($resource, user, $q, LoggedInUser, localStorageService) {       
-        //run LoggedInUser functio
-        LoggedInUser.set();
+    /*.factory('loadUser', function($resource, user, $q, LoggedInUser, localStorageService) {       
+        //run LoggedInUser function        
         var userAppID = LoggedInUser.getUsername();
         var localAppID = LoggedInUser.getUserData();
         var setDbUser = LoggedInUser.setQueryUser();
-        LoggedInUser.addNewUser();
+        //LoggedInUser.addNewUser();
         console.log(localAppID);
         if(localAppID == 'null'){
             LoggedInUser.addNewUser();
@@ -79,10 +87,10 @@ angular.module('sideMenuApp.services', [])
 
 
         return {
-            getUA: JSON.parse(localStorageService.get('userDbObj')),
+            getUA: userAppID,
             getDB: localStorageService.get('userDbObj')   
         }          
-    })
+    })*/
     // load DB user
     .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) {          
          console.log(loadUser);
@@ -162,28 +170,15 @@ angular.module('sideMenuApp.services', [])
         }
     })
     // get user coordinates
-    .factory('getNewMatchesInit', function($resource, getUserDataInit, getNewMatches, addNewUser, loadUser, getUserCoords, $q) {
-        console.log(getUserDataInit.get());
+    .factory('getNewMatchesInit', function($resource,  getNewMatches, LoggedInUser, $q) {       
         return {
-            get: function() {
-                var deferred = $q.defer();
-               
-                var matches = getUserDataInit.get().then(function(data){
-                        console.log(data);
-                        if(data._id == 0){
-                            var userID = 0;                            
-
-                        } else {              
-                            var userID = data._id;
-                            ////console.log(userID);
-                        }
-                        console.log(userID);
-                        console.log(getNewMatches.get(userID));
-                        return getNewMatches.get(userID); 
-
-                    })
-               return matches;
-                  //console.log(userID);          
+            get: function() {            
+                var userObj = LoggedInUser.getUserData();
+                var userID = userObj._id;   
+                console.log(userID);
+                console.log(getNewMatches.get(userID));
+                return getNewMatches.get(userID);       
+              
                
             }  
         }

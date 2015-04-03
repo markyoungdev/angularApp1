@@ -95,7 +95,17 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       data: { login: true },
       public: true,
       controller: 'LoginModalController',
-      resolve:{}
+      resolve:{
+        loadUserInit: function(LoggedInUser){
+          //console.log(LoggedInUser);
+          return LoggedInUser.set();
+        },
+        loadDbUser: function(LoggedInUser){        
+         
+          return LoggedInUser.getUserData();
+        }
+
+      }
       /*resolve: {
         getCoordsInit: function(getCoords){
           //return getCoords.getUserCoord();
@@ -162,24 +172,15 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       data: { public: false },
       public: false,
       resolve: {
-        loadUser: function(loadUser){
-          return loadUser.get;
-        },
-        loadDbUser: function(loadDbUser){
-          return loadDbUser.get();
-        } ,     
+        loadDbUser: function(LoggedInUser){  
+        //console.log(LoggedInUser.getUserData())        
+          return LoggedInUser.getUserData();
+        },       
         getCoordsInit: function(getUserCoords){
           return getUserCoords.get();
-        }, 
-        getUserInit: function(getUserDataInit, $q){
-          var deferred = $q.defer();
-          getUserDataInit.get().then(function(data){
-            deferred.resolve(data);            
-          });         
-          return deferred.promise;
-        },     
+        },            
         getNewMatchesInit: function(getNewMatchesInit){
-          //console.log(getNewMatchesInit.get());
+          console.log(getNewMatchesInit.get());
           return getNewMatchesInit.get();
         }
       },
@@ -202,17 +203,13 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
         }
       },
       resolve: {
-        loadUser: 'loadUser',
-        getMatchesInit: ['getMatches','loadUser', function(getMatches, loadUser){
-          console.log(loadUser);
-          var matches = loadUser.$promise.then(function(data){
-            console.log(data);
-            //return data._id;
-            return getMatches.getMatched(data._id);
-          });
-          console.log(matches);
-         return matches;
-          
+       loadDbUser: function(LoggedInUser){  
+        //console.log(LoggedInUser.getUserData())        
+          return LoggedInUser.getUserData();
+        },    
+        getMatchesInit: ['loadDbUser', 'getMatches' ,function(loadDbUser, getMatches){
+          console.log(loadDbUser);         
+            return getMatches.getMatched(data._id); 
           
         }]
       }
