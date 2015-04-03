@@ -1,6 +1,6 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('CardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, declineMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, getUserInit) {
+.controller('CardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, declineMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, loadDbUser) {
   /**
   *
   * Define scope variables that
@@ -8,9 +8,9 @@ angular.module('sideMenuApp.controllers')
   *
   **/  
   $scope.cardObj = getNewMatchesInit;
-  console.log(getUserInit);
+  console.log(loadDbUser);
   console.log(getNewMatchesInit);
-  $scope.userData = getUserInit;  
+  $scope.userData = loadDbUser;  
   var cardTypes = $scope.cardObj.data; 
   console.log(getCoordsInit); 
 

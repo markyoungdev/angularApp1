@@ -5,7 +5,7 @@ angular.module('sideMenuApp.services', [])
             var $rootScope = $injector.get('$rootScope');
             $rootScope.errors = $rootScope.errors || [];
             $rootScope.errors.push(exception.message);
-            console.log($rootScope.errors);
+            console.dir($rootScope.errors);
         }
     })
 
