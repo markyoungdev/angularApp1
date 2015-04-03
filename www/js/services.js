@@ -9,24 +9,28 @@ angular.module('sideMenuApp.services', [])
         }
     })
 
-    .service('LoggedInUser', function($resource, user, $q, localStorageService, getUser){
+    .service('LoggedInUser', function($resource, user, $q, localStorageService, getUser, getUserCoords, addNewUser){
         this.set = function(){             
             var test = user.getCurrent().then(function (currentUser) { 
 
                 if(localStorageService.isSupported) {
                    localStorageService.set('user_id', currentUser.user_id);
+                   localStorageService.set('userUAObj', JSON.stringify(currentUser));
                     
-                }                 
-                                             
+                }                                       
                 return currentUser.user_id;
             }); 
             return test;
+        }
+        this.getUAUser = function(){
+            return JSON.parse(localStorageService.get('userUAObj'));
         }
         this.getUsername = function(){
 
             return localStorageService.get('user_id');
         }
-        this.getUserData = function(){            
+        this.getUserData = function(){ 
+               
             return JSON.parse(localStorageService.get('userDbObj'));
         }
         this.setQueryUser = function(){            
@@ -35,24 +39,54 @@ angular.module('sideMenuApp.services', [])
                 localStorageService.set('userDbObj', JSON.stringify(user));
             });
         }
+        this.addNewUser = function(){ 
+          
+             getUserCoords.get().then(function(coordElm){  
+                var username = user.current.user_id;
+                var name = user.current.first_name;
+                var lat = parseFloat(coordElm.coords.latitude).toFixed(4);
+                var lng = parseFloat(coordElm.coords.longitude).toFixed(4);                                
+                var geoJSON = {'lat': lat, 'lng': lng};              
+                var userData = {};
+                userData.username = username;
+                userData.name =  name;
+                userData.img = 'img3';
+                userData.loc = geoJSON;
+                userData.distance = 30;
+                userData.hidden = false; 
+                console.log(userData);
+                var newUser = addNewUser.addUser(userData);   
+                var userObj = newUser.$promise.then(function(data){                     
+                  localStorageService.set('userDbObj', JSON.stringify(data));
+                  return JSON.parse(angular.toJson(data));
+                });  
+            });   
+
+        }
     })
      // load user
-    .factory('loadUser', function($resource, user, $q, LoggedInUser) {       
-        //run LoggedInUser function
+    .factory('loadUser', function($resource, user, $q, LoggedInUser, localStorageService) {       
+        //run LoggedInUser functio
         LoggedInUser.set();
         var userAppID = LoggedInUser.getUsername();
         var localAppID = LoggedInUser.getUserData();
         var setDbUser = LoggedInUser.setQueryUser();
-        console.log(setDbUser);
+        LoggedInUser.addNewUser();
+        console.log(localAppID);
+        if(localAppID == 'null'){
+            LoggedInUser.addNewUser();
+        }
 
 
         return {
-            get: userAppID   
+            getUA: JSON.parse(localStorageService.get('userDbObj')),
+            getDB: localStorageService.get('userDbObj')   
         }          
     })
     // load DB user
     .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) {          
-         console.log(loadUser.get);
+         console.log(loadUser);
+         //console.log(loadUser.getDB);
          var userAppID = loadUser.get;
         return {
             get: function() {               
@@ -62,25 +96,7 @@ angular.module('sideMenuApp.services', [])
                     console.log(data);                      
                         if(user.data){                            
                             if(user.data.id == 0){  
-                               var coordsObj = getUserCoords.get().then(function(coordElm){                                
-                                    var username = data;
-                                    var name = loadUser.first_name;
-                                    var lat = parseFloat(coordElm.coords.latitude).toFixed(4);
-                                    var lng = parseFloat(coordElm.coords.longitude).toFixed(4);                                
-                                    var geoJSON = {'lat': lat, 'lng': lng};              
-                                    var userData = {};
-                                    userData.username = data;
-                                    userData.name =  data;
-                                    userData.img = 'img3';
-                                    userData.loc = geoJSON;
-                                    userData.distance = 30;
-                                    userData.hidden = false; 
-                                    console.log(userData);
-                                    var newUser = addNewUser.addUser(userData);   
-                                    var userObj = newUser.$promise.then(function(data){                     
-                                      return JSON.parse(angular.toJson(data));
-                                    });  
-                                });                           
+                                                       
                                 
                             } else {
                                 var userObj = user;

@@ -162,9 +162,10 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       data: { public: false },
       public: false,
       resolve: {
-        loadUser: 'loadUser',
+        loadUser: function(loadUser){
+          return loadUser.get;
+        },
         loadDbUser: function(loadDbUser){
-          console.log(loadDbUser);
           return loadDbUser.get();
         } ,     
         getCoordsInit: function(getUserCoords){
@@ -178,7 +179,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
           return deferred.promise;
         },     
         getNewMatchesInit: function(getNewMatchesInit){
-          console.log(getNewMatchesInit.get());
+          //console.log(getNewMatchesInit.get());
           return getNewMatchesInit.get();
         }
       },
@@ -249,7 +250,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/app/new-matches');
   
 
 });
