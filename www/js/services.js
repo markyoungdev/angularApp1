@@ -29,11 +29,11 @@ angular.module('sideMenuApp.services', [])
 
             return localStorageService.get('user_id');
         }
-        this.getUserData = function(){  
-            this.setQueryUser();                  
+        this.getUserData = function(){                
+            this.setQueryUser();                              
             //console.log(localStorageService.get('userDbObj').failed)
-            if( localStorageService.get('userDbObj') == null || localStorageService.get('userDbObj').hasOwnProperty('failed')){
-                this.addNewUser();
+            if( localStorageService.get('userDbObj') == null || localStorageService.get('userDbObj').hasOwnProperty('failed') || !localStorageService.get('userDbObj')){
+                            
                 return localStorageService.get('userDbObj');
             } else {
                 console.log('already set');
@@ -43,8 +43,9 @@ angular.module('sideMenuApp.services', [])
            
         }
         this.setQueryUser = function(){            
-            var username = this.getUsername();          
+            var username = this.getUsername();                     
             return getUser.getUserData(username).then(function(user){
+                localStorageService.clearAll();               
                 localStorageService.set('userDbObj', JSON.stringify(user));
             });
         }
@@ -232,7 +233,7 @@ angular.module('sideMenuApp.services', [])
                 var lat = coords.lat;
                 var lng = coords.lng
                 var img = userData.img;
-                var url = $resource('http://localhost:3000/api/createtest/:name/:img/:username/:lat/:lng/:distance/:hidden',{name: name, img: img, username: username, lat: lat, lng: lng, distance: distance, hidden: hidden});
+                var url = $resource('http://localhost:3000/api/addNewUser/:name/:img/:username/:lat/:lng/:distance/:hidden',{name: name, img: img, username: username, lat: lat, lng: lng, distance: distance, hidden: hidden});
                 return url.save();
                 $rootScope.$broadcast('addNewUser:userAdded');
                 $scope.$apply();
@@ -241,16 +242,27 @@ angular.module('sideMenuApp.services', [])
     })
 
     // get user on login
-    .factory('getUser', function($resource, user, $q) {
+    .factory('getUser', function($resource, user, $q, $rootScope) {
         return {           
             getUserData: function(){
-                var userID = user.current.user_id;   
+               console.log( user);
+               return user.getCurrent().then(function(currentUser){
+                console.log(currentUser);
+                var userID = currentUser.user_id;   
                 //console.log(userID);            
                 var url = $resource('http://localhost:3000/api/user/:id',{id: userID});
-                 var query = url.get().$promise.then(function(data){
+                var query = url.get().$promise.then(function(data){
                     return data;
-                 }); 
-                 return query;    
+                });  
+                 return query;
+               })               
+                //var userID = user.current.user_id;   
+                //console.log(userID);            
+               // var url = $resource('http://localhost:3000/api/user/:id',{id: userID});
+                // var query = url.get().$promise.then(function(data){
+                  //  return data;
+                 //}); 
+                 //return query;    
                    
                      
             }

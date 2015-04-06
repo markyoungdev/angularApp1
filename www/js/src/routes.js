@@ -32,8 +32,8 @@ module.exports = [
      config: { handler: restrictMatch /*payload: 'parse'*/ } 
   },
     { method: 'POST',
-     path: '/api/createtest/{name}/{img}/{username}/{lat}/{lng}/{distance}/{hidden}',
-     config: { handler: createTestUsers /*payload: 'parse'*/ } 
+     path: '/api/addNewUser/{name}/{img}/{username}/{lat}/{lng}/{distance}/{hidden}',
+     config: { handler: addNewUser /*payload: 'parse'*/ } 
   },
     { method: 'GET',
        path: '/api/user/{userID}',
@@ -343,7 +343,7 @@ function restrictMatch(request,reply) {
   }
 }
 
-function createTestUsers(request, reply) {
+function addNewUser(request, reply) {
   console.log(request);
   var name = request.params.name;
   var username = request.params.username;

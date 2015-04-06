@@ -26,16 +26,22 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http, LoggedInUser) {
       StatusBar.styleDefault();
     }
     //PushNotificationsService.register();
-  });
-  user.init({ appId: '54c951838e11a' });  
-  $rootScope.$on('user.login', function() {
-    LoggedInUser.set();
-    $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
-  });
+ 
+    user.init({ appId: '54c951838e11a' });  
+    $rootScope.$on('user.login', function() {
+      $rootScope.loggedInUser = user.current.user_id;
+      LoggedInUser.set();
+      $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
+    });
 
-  $rootScope.$on('user.logout', function() {
-      $http.defaults.headers.common.Authorization = null;
-      localStorageService.clearAll();
+    $rootScope.$on('user.logout', function() {
+        $http.defaults.headers.common.Authorization = null;
+        localStorageService.clearAll();
+    });
+
+    $rootScope.$on('user.error', function(sender, error) {
+      console.log(error.message);
+    });
   });
 
 })
@@ -98,15 +104,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       public: true,
       controller: 'LoginModalController',
       resolve:{
-      }
-      /*resolve: {
-        getCoordsInit: function(getCoords){
-          //return getCoords.getUserCoord();
-        },
-        getUserInit: function() {
-          
-        }
-      }*/
+      }     
     })
      <!-- // handle the login -->
     .state('signup', {
@@ -164,15 +162,14 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       url: '/new-matches',
       data: { public: false },
       public: false,
-      resolve: {
+      resolve: {  
         loadUserInit: function(LoggedInUser){
-          //console.log(LoggedInUser);
-          return LoggedInUser.set();
-        },
-        loadDbUser: function(LoggedInUser){  
-        //console.log(LoggedInUser.getUserData())        
+          LoggedInUser.set();
+        },    
+        loadDbUser: ['loadUserInit','LoggedInUser',function(loadUserInit, LoggedInUser){  
+        console.log(LoggedInUser.getUserData())        
           return LoggedInUser.getUserData();
-        },       
+        }],       
         getCoordsInit: function(getUserCoords){
           return getUserCoords.get();
         },            
@@ -205,8 +202,9 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
           return LoggedInUser.getUserData();
         },    
         getMatchesInit: ['loadDbUser', 'getMatches' ,function(loadDbUser, getMatches){
-          console.log(loadDbUser);         
-            return getMatches.getMatched(data._id); 
+          var userObj = loadDbUser;
+          console.log(userObj);         
+            return getMatches.getMatched(userObj._id); 
           
         }]
       }
@@ -216,13 +214,8 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       url: '/profile',
       data: { public: false },
       public: false,
-      resolve: {
-        loadUserInit: function(LoggedInUser){
-          //console.log(LoggedInUser);
-          return LoggedInUser.set();
-        },
-        loadDbUser: function(LoggedInUser){  
-        //console.log(LoggedInUser.getUserData())        
+      resolve: {        
+        loadDbUser: function(LoggedInUser){               
           return LoggedInUser.getUserData();
         }   
       },
@@ -249,7 +242,11 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/login');
+  //$urlRouterProvider.otherwise('/app.matches');
+   $urlRouterProvider.otherwise( function($injector, $location) {
+            var $state = $injector.get("$state");
+            $state.go("app.newmatches");
+        });
   
 
 });

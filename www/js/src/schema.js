@@ -14,7 +14,7 @@ var MongooseRattlePlugin = require('mongoose-rattle-plugin');
 //Define the db schema
 var matchSchema = new mongoose.Schema({
     username        : { type: String, unique: true },
-    email           : { type: String, default: null, sparse: true, unique: false  },
+    email           : { type: String,  sparse: true, unique: true, trim: true  },
     name            : { type: String, default: null },
     visits          : { type: Number, default: null },    
     avatar          : { type: String, default: null }, 
