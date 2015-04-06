@@ -12,7 +12,7 @@ var sideMenuApp = angular.module('app',
   'ngResource']
   );
 
-sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http) {
+sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http, LoggedInUser) {
  // console.debug('Running com.unarin.cordova.proximity.quickstart');
   $ionicPlatform.ready(function() {
     //angular.bootstrap(document, ['com.unarin.cordova.proximity.quickstart']);
@@ -29,11 +29,13 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http) {
   });
   user.init({ appId: '54c951838e11a' });  
   $rootScope.$on('user.login', function() {
+    LoggedInUser.set();
     $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
   });
 
   $rootScope.$on('user.logout', function() {
       $http.defaults.headers.common.Authorization = null;
+      localStorageService.clearAll();
   });
 
 })
@@ -96,15 +98,6 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       public: true,
       controller: 'LoginModalController',
       resolve:{
-        loadUserInit: function(LoggedInUser){
-          //console.log(LoggedInUser);
-          return LoggedInUser.set();
-        },
-        loadDbUser: function(LoggedInUser){        
-         
-          return LoggedInUser.getUserData();
-        }
-
       }
       /*resolve: {
         getCoordsInit: function(getCoords){
@@ -172,6 +165,10 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       data: { public: false },
       public: false,
       resolve: {
+        loadUserInit: function(LoggedInUser){
+          //console.log(LoggedInUser);
+          return LoggedInUser.set();
+        },
         loadDbUser: function(LoggedInUser){  
         //console.log(LoggedInUser.getUserData())        
           return LoggedInUser.getUserData();
@@ -220,9 +217,14 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       data: { public: false },
       public: false,
       resolve: {
-        loadUser: 'loadUser',
-        loadDbUser: 'loadDbUser',
-        getUserInit: 'getUserInit',
+        loadUserInit: function(LoggedInUser){
+          //console.log(LoggedInUser);
+          return LoggedInUser.set();
+        },
+        loadDbUser: function(LoggedInUser){  
+        //console.log(LoggedInUser.getUserData())        
+          return LoggedInUser.getUserData();
+        }   
       },
       views: {
         'menuContent': {
@@ -247,7 +249,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('/app/new-matches');
+  $urlRouterProvider.otherwise('/login');
   
 
 });
