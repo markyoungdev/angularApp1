@@ -33,8 +33,10 @@ angular.module('sideMenuApp.services', [])
             this.setQueryUser();                              
             //console.log(localStorageService.get('userDbObj').failed)
             if( localStorageService.get('userDbObj') == null || localStorageService.get('userDbObj').hasOwnProperty('failed') || !localStorageService.get('userDbObj')){
-                            
-                return localStorageService.get('userDbObj');
+                console.log(this.getUAUser());      
+                //return localStorageService.get('userDbObj');
+                return this.addNewUser();
+
             } else {
                 console.log('already set');
                  return localStorageService.get('userDbObj');
@@ -49,8 +51,8 @@ angular.module('sideMenuApp.services', [])
                 localStorageService.set('userDbObj', JSON.stringify(user));
             });
         }
-        this.addNewUser = function(){ 
-          
+        this.addNewUser = function(){           
+
             return getUserCoords.get().then(function(coordElm){  
                 var username = user.current.user_id;
                 var name = user.current.first_name;
@@ -68,9 +70,10 @@ angular.module('sideMenuApp.services', [])
                 var newUser = addNewUser.addUser(userData);   
                 var userObj = newUser.$promise.then(function(data){                     
                   localStorageService.set('userDbObj', JSON.stringify(data));
-                 // return JSON.parse(angular.toJson(data));
-                });  
-            });   
+                  return localStorageService.get('userDbObj');
+                });                 
+                return localStorageService.get('userDbObj');
+            });             
 
         }
     })
