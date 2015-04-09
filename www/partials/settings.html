@@ -1,10 +1,49 @@
-<ion-view title="Settings">
+<ion-view title="Settings" no-scroll>
  <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header" scroll="false">
-   	<div class="settings-wrap">
+   	<div class="settings-wrap container">
    		<form ng-submit="saveSettings(settings)">
+
+   			<ul id="navlist" class="list">
+			    <li class="item col-md-4">
+			     	<button class="button icon-left ion-heart">
+					  Existing Matches
+					</button>
+			    </li>
+
+			     <li class="item col-md-4">
+			     	<button class="button icon-left ion-heart">
+					  Existing Matches
+					</button>
+			    </li>
+
+			     <li class="item col-md-4">
+			     	<button class="button icon-left ion-heart">
+					  Messages
+					</button>
+			    </li>
+
+			     <li class="item col-md-4">
+			     	<button class="button icon-left ion-heart">
+					  Settings
+					</button>
+			    </li>
+
+			     <li class="item col-md-4">
+			     	<button class="button icon-left ion-heart">
+					  Profile
+					</button>
+			    </li>
+
+			     <li class="item col-md-4">
+			     	<button class="button icon-left ion-heart">
+					  Help
+					</button>
+			    </li>
+
+			</ul>
 	   		<ul class="list">
 	   			<div class="item item-divider">Profile Visibility</div>
 	   			<ion-toggle ng-model="settings.profileHidden" toggle-class="toggle-assertive" >Hidden Profile</ion-toggle>	   			

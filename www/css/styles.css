@@ -91,6 +91,7 @@ html, body {
 	background:#000;
 	color:#fff;
 	font-size:15px;
+	font-weight:600;
 }
 .menu.menu-left .bar-footer{
 	background:#000;
@@ -200,6 +201,10 @@ td-card img {
 	padding-left: 134px;
 	border: 0;
 }
+/*==========Profile page styles============*/
+.profile-wrap form{
+	margin-bottom: 20px;
+}
 /*==========Setting page styles============*/
 .settings-button {
 	margin: 18px 
@@ -238,7 +243,15 @@ textarea.item {
   content: "\2026"; /* ascii code for the ellipsis character */
   width: 0px;
 }
-
+/*==========Nav lists ===============*/
+ul#navlist{
+	border: 0;
+	text-align: center;
+}
+ul#navlist li{
+	border: 0;
+	margin: 5px 0;
+}
 @keyframes ellipsis {
   to {
     width: 20px;    

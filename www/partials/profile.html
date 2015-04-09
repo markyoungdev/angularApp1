@@ -1,15 +1,42 @@
 <ion-view title="Profile">
-  <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-fireball" ng-click="goTo('app.newmatches')"></button>
   </ion-nav-buttons>
-    <ion-content class="has-header">
-    
- <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon  ion-gear-b" ng-click="goTo('app.settings')"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header" scroll="true">
+
+        <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
             <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
         </div>
-        <h1><div ng-show="user.authenticated">Welcome {{ user.first_name }}!</div></h1>
-        <a href="" class="button button-assertive" ng-click="uploadFile()">Upload Photo</a>
-        <p>or</p>
-        <a href="" class="button button-assertive" ng-click="getPhoto()"> Take Photo</a>
-</ion-content>
+
+        <div class="profile-wrap">
+            <form ng-submit="saveProfile(profile)">
+                <ul class="list">
+                    <div class="item item-divider">About You {{ user.first_name }}</div>
+                      <label class="item item-input">
+                        <input type="text" name="Name" value="{{profile.name}}" ng-model="profile.name" placeholder="First Name">
+                      </label>
+                      <label class="item item-input">
+                        <input type="text" name="Current_city" value="{{profile.currentcity}}" ng-model="profile.currrentcity" placeholder="Current City">
+                      </label>
+                      <label class="item item-input">
+                        <textarea type="text" name="bio" value="{{profile.bio}}" ng-model="profile.bio" placeholder="About You"></textarea>
+                      </label>
+                      <div class="item item-divider"></div>
+                      <label class="item item-input">
+                        <textarea type="email" name="email" value="{{profile.email}}" ng-model="profile.email" placeholder="test@yahoo.com"></textarea>
+                      </label>  
+                </ul>
+
+            </form>
+        
+        <div class="col-md-12">
+            <a href="" class="button button-assertive col-md-2 col-xs-5" ng-click="uploadFile()">Upload Photo</a>
+            <p class="col-md-1 col-xs-2 text-center">or</p>
+            <a href="" class="button button-assertive col-md-2 col-xs-5" ng-click="getPhoto()"> Take Photo</a>
+        </div>
+        </div>
+    </ion-content>
 </ion-view>

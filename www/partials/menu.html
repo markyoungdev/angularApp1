@@ -7,7 +7,7 @@
     <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-side-menu-content scroll="false" drag-content="false">
 
-  <ion-side-menu side="left" width="550" drag-content="false">
+  <ion-side-menu side="left" width="{{sideMenuWidth}}" drag-content="false">
     
     <ion-content scroll="false">
     <!--<img src="{{currentUserAvatar}}" class="profile-img">-->
@@ -24,6 +24,9 @@
         <ion-item nav-clear menu-close href="#/app/settings">
           Settings
         </ion-item>
+        <ion-item nav-clear menu-close href="#/app/profile">
+          Profile
+        </ion-item>
         <ion-item nav-clear menu-close href="#/app/help">
           Help
         </ion-item>
@@ -34,8 +37,8 @@
       <div class="clearfix"></div>
       
     </ion-content>
-    <div class="bar bar-footer">
+    <!--<div class="bar bar-footer">
       <button class="button button-balanced button-full button-large" ng-click="goTo('app.profile')">View Profile</button>
-    </div>
+    </div>-->
   </ion-side-menu>
 </ion-side-menus>

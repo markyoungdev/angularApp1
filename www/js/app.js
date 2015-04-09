@@ -97,10 +97,11 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       resolve:{}      
     })
     <!-- // handle the login -->
-    .state('login', {
+    .state('/', {
       url: '/login',
       templateUrl: 'partials/login.html',
       data: { login: true },
+      login: true,
       public: true,
       controller: 'LoginModalController',
       resolve:{
@@ -164,6 +165,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       public: false,
       resolve: {  
         loadUserInit: function(LoggedInUser){
+          console.log( LoggedInUser )
           LoggedInUser.set();
         },    
         loadDbUser: ['loadUserInit','LoggedInUser',function(loadUserInit, LoggedInUser){  
@@ -214,17 +216,18 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       url: '/profile',
       data: { public: false },
       public: false,
-      resolve: {        
-        loadDbUser: function(LoggedInUser){               
-          return LoggedInUser.getUserData();
-        }   
-      },
       views: {
         'menuContent': {
            templateUrl: 'partials/profile.html',
            controller: 'ProfileController'
           }
+      },
+      resolve: {        
+        loadDbUser: function(LoggedInUser){               
+          return LoggedInUser.getUserData();
+        }   
       }
+      
     })
       <!-- // handle the profile -->
     .state('app.match', {

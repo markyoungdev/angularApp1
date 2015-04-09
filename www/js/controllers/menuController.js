@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('MenuController', function ($scope, $location, $ionicSideMenuDelegate, $state, user, getUser) {
+angular.module('sideMenuApp.controllers').controller('MenuController', function ($scope, $window, $location, $ionicSideMenuDelegate, $state, user, getUser) {
        
     $scope.goTo = function(page) {
         console.log('Going to ' + page);
@@ -8,6 +8,10 @@ angular.module('sideMenuApp.controllers').controller('MenuController', function 
     var currentUser = user.current;
     var username = currentUser.user_id;
     var name = currentUser.first_name;
+    //console.log($window);
+    $scope.windowSize = $window.innerWidth;
+    $scope.percentage = (70/100);
+    $scope.sideMenuWidth = $scope.percentage * $scope.windowSize;
     
    /* getUser.getUserData(username)
  	.$promise.then(function(results){

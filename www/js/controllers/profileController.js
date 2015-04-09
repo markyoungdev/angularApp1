@@ -1,14 +1,14 @@
-angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer, Upload, Camera, getUserInit) {
+angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer, Upload, Camera, loadDbUser) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
         
     $scope.goTo = function(page) {
         console.log('Going to ' + page);       
         $state.go(page);       
-         $ionicSideMenuDelegate.toggleLeft();    
+        // $ionicSideMenuDelegate.toggleLeft();    
     };
-    console.log(getUserInit);
-    $scope.userID = getUserInit._id;
+    console.log(loadDbUser);
+    $scope.userID = loadDbUser._id;
     console.log($scope.userID);
     
 
