@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('LoginModalController', function ($scope) {
+angular.module('sideMenuApp.controllers').controller('SignupController', function ($scope, $state) {
 
   $scope.currentUser = Parse.User.current();
  
@@ -17,15 +17,10 @@ angular.module('sideMenuApp.controllers').controller('LoginModalController', fun
         alert("Unable to sign up:  " + error.code + " " + error.message);
       }
     });    
-  };
- 
-  $scope.logOut = function(form) {
-    Parse.User.logOut();
-    $scope.currentUser = null;
-  };
+  };  
 
   $scope.init = function () {
-    console.log('Ran: in loginModalController');
+    console.log('Ran: in SignupController');
   }
  
   $scope.init();

@@ -9,6 +9,8 @@ angular.module('sideMenuApp.services', [])
         }
     })
 
+
+
     .service('LoggedInUser', function($resource, user, $q, localStorageService, getUser, getUserCoords, addNewUser){
         this.set = function(){             
             var test = user.getCurrent().then(function (currentUser) { 
@@ -79,21 +81,12 @@ angular.module('sideMenuApp.services', [])
     })
      // load user
     
-    .factory('signupUser', function(form){
-        var user = new Parse.User();
-        user.set("email", 'maayoung20@yahoo.com');
-        user.set("username", 'maayoung20');
-        user.set("password", 't122804y');
-
-        user.signUp(null, {
-        success: function(user) {
-            console.log(user);
-        },
-        error: function(user, error) {
-            alert("Unable to sign up:  " + error.code + " " + error.message);
-         }
-        }); 
+    .factory('setUserAttrs', function(getUserCoords){
+       return getUserCoords.get().then(function(coords){
+           return coords;
+        })
     })
+
     // load DB user
     .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) {          
          console.log(loadUser);

@@ -1,18 +1,19 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('CardsController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, declineMatch, getCoordsInit, getNewMatchesInit, user, getUser, updateUser, loadDbUser) {
+.controller('NewMatchesController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, declineMatch, getNewMatchesInit, user, getUser, updateUser) {
   /**
   *
   * Define scope variables that
   * have been passed from the state resolve
   *
   **/  
-  $scope.cardObj = getNewMatchesInit;
-  console.log(loadDbUser);
-  console.log(getNewMatchesInit);
-  $scope.userData = loadDbUser;  
-  var cardTypes = $scope.cardObj.data; 
-  console.log(getCoordsInit); 
+  $scope.cardObj = getNewMatchesInit; 
+  $scope.userData = Parse.User.current();  
+  //var cardTypes = $scope.cardObj.data; 
+  var cardTypes = [1,2,3];
+  console.log($scope.userData);
+  var Friendships = Parse.Object.extend("Friends");
+  
 
   /**
   *
@@ -95,21 +96,21 @@ angular.module('sideMenuApp.controllers')
   * Get the current coordinates
   *
   **/  
-  $scope.coords = getCoordsInit;
-  var lat = parseFloat($scope.coords.coords.latitude).toFixed(4);
-  var lng = parseFloat($scope.coords.coords.longitude).toFixed(4);
+  //$scope.coords = getCoordsInit;
+  //var lat = parseFloat($scope.coords.coords.latitude).toFixed(4);
+  //var lng = parseFloat($scope.coords.coords.longitude).toFixed(4);
   /**
   *
   * Add the current coordinates to an object
   *
   **/
-  var geoJSON = {'lat': lat, 'lng': lng};
+ // var geoJSON = {'lat': lat, 'lng': lng};
   /**
   *
   * Update the user if the location has changed 
   *
   **/  
-  var currentUser = user.current;
+  /*var currentUser = user.current;
   if (currentUser.authenticated) {
     console.log($scope.userData);     
       //console.log(data.loc.lat);
@@ -125,7 +126,7 @@ angular.module('sideMenuApp.controllers')
       }
         
 
-  }
+  }*/
 
   $scope.init();
 })

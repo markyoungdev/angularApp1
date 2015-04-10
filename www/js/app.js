@@ -14,7 +14,7 @@ var sideMenuApp = angular.module('app',
   'ngResource']
   );
 
-sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http, LoggedInUser, localStorageService) {
+sideMenuApp.run(['$ionicPlatform', 'user', '$rootScope', '$http', '$location', 'localStorageService', function($ionicPlatform, user, $rootScope, $http, $location, localStorageService) {
  // console.debug('Running com.unarin.cordova.proximity.quickstart');
   $ionicPlatform.ready(function() {
     //angular.bootstrap(document, ['com.unarin.cordova.proximity.quickstart']);
@@ -30,25 +30,29 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http, LoggedInUser, l
     //PushNotificationsService.register();
  
     user.init({ appId: '54c951838e11a' });  
-    $rootScope.$on('user.login', function() {
-      $rootScope.loggedInUser = user.current.user_id;
-      LoggedInUser.set();
+    $rootScope.$on('user.login', function() {      
+     
       $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
     });
 
-    $rootScope.$on('user.logout', function() {
+    $rootScope.$on('Parse.User.logOut', function() {
         $http.defaults.headers.common.Authorization = null;
         localStorageService.clearAll();
+
     });
 
     $rootScope.$on('user.error', function(sender, error) {
       console.log(error.message);
     });
+      var currentUser = Parse.User.current();
+        if (!currentUser) {
+         $location.path('/');
+        } 
 
     
   });
 
-})
+}])
 
 sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
 
@@ -107,8 +111,9 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       data: { login: true },
       login: true,
       public: true,
-      controller: 'LoginModalController',
+      controller: 'LoginController',
       resolve:{
+
       }     
     })
      <!-- // handle the login -->
@@ -116,8 +121,8 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
       url: '/signup',
       templateUrl: 'partials/signup.html',
       data: { public: true },
-      public: true
-      //controller: 'AppCtrl'
+      public: true,
+      controller: 'SignupController'
     })
       <!-- // handle the forgot password -->
      .state('forgot-password', {
@@ -130,7 +135,8 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
      <!-- // handle the Faqs -->
      .state('app.help', {
       url: '/help',
-      data: { public: false },
+       data: { public: true },
+      public: true,
       views: {
         'menuContent': {
            templateUrl: 'partials/help.html',
@@ -141,34 +147,25 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
     <!-- // handle the settings -->
     .state('app.settings', {
       url: '/settings',
-      data: { public: false },
-      public: false,
+      data: { public: true },
+      public: true,
       views: {
         'menuContent': {
           templateUrl: 'partials/settings.html',
           controller: 'SettingsController'
         },
       },
-      resolve: {        
-        loadUser: ['user', 'getUser', function( user, getUser ) {
-          var user = user.getCurrent().then(function(currentUser) {  
-            return currentUser;
-          });
-          return user;
-        }],
-        getSettings: ['getUserSettings','loadUser',function(getUserSettings, loadUser) {
-          var id = loadUser.user_id;          
-          return getUserSettings.get(id);
-        }],
+      resolve: {    
+        
       }
     })
       <!-- // handle the Faqs -->
      .state('app.newmatches', {
       url: '/new-matches',
-      data: { public: false },
-      public: false,
-      resolve: {  
-        loadUserInit: function(LoggedInUser){
+      data: { public: true },
+      public: true,
+      resolve: {        
+        /*loadUserInit: function(LoggedInUser){
           console.log( LoggedInUser )
           LoggedInUser.set();
         },    
@@ -182,20 +179,20 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
         getNewMatchesInit: function(getNewMatchesInit){
           console.log(getNewMatchesInit.get());
           return getNewMatchesInit.get();
-        }
+        }*/
       },
       views: {
         'menuContent': {
            templateUrl: 'partials/new-matches.html',
-           controller: 'CardsController'
+           controller: 'NewMatchesController'
           }
       }
     })
      <!-- // handle the matches -->
     .state('app.matches', {
       url: '/matches',
-      data: { public: false },
-      public: false,
+      data: { public: true },
+      public: true,
       views: {
         'menuContent': {
           templateUrl: 'partials/matches.html',
@@ -218,8 +215,8 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
      <!-- // handle the profile -->
     .state('app.profile', {
       url: '/profile',
-      data: { public: false },
-      public: false,
+      data: { public: true },
+      public: true,
       views: {
         'menuContent': {
            templateUrl: 'partials/profile.html',
@@ -227,17 +224,15 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
           }
       },
       resolve: {        
-        loadDbUser: function(LoggedInUser){               
-          return LoggedInUser.getUserData();
-        }   
+        
       }
       
     })
       <!-- // handle the profile -->
     .state('app.match', {
       url: '/match/:matchId',
-      data: { public: false },
-      public: false,
+      data: { public: true },
+      public: true,
       views: {
         'menuContent': {
            templateUrl: 'partials/match-single.html',
@@ -252,7 +247,7 @@ sideMenuApp.config(function($stateProvider, $urlRouterProvider, localStorageServ
   //$urlRouterProvider.otherwise('/app.matches');
    $urlRouterProvider.otherwise( function($injector, $location) {
             var $state = $injector.get("$state");
-            $state.go("app.newmatches");
+            $state.go("/");
         });
   
 

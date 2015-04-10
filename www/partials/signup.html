@@ -1,22 +1,41 @@
- <ion-view title="navTitle" hide-back-button="false" left-buttons="leftButtons" right-buttons="rightButtons"
-      hide-back-button="false">
-      <ion-content class="login-page">
-	    
-	        <div class="login-image" style="display: inline-block;">
-	        	<div class="center">
-	        		<form ua-signup ng-show="!verificationEmailSent">
-						<input name="first_name" placeholder="Your name"><br>
-						<input name="login" ua-is-email placeholder="Email"><br>
-						<input name="password" placeholder="Password" type="password"><br>
-						<p><button type="submit">Create account</button> or <a href="" ua-oauth-link="google">Sign up with Google</a></p>
-						
-						<p ng-show="loading"><img src="https://app.userapp.io/img/ajax-loader-transparent.gif"></p>
-						<p ng-show="error">{{ error.message }}</p>
-					</form>
-
-					<p ng-show="verificationEmailSent">An email has been sent to your inbox. Click on the link to verify your account.</p>
-					<p><a href="#/login">Log in</a></p>
-	        	</div>
-	        </div>
-	  </ion-content>
-  </ion-view>
+<ion-view class="signup-view">
+  <ion-content scroll="false">
+  <div class="container">
+    <div class="row login-form-row">
+      <div class="col col-center">
+        <div class="card login-container" content-tabs tabsdata='tabsdata'>
+          <form name="signup_form" class="signup" >
+            <my-tabs>
+              <my-tab title="Email">
+                <div class="list">
+                  <label class="item item-input">
+                    <input type="text" placeholder="Email" ng-model="user.email">
+                  </label>
+                  <label class="item item-input">
+                    <input type="text" placeholder="Username" ng-model="user.username">
+                  </label>
+                  <label class="item item-input">
+                    <input type="password" placeholder="Password" ng-model="user.password">
+                  </label>
+                </div>
+              </my-tab>            
+            </my-tabs>
+            <div class="item item-body bottom-content">
+              <p><button type="submit" class="button button-block button-positive" ng-click="signUp(user)">Sign Up</button></p>
+              <div class="text-center"> 
+                <p> or <a href="" ua-oauth-link="google" class="button button-block button-assertive">Sign up with Google</a></p>                
+                <p ng-show="error">{{ error.message }}</p>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="alternative-actions">          
+          <button class="sign-up button button-small button-clear button-light" ng-click="goTo('/')">
+            Login In
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </ion-content>
+</ion-view>

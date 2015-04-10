@@ -18,14 +18,18 @@ angular.module('sideMenuApp.controllers').controller('MenuController', function 
  		$scope.currentUserAvatar = results['avatar'];
  		console.log(results['avatar']);
  	});*/
-      
-    $scope.init = function () {
-        /*getUser.getUserData(username)
-         .$promise.then(function(results){
-            $scope.currentUserAvatar = results['avatar'];
-            console.log(results['avatar']);
-        });*/
+    $scope.logout = function(){
+        var currentUser = Parse.User.current();
+        Parse.User.logOut();
+        $location.path("/app/new-matches");
+        console.log(currentUser);
     }
+
+    $scope.init = function () {
+       
+    }
+
+    
  
   $scope.init();
     });
