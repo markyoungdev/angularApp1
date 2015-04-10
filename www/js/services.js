@@ -78,23 +78,22 @@ angular.module('sideMenuApp.services', [])
         }
     })
      // load user
-    /*.factory('loadUser', function($resource, user, $q, LoggedInUser, localStorageService) {       
-        //run LoggedInUser function        
-        var userAppID = LoggedInUser.getUsername();
-        var localAppID = LoggedInUser.getUserData();
-        var setDbUser = LoggedInUser.setQueryUser();
-        //LoggedInUser.addNewUser();
-        console.log(localAppID);
-        if(localAppID == 'null'){
-            LoggedInUser.addNewUser();
-        }
+    
+    .factory('signupUser', function(form){
+        var user = new Parse.User();
+        user.set("email", 'maayoung20@yahoo.com');
+        user.set("username", 'maayoung20');
+        user.set("password", 't122804y');
 
-
-        return {
-            getUA: userAppID,
-            getDB: localStorageService.get('userDbObj')   
-        }          
-    })*/
+        user.signUp(null, {
+        success: function(user) {
+            console.log(user);
+        },
+        error: function(user, error) {
+            alert("Unable to sign up:  " + error.code + " " + error.message);
+         }
+        }); 
+    })
     // load DB user
     .factory('loadDbUser', function($resource, loadUser, getUser, getUserCoords, addNewUser, $q) {          
          console.log(loadUser);

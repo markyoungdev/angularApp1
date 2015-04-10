@@ -6,13 +6,15 @@ var sideMenuApp = angular.module('app',
   'UserApp','ui.bootstrap',
   'ionic.contrib.ui.tinderCards',
   'LocalStorageModule',
+  'parse-angular',
+  'parse-angular.enhance',
   //'com.unarin.cordova.proximity.quickstart.monitoring',
   //'com.unarin.cordova.proximity.quickstart.eventlog',
   //'com.unarin.cordova.proximity.quickstart.ranging',
   'ngResource']
   );
 
-sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http, LoggedInUser) {
+sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http, LoggedInUser, localStorageService) {
  // console.debug('Running com.unarin.cordova.proximity.quickstart');
   $ionicPlatform.ready(function() {
     //angular.bootstrap(document, ['com.unarin.cordova.proximity.quickstart']);
@@ -42,6 +44,8 @@ sideMenuApp.run(function($ionicPlatform, user, $rootScope,$http, LoggedInUser) {
     $rootScope.$on('user.error', function(sender, error) {
       console.log(error.message);
     });
+
+    
   });
 
 })
