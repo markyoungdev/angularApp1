@@ -38,6 +38,12 @@ angular.module('sideMenuApp.controllers').controller('LoginController', function
   $scope.init = function () {
     console.log('Ran: in loginController');
   }
+
+  $scope.goTo = function(page) {
+      console.log('Going to ' + page);
+      //$ionicSideMenuDelegate.toggleLeft();
+      $state.go(page);           
+  };
  
   $scope.init();
 

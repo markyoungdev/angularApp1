@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer, Upload, Camera) {
+angular.module('sideMenuApp.controllers').controller('ProfileController', function ($scope, $location, $ionicSideMenuDelegate, $state, $cordovaImagePicker, $timeout, $cordovaFileTransfer, Upload, Camera, UploadImage) {
         // "MenuService" is a service returning mock data (services.js)
         //$scope.list = MenuService.all();
         
@@ -44,15 +44,8 @@ angular.module('sideMenuApp.controllers').controller('ProfileController', functi
 	};
 
 	$scope.uploadFile = function() {
-
-		Upload.fileTo('http://localhost:3000/api/user/upload/image/'+$scope.userID).then(
-			function(res) {				
-				console.log('success: '+res);
-				// Success
-			}, function(err) {				
-				console.log('fail: '+err);
-				// Error
-		});
+		console.log(UploadImage.file());
+		UploadImage.file();
 	};
 
 	 /*document.addEventListener('deviceready', function () {

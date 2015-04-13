@@ -1,6 +1,7 @@
 var sideMenuApp = angular.module('app', 
   ['ionic', 
   'ngCordova',
+  'sideMenuApp.factories',
   'sideMenuApp.services',
   'sideMenuApp.controllers',
   'UserApp','ui.bootstrap',
@@ -36,6 +37,7 @@ sideMenuApp.run(['$ionicPlatform', 'user', '$rootScope', '$http', '$location', '
     });
 
     $rootScope.$on('Parse.User.logOut', function() {
+      console.log('logged out');
         $http.defaults.headers.common.Authorization = null;
         localStorageService.clearAll();
 

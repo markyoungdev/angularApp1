@@ -1,6 +1,10 @@
-angular.module('sideMenuApp.controllers').controller('SignupController', function ($scope, $state) {
+angular.module('sideMenuApp.controllers').controller('SignupController', function ($scope, $state, setUserAttrs, $rootScope, $location) {
 
   $scope.currentUser = Parse.User.current();
+
+  if ( $scope.currentUser ) {
+    $location.path("/app/new-matches");
+  } 
  
   $scope.signUp = function(form) {
     var user = new Parse.User();
@@ -17,6 +21,34 @@ angular.module('sideMenuApp.controllers').controller('SignupController', functio
         alert("Unable to sign up:  " + error.code + " " + error.message);
       }
     });    
+  };  
+
+  function loginSuccessful(user) {
+    setUserAttrs.then(function(data){
+      var latitude = data.coords.latitude;
+      var longitude = data.coords.longitude;
+      var point = new Parse.GeoPoint({latitude: latitude, longitude: longitude});
+      user.set("location", point); 
+      user.save();         
+    });
+
+    $rootScope.$apply(function() {
+      $rootScope.currentUser = Parse.User.current();
+      $location.path("/app/new-matches");
+    });
+  }
+
+  function loginUnsuccessful(user, error) {
+    alert("Error: " + error.message + " (" + error.code + ")");
+  }
+
+
+  $scope.logIn = function(form) {    
+ 
+    Parse.User.logIn(form.username, form.password, {
+      success: loginSuccessful,
+      error: loginUnsuccessful
+    });   
   };  
 
   $scope.init = function () {

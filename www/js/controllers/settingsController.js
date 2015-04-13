@@ -9,7 +9,7 @@ angular.module('sideMenuApp.controllers').controller('SettingsController', funct
     $scope.settings = {};
     // Get the current user's data
     $scope.currentUser = Parse.User.current();
-    //console.log(currentUser);
+    console.log($scope.currentUser);
     console.log($scope.currentUser.get('profileHidden'))
     // current users search radius
     if($scope.currentUser.get('searchRadius')){

@@ -21,7 +21,7 @@ angular.module('sideMenuApp.controllers').controller('MenuController', function 
     $scope.logout = function(){
         var currentUser = Parse.User.current();
         Parse.User.logOut();
-        $location.path("/app/new-matches");
+        $location.path("/");
         console.log(currentUser);
     }
 
