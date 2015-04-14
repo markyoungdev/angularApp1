@@ -278,7 +278,7 @@ angular.module('sideMenuApp.factories', [])
         }
     })
     // get new matches for associated user from the db
-    .factory('getNewMatches', function($resource, $http, getCoords, user, getUser) {
+    /*.factory('getNewMatches', function($resource, $http, getCoords, user, getUser) {
         return{  get: function(userId){                    
                 var coordsObj = getCoords.getUserCoord();                
                 var matches = coordsObj.then(function(data){                    
@@ -292,6 +292,31 @@ angular.module('sideMenuApp.factories', [])
                 console.log(matches);
                 return matches;
                           
+            }
+        }
+    })*/
+    .factory('getNewMatches', function(){
+        return {// User's location
+            get: function(){
+                var user = Parse.User.current();
+                var userGeoPoint = user.get("location");
+                var searchRadius  = user.get('searchRadius');
+                // Create a query for places
+                var query = new Parse.Query(Parse.User);
+                // Interested in locations near user.
+                query.near("location", userGeoPoint);
+
+                query.withinKilometers("location", userGeoPoint, searchRadius);
+
+                // Limit what could be a lot of points.
+                query.limit(10);
+                // Final list of objects
+                return query.find({
+                  success: function(placesObjects) {
+                    console.log(placesObjects);
+                    return placesObjects;
+                  }
+                });
             }
         }
     })

@@ -1,4 +1,4 @@
-angular.module('sideMenuApp.controllers').controller('SettingsController', function ($scope, $location, $ionicSideMenuDelegate, $state, user ) {
+angular.module('sideMenuApp.controllers').controller('SettingsController', function ($scope, $location, $ionicSideMenuDelegate, $state, user, getNewMatches ) {
         // "MenuService" is a service returning mock data (services.js)
       
     $scope.goTo = function(page) {
@@ -53,4 +53,5 @@ angular.module('sideMenuApp.controllers').controller('SettingsController', funct
         
 
     }
+    
 });

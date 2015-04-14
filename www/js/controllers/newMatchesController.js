@@ -1,6 +1,6 @@
 angular.module('sideMenuApp.controllers')
 
-.controller('NewMatchesController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, declineMatch, getNewMatchesInit, user, getUser, updateUser) {
+.controller('NewMatchesController', function($scope, TDCardDelegate, $state, matchService, getMatches, addMatch, declineMatch, getNewMatchesInit, user, getUser, updateUser, getNewMatches) {
   /**
   *
   * Define scope variables that
@@ -9,8 +9,9 @@ angular.module('sideMenuApp.controllers')
   **/  
   $scope.cardObj = getNewMatchesInit; 
   $scope.userData = Parse.User.current();  
-  //var cardTypes = $scope.cardObj.data; 
-  var cardTypes = [1,2,3];
+  var cardTypes = getNewMatches.get();
+  console.log(cardTypes);
+  //var cardTypes = [1,2,3];
   console.log($scope.userData);
   var Friendships = Parse.Object.extend("Friends");
   
